@@ -42,6 +42,19 @@ We&amp;rsquo;ll start with creating a new site with a very basic template.</desc
     </item>
     
     <item>
+      <title>Whatsapp Chat Data Analysis</title>
+      <link>/post/checking-post/</link>
+      <pubDate>Mon, 11 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/checking-post/</guid>
+      <description>AboutThe Whole Idea about this analysis, is to Understand about the persons chatting behavior and finding pattern in Whatsapp Messaging
+In this we will be analysing the chat between two persons
+From the below chart we can clearly see the number of messages sent each day
+The Total number of messages were : 5733 
+Number of messages sent by each persons:</description>
+    </item>
+    
+    <item>
       <title>Hello R Markdown</title>
       <link>/post/hello-r-markdown/</link>
       <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
