@@ -25,9 +25,9 @@ canonifyurls    = true
   mediumName = ""
 
   logo = ""
-  orgName = "EM"
-  orgWebsite = "https://www.telematika.org"
-  orgDescription = "Here is a description placeholder for your org"
+  orgName = "DataAnt"
+  orgWebsite = ""
+  orgDescription = ""
 
   showSupport = true
 
@@ -49,11 +49,6 @@ canonifyurls    = true
   name = "Home"
   url = "/"
   weight = 200
-
-[[menu.main]]
-  name = "Categories"
-  url = "/categories/"
-  weight = 99
 
 [[menu.main]]
   name = "External"
