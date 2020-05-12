@@ -32,7 +32,7 @@ canonifyurls    = true
   showSupport = true
 
   author = "Vignesh A"
-  authorAvatar = "img/vikki.jpg"
+  authorAvatar = "vikki.jpg"
   authorLocation = "India"
   authorWebsite = "https://github.com/madeye28"
   authorDescription = "Engineer by degree, Data Analyst by heart"
@@ -49,11 +49,6 @@ canonifyurls    = true
   name = "Home"
   url = "/"
   weight = 200
-
-[[menu.main]]
-  name = "Go"
-  url = "/tags/golang/"
-  weight = 100
 
 [[menu.main]]
   name = "Categories"
