@@ -18,13 +18,13 @@ canonifyurls    = true
   customCSS = []
   RSSLink = ""
 
-  twitterName = "faketryghost"
-  fbName = "fakeghost"
-  githubName = "eueung"
-  linkedinName = "eueung"
+  twitterName = "Vignesh_Appanraj"
+  #fbName = "fakeghost"
+  githubName = "madeye28"
+  linkedinName = "Vignesh Appanraj"
   mediumName = ""
 
-  logo = ""
+  logo = "da.ico"
   orgName = "DataAnt"
   orgWebsite = ""
   orgDescription = ""
