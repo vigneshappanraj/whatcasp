@@ -7,12 +7,12 @@ paginate        = 6
 canonifyurls    = true
 
 [params]
-  title       = "Hugo Casper Two"
-  subtitle    = "Port of Casper 2.x for Hugo"
-  copyright   = "© 2018"
+  title       = "DataAnt"
+  subtitle    = "Average Analyst"
+  copyright   = "© 2020"
 
   cover       = "img/blog-cover.jpg"
-  description = "Here is a description of your site."
+  description = "Personal Data Blog"
   metaDescription = ""
   googleAnalytics = ""
   customCSS = []
@@ -24,18 +24,18 @@ canonifyurls    = true
   linkedinName = "eueung"
   mediumName = ""
 
-  logo = "hugo-logo.png"
+  logo = ""
   orgName = "EM"
   orgWebsite = "https://www.telematika.org"
   orgDescription = "Here is a description placeholder for your org"
 
   showSupport = true
 
-  author = "EM"
-  authorAvatar = "img/ghost-icon.png"
-  authorLocation = "Bandung, ID"
-  authorWebsite = "https://eueung.github.io"
-  authorDescription = "Your description here"
+  author = "Vignesh A"
+  authorAvatar = "img/vikki.jpg"
+  authorLocation = "India"
+  authorWebsite = "https://github.com/madeye28"
+  authorDescription = "Engineer by degree, Data Analyst by heart"
 
   pageNotFoundTitle = "404 - Page not found"
 
