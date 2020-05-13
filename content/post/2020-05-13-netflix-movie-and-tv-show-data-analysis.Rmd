@@ -1,0 +1,351 @@
+---
+title: Netflix Movie and TV Show Data Analysis
+author: A Vignesh
+date: '2020-05-13'
+slug: netflix-movie-and-tv-show-data-analysis
+categories: []
+tags: []
+---
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+library(Amelia)
+library(tidyverse)
+library(plotly)
+library(lubridate)
+library(ggplot2)
+library(ggrepel)
+library(cowplot)
+```
+
+
+*Netflix and Chill*, That famous saying, So netflix has entertaining us for almost a decade now. It has developed a lot. Started as a DVD renting company in USA now it is can be accesed from anywhere in the world. This data descriptive analysis is done to understand the growth(in terms of the collection of Movies and TV shows) of Netflix all around the world.
+
+The Data set that we used to analysis is from **[Kaggle](https://www.kaggle.com/shivamb/netflix-shows) **. This dataset contains all the Movies and TV shows added to Netflix from **2008 - 2019**. The dataset consist of Rating, Director, Cast, Country, Released date and Added date.
+
+```{r, echo=FALSE,warning=FALSE}
+df <- read.csv('netflix_titles.csv')
+df$date_added<-parse_date_time(df$date_added, orders = c("bdy", "bY"))
+
+#missmap(df,main = 'missing map',col = c('yellow','black'))
+df$year_added <- year(df$date_added)
+#missmap(df,main = 'missing map',col = c('yellow','black'))
+df$year_added <- ifelse(is.na(df$year_added),df$release_year,df$year_added)
+#missmap(df,main = 'missing map',col = c('yellow','black'))
+df<- df%>% 
+  filter(year_added != '2020')
+#head(df,2)
+#unique(df$type)
+total_shows <- as.data.frame(df %>%
+  select(type)%>%
+  count(type))
+```
+
+# KEY FINDINGS
+
+
+The Total number of Movies and Shows in Netflix are : **`r count(df)`**   
+
+* Movies   : **`r total_shows[1,2]`**   
+
+* TV Shows : **`r total_shows[2,2]`**
+
+```{r, echo=FALSE,warning=FALSE}
+fig <- plot_ly(total_shows, labels = ~type, values = ~n, type = 'pie')
+fig <- fig %>% layout(title = 'Percentage of Movies and TV Shows in Netflix',
+                      xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+                      yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+
+```
+
+Percentage of TV Shows and Movies in Netflix
+
+```{r, echo=FALSE,warning=FALSE}
+fig
+```
+
+We can see Netflix contains a mojor of about **70%** movies and **30%** of TV Shows.
+
+```{r, echo=FALSE,warning=FALSE}
+movie_year<-as.data.frame(df %>%
+  filter(type == unique(df$type)[1]) %>%
+  select(year_added) %>%
+  count(year_added))
+#str(movie_year)
+movie_year <- movie_year%>%
+  filter(year_added != '2020')
+#movie_year
+library(ggplot2)
+library(ggrepel)
+
+movie_year_graph <- ggplot(data =movie_year,aes(x=year_added,y=n)) + geom_col(fill = 'red',color ='black',alpha = .4) +
+             ylab('Number of Movies Added') +
+             xlab('Year') +
+             ggtitle("Movies added in Each Year ")+
+  scale_x_continuous(limits = c(2008,2020),
+                     breaks = seq(from = 2008, to = 2019, by = 1)) + theme_bw()+
+  geom_label_repel(aes(label = n),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50')
+#movie_year_graph
+
+
+
+tv_year <-as.data.frame(df %>%
+  filter(type == unique(df$type)[2]) %>%
+  select(year_added) %>%
+  count(year_added))
+tv_year$total<- cumsum(tv_year$n)
+
+tv_year <- tv_year%>%
+  filter(year_added != '2020')
+
+
+tv_year_graph <- ggplot(data = tv_year,aes(x=year_added,y=n)) + geom_col(fill = 'blue',color ='black',alpha = .4) +
+  ylab('Number of TV Shows Added') +
+  xlab('Year') +
+  ggtitle("TV Shows added in Each Year ")+
+  scale_x_continuous(limits = c(2008,2020),
+                     breaks = seq(from = 2008, to = 2019, by = 1)) + theme_bw()+
+  geom_label_repel(aes(label = n),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50')
+
+movie_cum_graph <- ggplot(movie_year,aes(x=year_added,y = cumsum(n))) +
+  geom_line(col = "pink",size =2)+
+  geom_point(col='red',size = 4)+
+  ylab('Number of Movies') +
+  xlab('Year') +
+  ggtitle("Movies across Years ")+
+  scale_x_continuous(limits = c(2008,2020),
+                     breaks = seq(from = 2008, to = 2019, by = 1)) + theme_bw()+
+  geom_label_repel(aes(label = cumsum(n)),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50')
+tv_cum_graph<- ggplot(tv_year,aes(x=year_added,y = cumsum(n))) +
+  geom_line(col = "light blue",size =2)+
+  geom_point(col='blue',size = 4)+
+  ylab('Number of TV Shows') +
+  xlab('Year') +
+  ggtitle("TV Shows across Years ")+
+  scale_x_continuous(limits = c(2008,2020),
+                     breaks = seq(from = 2008, to = 2019, by = 1)) + theme_bw()+
+  geom_label_repel(aes(label = cumsum(n)),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50')
+#tv_cum_graph
+
+```
+
+# Yearwise Analysis
+
+```{r, echo=FALSE,warning=FALSE}
+#plot_grid(movie_cum_graph,tv_cum_graph)
+
+movie_cum_graph
+#tv_cum_graph
+```
+From the above graphs we can see Increse in the number of Movies  
+
+* We can see that during **2014** There were only **46 Movies** and in **2019** there are **4188 Movies**, literally like 100 time more Movies.  
+
+* Growth rate is addition on Movies is more than **100%** during **2017 - 2018** and almost the same for TV Shows
+
+```{r, echo=FALSE,warning=FALSE}
+#plot_grid(movie_cum_graph,tv_cum_graph)
+
+#movie_cum_graph
+tv_cum_graph
+```
+
+
+From the above graphs we can see Increse in the number of  TV Shows each Year
+
+* We can see that for both Movies and TV shows, there was **not much of a incrase till 2014.**
+* From **2015** we can see a **exponential increase** in number of Movies and TV Shows.
+
+```{r, echo=FALSE,warning=FALSE}
+#plot_grid(movie_year_graph,tv_year_graph)
+movie_year_graph
+tv_year_graph
+```
+
+The Above Graphs shows the number of Movies and TV Shows added each Year.
+
+* We can see that from both the above graph Netflix, started adding more Movies and TV Shows from *2015* and year after year, it keeps on increasing the number of Movies and TV Shows per year Count.
+
+# Top Movies And TV Shows    
+
+## Top 20 Movies by Runtime.
+
+```{r, echo=FALSE,warning=FALSE}
+top_20_movie <- df %>%
+  select(title,type,duration,country) %>%
+  filter(type == unique(df$type)[1]) %>%
+  arrange(desc(duration)) %>%
+  head(20)
+
+ggplot(top_20_movie,aes(y=duration,x=reorder(title,duration))) + 
+  geom_bar(stat = 'identity',aes(fill=factor(country))) + 
+  xlab('Movie')+
+  ylab('Minutes')+
+  ggtitle("TOP 20 Movies in Netflix by Minutes") + theme_bw() +
+  scale_fill_discrete(name = "No.of.Seasons") +
+  geom_label_repel(aes(label = duration),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') + coord_flip()
+```
+
+
+From the above graph, we can see that the **top 20** lengthiest movie and which coutry these movies belongs to.
+
+* Out of the 20, **10 Movies are Indian Movies.** 
+
+Since there are so much movies in Netflix, We thought how many days it would take to watch all movies in Netflix
+
+So, There are total of **`r total_shows[1,2]`** in Netflix, and each has a duration then by calculation.
+
+* We found out that it would take about **`r round(df %>% filter(type == unique(df$type)[1]) %>%select(duration) %>% sum()/(60*24))`  Days to complete**.
+
+Yes!! **`r round(df %>% filter(type == unique(df$type)[1]) %>%select(duration) %>% sum()/(60*24))`** Many days just to watch Movies.
+
+## Top 20 TV Shows by Number of Seasons
+
+```{r, echo=FALSE,warning=FALSE}
+top_20_tv <- df %>%
+  select(title,type,duration) %>%
+  filter(type == unique(df$type)[2]) %>%
+  arrange(desc(duration)) %>%
+  head(20)
+
+
+ggplot(top_20_tv,aes(y=duration,x=reorder(title,duration))) + 
+  geom_bar(stat = 'identity',aes(fill=factor(duration)),col = 'black') + 
+  xlab('TV Series')+
+  ylab('Number Of Seasons')+
+  ggtitle("TOP 30 TV Shows in Netflix by Season") + theme_bw() + coord_flip() + 
+  scale_fill_discrete(name = "No.of.Seasons")
+```
+
+From the above graph we can see that,
+* **`r top_20_tv[2,1]`** and **`r top_20_tv[1,1]`** hold the first place with **`r top_20_tv[1,3]` Seasons.**
+
+So, There are some great shows up there, so we would like to see how many TV shows made upto 5 Sesons.
+
+There are total of **`r total_shows[2,2]`** TV Shows in Netflix.
+
+```{r, echo=FALSE,warning=FALSE}
+movie_percentage <- df %>%filter(type == unique(df$type)[2]) %>%
+  select(duration,title) %>%
+  count(duration) %>%
+  mutate(ind_percentage = round(n*100/sum(n),2)) %>%
+  mutate(cum_percentage = cumsum(ind_percentage))
+movie_percentage$duration <- ifelse(movie_percentage$cum_percentage >= 95,
+                                    '5+',movie_percentage$duration)
+
+fig <- plot_ly(movie_percentage, labels = ~duration, values = ~ind_percentage, type = 'pie')
+fig <- fig %>% layout(title = 'Percentage of Shows Seasons',
+                      xaxis = list(showgrid = TRUE, zeroline = TRUE, showticklabels = TRUE),
+                      yaxis = list(showgrid = TRUE, zeroline = TRUE, showticklabels = TRUE))
+fig
+
+```
+
+
+From the above Pie chart   
+
+* We can see that only **6.42%** of the TV shows aired for more than **5** Seasons.
+* The More shocking thing is **67%** of TV Shows aired only **1 season**
+* **82%** of TV Shows have **2 or 1 Seasons**   
+
+# Number Of TV Show and Movies from Each Countries   
+   
+        
+```{r, echo=FALSE,warning=FALSE}
+country_count<-as.data.frame(df %>% select(country) %>% 
+  count(country)%>%
+  arrange(desc(n)) %>% head(11))
+country_count <- country_count[-3,]
+ggplot(country_count,aes(x=reorder(country,n),y=n)) + 
+  geom_bar(stat='identity',aes(fill = factor(country))) +
+  xlab('Country') +
+  ylab('Number Of TV Shows and Movies') +
+  ggtitle('TOP 10 Counties with most Movies and TV Shows featured in Netflix') +
+  theme_bw() +
+  theme(legend.position = "none")+
+  geom_label_repel(aes(label = n),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +coord_flip()
+```
+
+
+From the graph we can see the number of TV Shows and Movies from each Countries.
+ 
+ * **USA** is in first place followed by India, **yes India**.
+ * Total of **770 Movies and TV Shows** are from India that are in Netflix.
+
+We are intrested in finding out from when and why Indian Movies and TV Shows made into Netflix. Our findings are.
+
+```{r, echo=FALSE,warning=FALSE}
+df %>% filter(country == 'India') %>%
+  count(year_added) %>% ggplot(aes(x=year_added,y=n)) + 
+  geom_bar(stat = "identity",fill='red',alpha=.4,col='black',width = .35) +
+  xlab('Year') +
+  ylab('Number Of TV show and Movies') +
+  ggtitle('Number Of Indian TV Showns and Movies featured in Netflix') +
+  theme_bw() +
+  geom_label_repel(aes(label = n),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50')
+```
+
+* From above graph you can see that *First Movie* from india was added into Netflix only on **2016**.
+* with in a priod of four years, a total of **770 TV Shows and Movies** are added into Netfliix.
+
+*Why Netflix added so much Indian Movies and TV Shows into Netflix ?*
+
+*Why, all of a Sudden ?*
+
+
+*We were confused, what happened in 2016 ?!!!*
+
+![](jio.png)
+
+**Yes, JIO Happened. **
+
+
+# Movie and TV Shows Rating
+
+Each Movie and TV Show will be given a Sensor Rating. 
+
+```{r, echo=FALSE,warning=FALSE}
+total_rating<-df %>% select(rating)%>%
+  count(rating) %>%
+  arrange(desc(n)) %>%
+  mutate(int_percentage = round(n*100/sum(n),2))
+total_rating$rating <- ifelse(total_rating$int_percentage < 6,'Others',as.character(total_rating$rating))
+
+
+fig <- plot_ly(total_rating, labels = ~rating, values = ~int_percentage, type = 'pie')
+fig <- fig %>% layout(title = 'Rating Percentage Of Movie of Movies in Netflix',
+                      xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+                      yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+fig
+
+```
+
+Rating Abbrevations
+
+* **TV-MA** :- This program is specifically designed to be viewed by adults and therefore may be unsuitable for children under 17.
+* **TV-14** :- This program contains some material that many parents would find unsuitable for children under 14 years of age
+* **TV-PG** :- This program contains material that parents may find unsuitable for younger children
+* **R**     :- Under 17 requires accompanying parent or adult guardian. Contains some adult material. Parents are urged to learn more about the film before taking their young children with them.
+
+We can see that clearly see that majority of Netflix is rated under this four category. **TV-MA** and *R* rating alone contributes to **40%**. Hence it shows that **40% Movies and TV Shows** are not suitable for Childrens Under 17.    
+
+That means, **4 in 10 Movies or TV Shows** is not suitable for childrens.
+
+
+Yes! We are at the end. Netflix has been a great place for entertainment for people all over the World and it will keep on entertaining us.
+
+# Thank You for your time.
+
+

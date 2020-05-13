@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en-US" />
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>Netflix Movie and TV Show Data Analysis &middot; </title>
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="canonical" href="/post/netflix-movie-and-tv-show-data-analysis/" />
+
+     <meta name="description" content="Netflix and Chill, That famous saying, So netflix has entertaining us for almost a decade now. It has developed a lot. Started as a DVD renting company in USA n" /> 
+
+     
+    
+    <meta name="twitter:card" content="summary"/>
+    
+ 
+    <meta name="twitter:title" content="Netflix Movie and TV Show Data Analysis"/>
+    <meta name="twitter:description" content="Netflix and Chill, That famous saying, So netflix has entertaining us for almost a decade now. It has developed a lot. Started as a DVD renting company in USA n"/>
+    <meta name="twitter:url" content="/post/netflix-movie-and-tv-show-data-analysis/" />
+    <meta name="twitter:site" content="@Vignesh_Appanraj"/>
+
+    <meta property="og:site_name" content="" />
+    <meta property="og:title" content="Netflix Movie and TV Show Data Analysis &middot; DataAnt" />
+    <meta property="og:url" content="/post/netflix-movie-and-tv-show-data-analysis/" />
+    
+
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="Netflix and Chill, That famous saying, So netflix has entertaining us for almost a decade now. It has developed a lot. Started as a DVD renting company in USA n" />
+
+    <meta property="article:published_time" content="2020-05-13T00:00:00Z" />
+    
+
+    <meta property="og:image" content="/img/blog-cover.jpg"/>
+
+    <meta name="generator" content="Hugo 0.70.0" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" type="text/css" href="/built/screen.css" /> 
+    <link rel="stylesheet" type="text/css" href="/css/casper-two.css" /> 
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" />
+    
+
+     
+
+</head>
+
+
+<body class="post-template">
+  <div class="site-wrapper"> 
+
+<header class="site-header outer">
+  <div class="inner">
+    <nav class="site-nav">
+      <div class="site-nav-left">
+        <a class="site-nav-logo" href="#"><img src="/da.ico" alt="DataAnt" /></a>
+
+        <ul class="nav" role="menu">
+        
+        
+        
+            <li class="" role="menuitem">
+              <a href="/">Home</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="/about/">About me</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://google.com/">External</a>
+            </li>
+        
+      </ul></div>
+
+      <div class="site-nav-right">
+        <div class="social-links">
+                    
+
+                    <a class="social-link social-link-tw" href="https://twitter.com/Vignesh_Appanraj" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg></a>
+
+                    <a class="social-link" href="https://github.com/madeye28" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+
+                    <a class="social-link" href="https://www.linkedin.com/in/Vignesh%20Appanraj" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 50 512 512"><path d="M150.65,100.682c0,27.992-22.508,50.683-50.273,50.683c-27.765,0-50.273-22.691-50.273-50.683 C50.104,72.691,72.612,50,100.377,50C128.143,50,150.65,72.691,150.65,100.682z M143.294,187.333H58.277V462h85.017V187.333z M279.195,187.333h-81.541V462h81.541c0,0,0-101.877,0-144.181c0-38.624,17.779-61.615,51.807-61.615 c31.268,0,46.289,22.071,46.289,61.615c0,39.545,0,144.181,0,144.181h84.605c0,0,0-100.344,0-173.915 s-41.689-109.131-99.934-109.131s-82.768,45.369-82.768,45.369V187.333z" /></svg></a>
+
+                    
+        </div>  
+            
+      </div>
+
+    </nav>  
+
+  </div>
+</header>
+
+<main id="site-main" class="site-main outer" role="main">
+  <div class="inner">
+    
+      <article class="post-full post"> 
+    <header class="post-full-header">
+        <section class="post-full-meta">
+            <time class="post-full-meta-date" datetime="2020-05-13">13 May 2020</time>
+        </section>
+        <h1 class="post-full-title">Netflix Movie and TV Show Data Analysis</h1>
+    </header>
+    
+    <figure class="post-full-image" style="background-image: url(/defimg/2.jpg)">
+    </figure>
+
+    <section class="post-full-content">
+        <div class="kg-card-markdown">
+        
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/plotly-binding/plotly.js"></script>
+<script src="/rmarkdown-libs/typedarray/typedarray.min.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="/rmarkdown-libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/plotly-main/plotly-latest.min.js"></script>
+
+
+<p><em>Netflix and Chill</em>, That famous saying, So netflix has entertaining us for almost a decade now. It has developed a lot. Started as a DVD renting company in USA now it is can be accesed from anywhere in the world. This data descriptive analysis is done to understand the growth(in terms of the collection of Movies and TV shows) of Netflix all around the world.</p>
+<p>The Data set that we used to analysis is from <strong><a href="https://www.kaggle.com/shivamb/netflix-shows">Kaggle</a> </strong>. This dataset contains all the Movies and TV shows added to Netflix from <strong>2008 - 2019</strong>. The dataset consist of Rating, Director, Cast, Country, Released date and Added date.</p>
+<div id="key-findings" class="section level1">
+<h1>KEY FINDINGS</h1>
+<p>The Total number of Movies and Shows in Netflix are : <strong>6050</strong></p>
+<ul>
+<li><p>Movies : <strong>4118</strong></p></li>
+<li><p>TV Shows : <strong>1932</strong></p></li>
+</ul>
+<p>Percentage of TV Shows and Movies in Netflix</p>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"visdat":{"8cac29fcb77":["function () ","plotlyVisDat"]},"cur_data":"8cac29fcb77","attrs":{"8cac29fcb77":{"labels":{},"values":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Percentage of Movies and TV Shows in Netflix","xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"labels":["Movie","TV Show"],"values":[4118,1932],"type":"pie","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>We can see Netflix contains a mojor of about <strong>70%</strong> movies and <strong>30%</strong> of TV Shows.</p>
+</div>
+<div id="yearwise-analysis" class="section level1">
+<h1>Yearwise Analysis</h1>
+<p><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+From the above graphs we can see Increse in the number of Movies</p>
+<ul>
+<li><p>We can see that during <strong>2014</strong> There were only <strong>46 Movies</strong> and in <strong>2019</strong> there are <strong>4188 Movies</strong>, literally like 100 time more Movies.</p></li>
+<li><p>Growth rate is addition on Movies is more than <strong>100%</strong> during <strong>2017 - 2018</strong> and almost the same for TV Shows</p></li>
+</ul>
+<p><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>From the above graphs we can see Increse in the number of TV Shows each Year</p>
+<ul>
+<li>We can see that for both Movies and TV shows, there was <strong>not much of a incrase till 2014.</strong></li>
+<li>From <strong>2015</strong> we can see a <strong>exponential increase</strong> in number of Movies and TV Shows.</li>
+</ul>
+<p><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" /><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p>The Above Graphs shows the number of Movies and TV Shows added each Year.</p>
+<ul>
+<li>We can see that from both the above graph Netflix, started adding more Movies and TV Shows from <em>2015</em> and year after year, it keeps on increasing the number of Movies and TV Shows per year Count.</li>
+</ul>
+</div>
+<div id="top-movies-and-tv-shows" class="section level1">
+<h1>Top Movies And TV Shows</h1>
+<div id="top-20-movies-by-runtime." class="section level2">
+<h2>Top 20 Movies by Runtime.</h2>
+<p><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>From the above graph, we can see that the <strong>top 20</strong> lengthiest movie and which coutry these movies belongs to.</p>
+<ul>
+<li>Out of the 20, <strong>10 Movies are Indian Movies.</strong></li>
+</ul>
+<p>Since there are so much movies in Netflix, We thought how many days it would take to watch all movies in Netflix</p>
+<p>So, There are total of <strong>4118</strong> in Netflix, and each has a duration then by calculation.</p>
+<ul>
+<li>We found out that it would take about <strong>283 Days to complete</strong>.</li>
+</ul>
+<p>Yes!! <strong>283</strong> Many days just to watch Movies.</p>
+</div>
+<div id="top-20-tv-shows-by-number-of-seasons" class="section level2">
+<h2>Top 20 TV Shows by Number of Seasons</h2>
+<p><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>From the above graph we can see that,
+* <strong>NCIS</strong> and <strong>Grey’s Anatomy</strong> hold the first place with <strong>15 Seasons.</strong></p>
+<p>So, There are some great shows up there, so we would like to see how many TV shows made upto 5 Sesons.</p>
+<p>There are total of <strong>1932</strong> TV Shows in Netflix.</p>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"visdat":{"8cac2ec464e5":["function () ","plotlyVisDat"]},"cur_data":"8cac2ec464e5","attrs":{"8cac2ec464e5":{"labels":{},"values":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Percentage of Shows Seasons","xaxis":{"showgrid":true,"zeroline":true,"showticklabels":true},"yaxis":{"showgrid":true,"zeroline":true,"showticklabels":true},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"labels":["1","2","3","4","5+","5+","5+","5+","5+","5+","5+","5+","5+","5+","5+"],"values":[66.98,15.58,7.92,3.11,2.33,1.14,1.09,0.83,0.36,0.16,0.16,0.1,0.1,0.05,0.1],"type":"pie","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>From the above Pie chart</p>
+<ul>
+<li>We can see that only <strong>6.42%</strong> of the TV shows aired for more than <strong>5</strong> Seasons.</li>
+<li>The More shocking thing is <strong>67%</strong> of TV Shows aired only <strong>1 season</strong></li>
+<li><strong>82%</strong> of TV Shows have <strong>2 or 1 Seasons</strong></li>
+</ul>
+</div>
+</div>
+<div id="number-of-tv-show-and-movies-from-each-countries" class="section level1">
+<h1>Number Of TV Show and Movies from Each Countries</h1>
+<p><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>From the graph we can see the number of TV Shows and Movies from each Countries.</p>
+<ul>
+<li><strong>USA</strong> is in first place followed by India, <strong>yes India</strong>.</li>
+<li>Total of <strong>770 Movies and TV Shows</strong> are from India that are in Netflix.</li>
+</ul>
+<p>We are intrested in finding out from when and why Indian Movies and TV Shows made into Netflix. Our findings are.</p>
+<p><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<ul>
+<li>From above graph you can see that <em>First Movie</em> from india was added into Netflix only on <strong>2016</strong>.</li>
+<li>with in a priod of four years, a total of <strong>770 TV Shows and Movies</strong> are added into Netfliix.</li>
+</ul>
+<p><em>Why Netflix added so much Indian Movies and TV Shows into Netflix ?</em></p>
+<p><em>Why, all of a Sudden ?</em></p>
+<p><em>We were confused, what happened in 2016 ?!!!</em></p>
+<p><img src="jio.png" /></p>
+<p><strong>Yes, JIO Happened. </strong></p>
+</div>
+<div id="movie-and-tv-shows-rating" class="section level1">
+<h1>Movie and TV Shows Rating</h1>
+<p>Each Movie and TV Show will be given a Sensor Rating.</p>
+<div id="htmlwidget-3" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"visdat":{"8cac2cc5b1f":["function () ","plotlyVisDat"]},"cur_data":"8cac2cc5b1f","attrs":{"8cac2cc5b1f":{"labels":{},"values":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Rating Percentage Of Movie of Movies in Netflix","xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"labels":["TV-MA","TV-14","TV-PG","R","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others"],"values":[32.94,27.72,11.52,7.62,4.03,3.6,2.73,2.68,2.45,2.31,1.55,0.53,0.17,0.12,0.03],"type":"pie","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>Rating Abbrevations</p>
+<ul>
+<li><strong>TV-MA</strong> :- This program is specifically designed to be viewed by adults and therefore may be unsuitable for children under 17.</li>
+<li><strong>TV-14</strong> :- This program contains some material that many parents would find unsuitable for children under 14 years of age</li>
+<li><strong>TV-PG</strong> :- This program contains material that parents may find unsuitable for younger children</li>
+<li><strong>R</strong> :- Under 17 requires accompanying parent or adult guardian. Contains some adult material. Parents are urged to learn more about the film before taking their young children with them.</li>
+</ul>
+<p>We can see that clearly see that majority of Netflix is rated under this four category. <strong>TV-MA</strong> and <em>R</em> rating alone contributes to <strong>40%</strong>. Hence it shows that <strong>40% Movies and TV Shows</strong> are not suitable for Childrens Under 17.</p>
+<p>That means, <strong>4 in 10 Movies or TV Shows</strong> is not suitable for childrens.</p>
+<p>Yes! We are at the end. Netflix has been a great place for entertainment for people all over the World and it will keep on entertaining us.</p>
+</div>
+<div id="thank-you-for-your-time." class="section level1">
+<h1>Thank You for your time.</h1>
+</div>
+    
+        </div>
+    </section>
+
+    <footer class="post-full-footer">
+      <section class="author-card">
+        <img class="author-profile-image" src="/vikki.jpg" alt="Author" />
+        <section class="author-card-content">
+            <h4 class="author-card-name"><a href="/">A Vignesh</a></h4>
+                <p>Engineer by degree, Data Analyst by heart</p>
+        </section>
+      </section>
+    </footer>
+</article>
+    
+    
+    
+
+  </div>
+</main>
+
+
+<aside class="read-next outer">
+  <div class="inner">
+    <div class="read-next-feed">      
+      
+
+      
+      
+      <article class="post-card post"> 
+    
+    <a class="post-card-image-link" href="/post/checking-post/">
+      <div class="post-card-image" style="background-image: url(/defimg/4.jpg)"></div>
+    </a>    
+    
+
+    <div class="post-card-content">
+      <a class="post-card-content-link" href="/post/checking-post/">
+          <header class="post-card-header">
+              
+              <h2 class="post-card-title">Whatsapp Chat Data Analysis</h2>
+          </header>
+          <section class="post-card-excerpt">
+              
+                <p>AboutThe Whole Idea about this analysis, is to Understand about the persons chatting behavior and finding pattern in Whatsapp Messaging
+In this we will be analysing the chat between two persons
+From the below chart we can clearly see the number of messages sent each day
+The Total number of messages were : 5733 
+Number of messages sent by each persons: ...  </p>
+              
+          </section>
+      </a>
+
+      <footer class="post-card-meta">
+          <img class="author-profile-image" src="/vikki.jpg" alt="Author" />
+          <span class="post-card-author"><a href="/">Vignesh</a></span>
+      </footer>
+    </div>
+</article>
+      
+    </div>
+  </div>
+</aside>
+
+<div class="floating-header">
+  <div class="floating-header-logo">
+    <a href="/">
+      <img src="/da.ico" alt="" />
+      <span></span>
+    </a>
+  </div>
+  <span class="floating-header-divider">&mdash;</span>
+  <div class="floating-header-title">Netflix Movie and TV Show Data Analysis</div>
+  <div class="floating-header-share">
+    <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+     <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/></svg>
+    </div>
+    
+    <a class="floating-header-share-tw" href="https://twitter.com/share?text=Netflix%20Movie%20and%20TV%20Show%20Data%20Analysis&amp;url=%2fpost%2fnetflix-movie-and-tv-show-data-analysis%2f"
+          onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+      </a>
+      <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=%2fpost%2fnetflix-movie-and-tv-show-data-analysis%2f"
+          onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+      </a>
+  </div>
+
+  <progress class="progress" value="0">
+    <div class="progress-container">
+      <span class="progress-bar"></span>
+    </div>
+  </progress>
+</div>
+
+
+
+<footer class="site-footer outer">
+  <div class="site-footer-content inner">
+    <section class="copyright" style="line-height: 1.3em;">
+      <a href="/">DataAnt</a> © 2020 <br>
+      <span style="font-size: 0.8em; color: #555;">Hugo port of <a href="https://github.com/TryGhost/Casper">Casper 2.1.7</a> by <a href="https://www.telematika.org">EM</a></span>
+    </section>
+    <nav class="site-footer-nav">
+        <a href="/">Latest Posts</a>
+        
+        <a href="https://twitter.com/Vignesh_Appanraj" target="_blank" rel="noopener">Twitter</a>
+        <a href="https://github.com/madeye28" target="_blank" rel="noopener">Github</a>
+        <a href="https://www.linkedin.com/in/Vignesh%20Appanraj" target="_blank" rel="noopener">LinkedIn</a>
+        
+    </nav>  
+  </div>
+</footer>
+
+</div>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    <script>
+
+
+
+
+
+$(document).ready(function () {
+    
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+</body></html>

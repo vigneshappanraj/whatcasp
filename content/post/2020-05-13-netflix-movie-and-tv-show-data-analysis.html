@@ -1,0 +1,125 @@
+---
+title: Netflix Movie and TV Show Data Analysis
+author: A Vignesh
+date: '2020-05-13'
+slug: netflix-movie-and-tv-show-data-analysis
+categories: []
+tags: []
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/plotly-binding/plotly.js"></script>
+<script src="/rmarkdown-libs/typedarray/typedarray.min.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="/rmarkdown-libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/plotly-main/plotly-latest.min.js"></script>
+
+
+<p><em>Netflix and Chill</em>, That famous saying, So netflix has entertaining us for almost a decade now. It has developed a lot. Started as a DVD renting company in USA now it is can be accesed from anywhere in the world. This data descriptive analysis is done to understand the growth(in terms of the collection of Movies and TV shows) of Netflix all around the world.</p>
+<p>The Data set that we used to analysis is from <strong><a href="https://www.kaggle.com/shivamb/netflix-shows">Kaggle</a> </strong>. This dataset contains all the Movies and TV shows added to Netflix from <strong>2008 - 2019</strong>. The dataset consist of Rating, Director, Cast, Country, Released date and Added date.</p>
+<div id="key-findings" class="section level1">
+<h1>KEY FINDINGS</h1>
+<p>The Total number of Movies and Shows in Netflix are : <strong>6050</strong></p>
+<ul>
+<li><p>Movies : <strong>4118</strong></p></li>
+<li><p>TV Shows : <strong>1932</strong></p></li>
+</ul>
+<p>Percentage of TV Shows and Movies in Netflix</p>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"visdat":{"8cac29fcb77":["function () ","plotlyVisDat"]},"cur_data":"8cac29fcb77","attrs":{"8cac29fcb77":{"labels":{},"values":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Percentage of Movies and TV Shows in Netflix","xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"labels":["Movie","TV Show"],"values":[4118,1932],"type":"pie","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>We can see Netflix contains a mojor of about <strong>70%</strong> movies and <strong>30%</strong> of TV Shows.</p>
+</div>
+<div id="yearwise-analysis" class="section level1">
+<h1>Yearwise Analysis</h1>
+<p><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+From the above graphs we can see Increse in the number of Movies</p>
+<ul>
+<li><p>We can see that during <strong>2014</strong> There were only <strong>46 Movies</strong> and in <strong>2019</strong> there are <strong>4188 Movies</strong>, literally like 100 time more Movies.</p></li>
+<li><p>Growth rate is addition on Movies is more than <strong>100%</strong> during <strong>2017 - 2018</strong> and almost the same for TV Shows</p></li>
+</ul>
+<p><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>From the above graphs we can see Increse in the number of TV Shows each Year</p>
+<ul>
+<li>We can see that for both Movies and TV shows, there was <strong>not much of a incrase till 2014.</strong></li>
+<li>From <strong>2015</strong> we can see a <strong>exponential increase</strong> in number of Movies and TV Shows.</li>
+</ul>
+<p><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" /><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p>The Above Graphs shows the number of Movies and TV Shows added each Year.</p>
+<ul>
+<li>We can see that from both the above graph Netflix, started adding more Movies and TV Shows from <em>2015</em> and year after year, it keeps on increasing the number of Movies and TV Shows per year Count.</li>
+</ul>
+</div>
+<div id="top-movies-and-tv-shows" class="section level1">
+<h1>Top Movies And TV Shows</h1>
+<div id="top-20-movies-by-runtime." class="section level2">
+<h2>Top 20 Movies by Runtime.</h2>
+<p><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>From the above graph, we can see that the <strong>top 20</strong> lengthiest movie and which coutry these movies belongs to.</p>
+<ul>
+<li>Out of the 20, <strong>10 Movies are Indian Movies.</strong></li>
+</ul>
+<p>Since there are so much movies in Netflix, We thought how many days it would take to watch all movies in Netflix</p>
+<p>So, There are total of <strong>4118</strong> in Netflix, and each has a duration then by calculation.</p>
+<ul>
+<li>We found out that it would take about <strong>283 Days to complete</strong>.</li>
+</ul>
+<p>Yes!! <strong>283</strong> Many days just to watch Movies.</p>
+</div>
+<div id="top-20-tv-shows-by-number-of-seasons" class="section level2">
+<h2>Top 20 TV Shows by Number of Seasons</h2>
+<p><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>From the above graph we can see that,
+* <strong>NCIS</strong> and <strong>Grey’s Anatomy</strong> hold the first place with <strong>15 Seasons.</strong></p>
+<p>So, There are some great shows up there, so we would like to see how many TV shows made upto 5 Sesons.</p>
+<p>There are total of <strong>1932</strong> TV Shows in Netflix.</p>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"visdat":{"8cac2ec464e5":["function () ","plotlyVisDat"]},"cur_data":"8cac2ec464e5","attrs":{"8cac2ec464e5":{"labels":{},"values":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Percentage of Shows Seasons","xaxis":{"showgrid":true,"zeroline":true,"showticklabels":true},"yaxis":{"showgrid":true,"zeroline":true,"showticklabels":true},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"labels":["1","2","3","4","5+","5+","5+","5+","5+","5+","5+","5+","5+","5+","5+"],"values":[66.98,15.58,7.92,3.11,2.33,1.14,1.09,0.83,0.36,0.16,0.16,0.1,0.1,0.05,0.1],"type":"pie","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>From the above Pie chart</p>
+<ul>
+<li>We can see that only <strong>6.42%</strong> of the TV shows aired for more than <strong>5</strong> Seasons.</li>
+<li>The More shocking thing is <strong>67%</strong> of TV Shows aired only <strong>1 season</strong></li>
+<li><strong>82%</strong> of TV Shows have <strong>2 or 1 Seasons</strong></li>
+</ul>
+</div>
+</div>
+<div id="number-of-tv-show-and-movies-from-each-countries" class="section level1">
+<h1>Number Of TV Show and Movies from Each Countries</h1>
+<p><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>From the graph we can see the number of TV Shows and Movies from each Countries.</p>
+<ul>
+<li><strong>USA</strong> is in first place followed by India, <strong>yes India</strong>.</li>
+<li>Total of <strong>770 Movies and TV Shows</strong> are from India that are in Netflix.</li>
+</ul>
+<p>We are intrested in finding out from when and why Indian Movies and TV Shows made into Netflix. Our findings are.</p>
+<p><img src="/post/2020-05-13-netflix-movie-and-tv-show-data-analysis_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<ul>
+<li>From above graph you can see that <em>First Movie</em> from india was added into Netflix only on <strong>2016</strong>.</li>
+<li>with in a priod of four years, a total of <strong>770 TV Shows and Movies</strong> are added into Netfliix.</li>
+</ul>
+<p><em>Why Netflix added so much Indian Movies and TV Shows into Netflix ?</em></p>
+<p><em>Why, all of a Sudden ?</em></p>
+<p><em>We were confused, what happened in 2016 ?!!!</em></p>
+<p><img src="jio.png" /></p>
+<p><strong>Yes, JIO Happened. </strong></p>
+</div>
+<div id="movie-and-tv-shows-rating" class="section level1">
+<h1>Movie and TV Shows Rating</h1>
+<p>Each Movie and TV Show will be given a Sensor Rating.</p>
+<div id="htmlwidget-3" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"visdat":{"8cac2cc5b1f":["function () ","plotlyVisDat"]},"cur_data":"8cac2cc5b1f","attrs":{"8cac2cc5b1f":{"labels":{},"values":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Rating Percentage Of Movie of Movies in Netflix","xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"labels":["TV-MA","TV-14","TV-PG","R","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others"],"values":[32.94,27.72,11.52,7.62,4.03,3.6,2.73,2.68,2.45,2.31,1.55,0.53,0.17,0.12,0.03],"type":"pie","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>Rating Abbrevations</p>
+<ul>
+<li><strong>TV-MA</strong> :- This program is specifically designed to be viewed by adults and therefore may be unsuitable for children under 17.</li>
+<li><strong>TV-14</strong> :- This program contains some material that many parents would find unsuitable for children under 14 years of age</li>
+<li><strong>TV-PG</strong> :- This program contains material that parents may find unsuitable for younger children</li>
+<li><strong>R</strong> :- Under 17 requires accompanying parent or adult guardian. Contains some adult material. Parents are urged to learn more about the film before taking their young children with them.</li>
+</ul>
+<p>We can see that clearly see that majority of Netflix is rated under this four category. <strong>TV-MA</strong> and <em>R</em> rating alone contributes to <strong>40%</strong>. Hence it shows that <strong>40% Movies and TV Shows</strong> are not suitable for Childrens Under 17.</p>
+<p>That means, <strong>4 in 10 Movies or TV Shows</strong> is not suitable for childrens.</p>
+<p>Yes! We are at the end. Netflix has been a great place for entertainment for people all over the World and it will keep on entertaining us.</p>
+</div>
+<div id="thank-you-for-your-time." class="section level1">
+<h1>Thank You for your time.</h1>
+</div>

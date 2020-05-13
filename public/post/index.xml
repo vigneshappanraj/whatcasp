@@ -6,10 +6,19 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Mon, 11 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 13 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Netflix Movie and TV Show Data Analysis</title>
+      <link>/post/netflix-movie-and-tv-show-data-analysis/</link>
+      <pubDate>Wed, 13 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/netflix-movie-and-tv-show-data-analysis/</guid>
+      <description>Netflix and Chill, That famous saying, So netflix has entertaining us for almost a decade now. It has developed a lot. Started as a DVD renting company in USA now it is can be accesed from anywhere in the world. This data descriptive analysis is done to understand the growth(in terms of the collection of Movies and TV shows) of Netflix all around the world.</description>
+    </item>
     
     <item>
       <title>Whatsapp Chat Data Analysis</title>
