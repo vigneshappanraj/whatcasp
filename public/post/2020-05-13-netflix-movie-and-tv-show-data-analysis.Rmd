@@ -18,6 +18,17 @@ library(knitr)
 library(png)
 ```
 
+## Important Findings:
+
+
+* *It will take 283 days from now to watch all available Movies in Netflix*
+
+* *4 in 10, Movies or TV Shows are not suitable for childrens under 17*
+
+* *67% of TV Shows never made to Second Season.*
+
+* *Only 6% TV Shows have more than 5 Seasons*
+
 
 *Netflix and Chill*, That famous saying, So netflix has entertaining us for almost a decade now. It has developed a lot. Started as a DVD renting company in USA now it is can be accesed from anywhere in the world. This data descriptive analysis is done to understand the growth(in terms of the collection of Movies and TV shows) of Netflix all around the world.
 
@@ -40,8 +51,6 @@ total_shows <- as.data.frame(df %>%
   select(type)%>%
   count(type))
 ```
-
-# KEY FINDINGS
 
 
 The Total number of Movies and Shows in Netflix are : **`r count(df)`**   
@@ -139,35 +148,26 @@ tv_cum_graph<- ggplot(tv_year,aes(x=year_added,y = cumsum(n))) +
 
 # Yearwise Analysis
 
-```{r, echo=FALSE,warning=FALSE}
-#plot_grid(movie_cum_graph,tv_cum_graph)
+```{r, echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+plot_grid(movie_cum_graph,tv_cum_graph)
 
-movie_cum_graph
+#movie_cum_graph
 #tv_cum_graph
 ```
-From the above graphs we can see Increse in the number of Movies  
+From the above graphs we can see Increse in the number of Movies and TV Shows each Year
 
 * We can see that during **2014** There were only **46 Movies** and in **2019** there are **4188 Movies**, literally like 100 time more Movies.  
 
 * Growth rate is addition on Movies is more than **100%** during **2017 - 2018** and almost the same for TV Shows
 
-```{r, echo=FALSE,warning=FALSE}
-#plot_grid(movie_cum_graph,tv_cum_graph)
-
-#movie_cum_graph
-tv_cum_graph
-```
-
-
-From the above graphs we can see Increse in the number of  TV Shows each Year
-
 * We can see that for both Movies and TV shows, there was **not much of a incrase till 2014.**
+
 * From **2015** we can see a **exponential increase** in number of Movies and TV Shows.
 
-```{r, echo=FALSE,warning=FALSE}
-#plot_grid(movie_year_graph,tv_year_graph)
-movie_year_graph
-tv_year_graph
+```{r, echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+plot_grid(movie_year_graph,tv_year_graph)
+#movie_year_graph
+#tv_year_graph
 ```
 
 The Above Graphs shows the number of Movies and TV Shows added each Year.
@@ -178,7 +178,7 @@ The Above Graphs shows the number of Movies and TV Shows added each Year.
 
 ## Top 20 Movies by Runtime.
 
-```{r, echo=FALSE,warning=FALSE}
+```{r, echo=FALSE,warning=FALSE,,fig.width=12,fig.height= 6, out.width='100%'}
 top_20_movie <- df %>%
   select(title,type,duration,country) %>%
   filter(type == unique(df$type)[1]) %>%
@@ -190,7 +190,7 @@ ggplot(top_20_movie,aes(y=duration,x=reorder(title,duration))) +
   xlab('Movie')+
   ylab('Minutes')+
   ggtitle("TOP 20 Movies in Netflix by Minutes") + theme_bw() +
-  scale_fill_discrete(name = "No.of.Seasons") +
+  scale_fill_discrete(name = "Country") +
   geom_label_repel(aes(label = duration),box.padding   = 0.35, 
                    point.padding = 0.5,
                    segment.color = 'grey50') + coord_flip()
@@ -309,13 +309,6 @@ df %>% filter(country == 'India') %>%
 
 *We were confused, what happened in 2016 ?!!!*
 
-
-```{r,out.width="40%",echo=FALSE,warning=FALSE}
-img1_path <- "jio.png"
-
-include_graphics(img1_path)
-
-```
 
 **Yes, JIO Happened. **
 
