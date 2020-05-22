@@ -108,8 +108,8 @@ summary(model)
 
 ```{r,echo=FALSE,warning=FALSE}
 
-y_pred <- predict(model,data = test)
-train_pred <- predict(model,data = train)
+y_pred <- predict(model,newdata = test)
+train_pred <- predict(model,newdata = train)
 
 cat('Train MSE =',mean((train_pred - train$priceinK)^2))
 cat("Test MSE = ", mean((y_pred - test$priceinK)^2))
