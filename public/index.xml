@@ -41,7 +41,7 @@ Now our dataset consist of the following columns.
       <guid>/post/regression-project-part-1-data-preprocessing/</guid>
       <description>Main IdeaThe idea of this new series of data is to understand more obout different types of regressiion and how they works.
 Regression, is to find a relationship between dependant variable and independent variablewhat kind of relationship exists.How Much each Indipendent variblee affect the dependent variableThe few Regressions that we are going to work in this series are givven below
-Simple Linear RegressionMultiple Linear RegressionLogistic RegressionStepwise RegressionRidge RegressionElasticNet RegressionWe will be using House Sales in King County, USA dataset from Kaagle for all regression models except Logistic regression(it is a Classification Model).</description>
+Simple Linear RegressionMultiple Linear RegressionLogistic RegressionRidge RegressionElasticNet RegressionWe will be using House Sales in King County, USA dataset from Kaagle for all regression models except Logistic regression(it is a Classification Model).</description>
     </item>
     
     <item>
