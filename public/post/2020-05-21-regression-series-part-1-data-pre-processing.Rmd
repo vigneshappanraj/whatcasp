@@ -15,13 +15,16 @@ The idea of this new series of data is to understand more obout different types 
 * what kind of relationship exists.
 * How Much each Indipendent variblee affect the dependent variable   
 
-The few Regressions that we are going to work in this series are givven below
-  1. Simple Linear Regression
-  2. Multiple Linear Regression
-  3. Logistic Regression 
-  4. Stepwise Regression
-  5. Ridge Regression
-  6. ElasticNet Regression
+The few Regressions that we are going to work in this series are givven below   
+
+
+
+1. Simple Linear Regression
+2. Multiple Linear Regression
+3. Logistic Regression 
+4. Stepwise Regression
+5. Ridge Regression
+6. ElasticNet Regression
 
 
 We will be using House Sales in King County, USA dataset from [Kaagle](https://www.kaggle.com/harlfoxem/housesalesprediction) for all regression models except Logistic regression(it is a Classification Model).
