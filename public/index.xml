@@ -12,6 +12,16 @@
     
     
     <item>
+      <title>Regression Project, Part -1, Data Preprocessing</title>
+      <link>/post/regression-project-part-1-data-preprocessing/</link>
+      <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/regression-project-part-1-data-preprocessing/</guid>
+      <description>Main IdeaThe idea of this new series of data is to understand more obout different types of regressiion and how they works.
+Regression, is to find a relationship between dependant variable and independent variablewhat kind of relationship exists.How Much each Indipendent variblee affect the dependent variableThe few Regressions that we are going to work in this series are givven below1. Simple Linear Regression2.</description>
+    </item>
+    
+    <item>
       <title>Netflix Movie and TV Show Data Analysis</title>
       <link>/post/netflix-movie-and-tv-show-data-analysis/</link>
       <pubDate>Wed, 13 May 2020 00:00:00 +0000</pubDate>

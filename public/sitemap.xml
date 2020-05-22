@@ -3,12 +3,17 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/post/netflix-movie-and-tv-show-data-analysis/</loc>
-    <lastmod>2020-05-13T00:00:00+00:00</lastmod>
+    <loc>/post/</loc>
+    <lastmod>2020-05-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/</loc>
+    <loc>/post/regression-project-part-1-data-preprocessing/</loc>
+    <lastmod>2020-05-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/netflix-movie-and-tv-show-data-analysis/</loc>
     <lastmod>2020-05-13T00:00:00+00:00</lastmod>
   </url>
   

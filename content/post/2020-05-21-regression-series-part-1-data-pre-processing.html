@@ -1,0 +1,205 @@
+---
+title: Regression Project, Part -1, Data Preprocessing
+author: Vignesh A
+date: '2020-05-21'
+slug: regression-project-part-1-data-preprocessing
+categories: []
+tags: []
+---
+
+
+
+<div id="main-idea" class="section level1">
+<h1>Main Idea</h1>
+<p>The idea of this new series of data is to understand more obout different types of regressiion and how they works.</p>
+<ul>
+<li>Regression, is to find a relationship between dependant variable and independent variable</li>
+<li>what kind of relationship exists.</li>
+<li>How Much each Indipendent variblee affect the dependent variable</li>
+</ul>
+<p>The few Regressions that we are going to work in this series are givven below
+1. Simple Linear Regression
+2. Multiple Linear Regression
+3. Logistic Regression
+4. Stepwise Regression
+5. Ridge Regression
+6. ElasticNet Regression</p>
+<p>We will be using House Sales in King County, USA dataset from <a href="https://www.kaggle.com/harlfoxem/housesalesprediction">Kaagle</a> for all regression models except Logistic regression(it is a Classification Model).</p>
+<p>So, with latest advancement in technlogy you can easily build a model within few minutes but the most of the time you will be spending while creationg a model is in Data pre-processing.</p>
+<p><em>Understand, Good Data in Good Data Out</em>
+In the first part of this regression series we will be starting the pre-processing part or data cleaning process. All these preprocessing and analysis are done in R Studio.</p>
+<p>Before Bulding any model it is important to follow few steps
+* Business Knowledge, What is the data is about.
+* Data and Data Dictonary.
+* Univarient Analysis and Extended Data Dictonary.</p>
+</div>
+<div id="checking-the-columns-in-the-data-set." class="section level1">
+<h1>Checking the columns in the data set.</h1>
+<pre><code>##  [1] &quot;date&quot;          &quot;price&quot;         &quot;bedrooms&quot;      &quot;bathrooms&quot;    
+##  [5] &quot;sqft_living&quot;   &quot;sqft_lot&quot;      &quot;floors&quot;        &quot;waterfront&quot;   
+##  [9] &quot;view&quot;          &quot;condition&quot;     &quot;grade&quot;         &quot;sqft_above&quot;   
+## [13] &quot;sqft_basement&quot; &quot;yr_built&quot;      &quot;yr_renovated&quot;  &quot;zipcode&quot;      
+## [17] &quot;lat&quot;           &quot;long&quot;          &quot;sqft_living15&quot; &quot;sqft_lot15&quot;</code></pre>
+<p>Form the ablove columns we can undestand this data set consist of price of houses in King Country, USA.</p>
+<p>We will understand what each column stands for, it is called as Data Directory</p>
+<ul>
+<li><p><strong>id</strong> - Unique ID for each home sold</p></li>
+<li><p><strong>date</strong> - Date of the home sale</p></li>
+<li><p><strong>price</strong> - Price of each home sold</p></li>
+<li><p><strong>bedrooms</strong> - Number of bedrooms</p></li>
+<li><p><strong>bathrooms</strong> - Number of bathrooms, where .5 accounts for a room with a toilet but no shower</p></li>
+<li><p><strong>sqft_living</strong> - Square footage of the apartments interior living space</p></li>
+<li><p><strong>sqft_lot</strong> - Square footage of the land space</p></li>
+<li><p><strong>floors</strong> - Number of floors</p></li>
+<li><p><strong>waterfront</strong> - A dummy variable for whether the apartment was overlooking the waterfront or not</p></li>
+<li><p><strong>view</strong> - An index from 0 to 4 of how good the view of the property was</p></li>
+<li><p><strong>condition</strong> - An index from 1 to 5 on the condition of the apartment,</p></li>
+<li><p><strong>grade</strong> - An index from 1 to 13, where 1-3 falls short of building construction and design, 7 has an average level of construction and design, and 11-13 have a high quality level of construction and design.</p></li>
+<li><p><strong>sqft_above</strong> - The square footage of the interior housing space that is above ground level</p></li>
+<li><p><strong>sqft_basement</strong> - The square footage of the interior housing space that is below ground level</p></li>
+<li><p><strong>yr_built</strong> - The year the house was initially built</p></li>
+<li><p><strong>yr_renovated</strong> - The year of the house’s last renovation</p></li>
+<li><p><strong>zipcode</strong> - What zipcode area the house is in</p></li>
+<li><p><strong>lat</strong> - Lattitude</p></li>
+<li><p><strong>long</strong> - Longitude</p></li>
+<li><p><strong>sqft_living15</strong> - The square footage of interior housing living space for the nearest 15 neighbors</p></li>
+<li><p><strong>sqft_lot15</strong> - The square footage of the land lots of the nearest 15 neighbors</p></li>
+</ul>
+</div>
+<div id="data-cleaning" class="section level1">
+<h1>Data Cleaning</h1>
+<p>Since all these data may be collected from various resources and attached togethor or there may be any discrepancy in data. Few process are generally done to clean the data for Modeling.</p>
+<ul>
+<li>Removing unusable variables</li>
+<li>Missing Value</li>
+<li>Outliers Treatment</li>
+<li>Bivarient Analysis</li>
+<li>Variable Transformation</li>
+</ul>
+</div>
+<div id="removing-unusable-variables" class="section level1">
+<h1>Removing unusable variables</h1>
+<p>We will check the sample of first five data in dataset</p>
+<pre><code>##       date  price bedrooms bathrooms sqft_living sqft_lot floors waterfront
+## 1 20141013 221900        3      1.00        1180     5650      1          0
+## 2 20141209 538000        3      2.25        2570     7242      2          0
+## 3 20150225 180000        2      1.00         770    10000      1          0
+## 4 20141209 604000        4      3.00        1960     5000      1          0
+## 5 20150218 510000        3      2.00        1680     8080      1          0
+##   view condition grade sqft_above sqft_basement yr_built yr_renovated zipcode
+## 1    0         3     7       1180             0     1955            0   98178
+## 2    0         3     7       2170           400     1951         1991   98125
+## 3    0         3     6        770             0     1933            0   98028
+## 4    0         5     7       1050           910     1965            0   98136
+## 5    0         3     8       1680             0     1987            0   98074
+##       lat     long sqft_living15 sqft_lot15
+## 1 47.5112 -122.257          1340       5650
+## 2 47.7210 -122.319          1690       7639
+## 3 47.7379 -122.233          2720       8062
+## 4 47.5208 -122.393          1360       5000
+## 5 47.6168 -122.045          1800       7503</code></pre>
+<p>We can see that <em>lat</em> and <em>long</em> are not much useful for model, but they can be visualised, we will be doing that in forecoming series.
+In this modeling we will have to remove those and <em>sqft_living15, sqft_lot15</em> does not add much to the data set, but I dont want to remove it now.</p>
+<p>So, we will be removing <em>lat</em> and <em>long</em> columns and we will also change the price in 1000 units</p>
+<p>We have deleted those two columns and The dataset looks like this</p>
+<pre><code>##       date bedrooms bathrooms sqft_living sqft_lot floors waterfront view
+## 1 20141013        3      1.00        1180     5650      1          0    0
+## 2 20141209        3      2.25        2570     7242      2          0    0
+## 3 20150225        2      1.00         770    10000      1          0    0
+## 4 20141209        4      3.00        1960     5000      1          0    0
+## 5 20150218        3      2.00        1680     8080      1          0    0
+##   condition grade sqft_above sqft_basement yr_built yr_renovated zipcode
+## 1         3     7       1180             0     1955            0   98178
+## 2         3     7       2170           400     1951         1991   98125
+## 3         3     6        770             0     1933            0   98028
+## 4         5     7       1050           910     1965            0   98136
+## 5         3     8       1680             0     1987            0   98074
+##   sqft_living15 sqft_lot15 priceinK
+## 1          1340       5650    221.9
+## 2          1690       7639    538.0
+## 3          2720       8062    180.0
+## 4          1360       5000    604.0
+## 5          1800       7503    510.0</code></pre>
+</div>
+<div id="variable-type-changing" class="section level1">
+<h1>Variable Type Changing</h1>
+<pre><code>## &#39;data.frame&#39;:    21613 obs. of  18 variables:
+##  $ date         : int  20141013 20141209 20150225 20141209 20150218 20140512 20140627 20150115 20150415 20150312 ...
+##  $ bedrooms     : int  3 3 2 4 3 4 3 3 3 3 ...
+##  $ bathrooms    : num  1 2.25 1 3 2 4.5 2.25 1.5 1 2.5 ...
+##  $ sqft_living  : int  1180 2570 770 1960 1680 5420 1715 1060 1780 1890 ...
+##  $ sqft_lot     : int  5650 7242 10000 5000 8080 101930 6819 9711 7470 6560 ...
+##  $ floors       : num  1 2 1 1 1 1 2 1 1 2 ...
+##  $ waterfront   : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ view         : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ condition    : int  3 3 3 5 3 3 3 3 3 3 ...
+##  $ grade        : int  7 7 6 7 8 11 7 7 7 7 ...
+##  $ sqft_above   : int  1180 2170 770 1050 1680 3890 1715 1060 1050 1890 ...
+##  $ sqft_basement: int  0 400 0 910 0 1530 0 0 730 0 ...
+##  $ yr_built     : int  1955 1951 1933 1965 1987 2001 1995 1963 1960 2003 ...
+##  $ yr_renovated : int  0 1991 0 0 0 0 0 0 0 0 ...
+##  $ zipcode      : int  98178 98125 98028 98136 98074 98053 98003 98198 98146 98038 ...
+##  $ sqft_living15: int  1340 1690 2720 1360 1800 4760 2238 1650 1780 2390 ...
+##  $ sqft_lot15   : int  5650 7639 8062 5000 7503 101930 6819 9711 8113 7570 ...
+##  $ priceinK     : num  222 538 180 604 510 ...</code></pre>
+<p>We can see that Bathrooms are in integers, no house can have 1.5 or 2.5 bathrooms so we will round the bathrooms and change Floors, waterfront,view,condition,grade,zipcode,PYears adn Pmonths to factor data type variables</p>
+<p>We will create two columns and extract the month and year from date variable. As it may affect the price of the house and we will delete the date column.</p>
+</div>
+<div id="missing-values." class="section level1">
+<h1>Missing Values.</h1>
+<p>We are going to find out if any data is missing in dataset. we will do it by visualization.
+<img src="/post/2020-05-21-regression-series-part-1-data-pre-processing_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>From the above graph we can see that there are no missing value, so will proceed furture.</p>
+</div>
+<div id="outliers-treatment" class="section level1">
+<h1>outliers Treatment</h1>
+<p>Outliners will highly affect the mean of the variable. and from Univarient analysis, we can find the outliners.</p>
+<pre><code>##     bedrooms      bathrooms.round((as.numeric((dfColDeleted$bathrooms))))
+##  Min.   : 0.000   Min.   :0.000000                                       
+##  1st Qu.: 3.000   1st Qu.:2.000000                                       
+##  Median : 3.000   Median :2.000000                                       
+##  Mean   : 3.371   Mean   :2.058715                                       
+##  3rd Qu.: 4.000   3rd Qu.:2.000000                                       
+##  Max.   :33.000   Max.   :8.000000                                       
+##                                                                          
+##   sqft_living       sqft_lot           floors      waterfront view     
+##  Min.   :  290   Min.   :    520   Min.   :1.000   0:21450    0:19489  
+##  1st Qu.: 1427   1st Qu.:   5040   1st Qu.:1.000   1:  163    1:  332  
+##  Median : 1910   Median :   7618   Median :1.500              2:  963  
+##  Mean   : 2080   Mean   :  15107   Mean   :1.494              3:  510  
+##  3rd Qu.: 2550   3rd Qu.:  10688   3rd Qu.:2.000              4:  319  
+##  Max.   :13540   Max.   :1651359   Max.   :3.500                       
+##                                                                        
+##  condition     grade        sqft_above   sqft_basement       yr_built   
+##  1:   30   7      :8981   Min.   : 290   Min.   :   0.0   Min.   :1900  
+##  2:  172   8      :6068   1st Qu.:1190   1st Qu.:   0.0   1st Qu.:1951  
+##  3:14031   9      :2615   Median :1560   Median :   0.0   Median :1975  
+##  4: 5679   6      :2038   Mean   :1788   Mean   : 291.5   Mean   :1971  
+##  5: 1701   10     :1134   3rd Qu.:2210   3rd Qu.: 560.0   3rd Qu.:1997  
+##            11     : 399   Max.   :9410   Max.   :4820.0   Max.   :2015  
+##            (Other): 378                                                 
+##   yr_renovated       zipcode      sqft_living15    sqft_lot15    
+##  Min.   :   0.0   98103  :  602   Min.   : 399   Min.   :   651  
+##  1st Qu.:   0.0   98038  :  590   1st Qu.:1490   1st Qu.:  5100  
+##  Median :   0.0   98115  :  583   Median :1840   Median :  7620  
+##  Mean   :  84.4   98052  :  574   Mean   :1987   Mean   : 12768  
+##  3rd Qu.:   0.0   98117  :  553   3rd Qu.:2360   3rd Qu.: 10083  
+##  Max.   :2015.0   98042  :  548   Max.   :6210   Max.   :871200  
+##                   (Other):18163                                  
+##     priceinK       PYears          Pmonth    
+##  Min.   :  75.0   2014:14633   5      :2414  
+##  1st Qu.: 321.9   2015: 6980   4      :2231  
+##  Median : 450.0                7      :2211  
+##  Mean   : 540.2                6      :2180  
+##  3rd Qu.: 645.0                8      :1940  
+##  Max.   :7700.0                10     :1878  
+##                                (Other):8759</code></pre>
+<p>We can see in bedroom column 3rd quartile value is 4 where as the maximum value is 33, Sqft_lost,sfseems odd. so for furture analysis. we will use box and scatter plot</p>
+<p>We can see that one particular house has 33 bedrooms, it may be a mansion. we will have to analysis more to decide what to do with this data. So we will plot it with price</p>
+<p><img src="/post/2020-05-21-regression-series-part-1-data-pre-processing_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+we can see that for price less than 1000K we are having a house with 33 Bedrooms, we can be sure that it is prety much wronf data. so we will delete that record.</p>
+<p>So now we have cleaned the data for modeling, from next post we will be creating various models and will find which model gives the best results</p>
+</div>
+<div id="thank-you" class="section level1">
+<h1><strong>Thank You</strong></h1>
+</div>

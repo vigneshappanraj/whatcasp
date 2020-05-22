@@ -1,0 +1,207 @@
+---
+title: Regression Project, Part -1, Data Preprocessing
+author: Vignesh A
+date: '2020-05-21'
+slug: regression-project-part-1-data-preprocessing
+categories: []
+tags: []
+---
+# Main Idea
+
+
+The idea of this new series of data is to understand more obout different types of regressiion and how they works.
+
+* Regression, is to find a relationship between dependant variable and independent variable 
+* what kind of relationship exists.
+* How Much each Indipendent variblee affect the dependent variable   
+
+The few Regressions that we are going to work in this series are givven below
+  1. Simple Linear Regression
+  2. Multiple Linear Regression
+  3. Logistic Regression 
+  4. Stepwise Regression
+  5. Ridge Regression
+  6. ElasticNet Regression
+
+
+We will be using House Sales in King County, USA dataset from [Kaagle](https://www.kaggle.com/harlfoxem/housesalesprediction) for all regression models except Logistic regression(it is a Classification Model).
+
+So, with latest advancement in technlogy you can easily build a model within few minutes but the most of the time you will be spending while creationg a model is in Data pre-processing.
+
+*Understand, Good Data in Good Data Out*
+In the first part of this regression series we will be starting the pre-processing part or data cleaning process. All these preprocessing and analysis are done in R Studio.
+
+
+
+
+Before Bulding any model it is important to follow few steps 
+* Business Knowledge, What is the data is about.
+* Data and Data Dictonary.
+* Univarient Analysis and Extended Data Dictonary.
+
+# Checking the columns in the data set.
+
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+library(Amelia)
+library(tidyverse)
+library(plotly)
+library(lubridate)
+library(ggplot2)
+library(ggrepel)
+library(cowplot)
+library(knitr)
+library(png)
+library(cowplot)
+library(lubridate)
+```
+
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+df <- read.csv('kc_house_data.csv')
+
+```
+```{r,echo=FALSE,warning=FALSE}
+names(df)
+```
+Form the ablove columns we can undestand this data set consist of price of houses in King Country, USA.
+
+We will understand what each column stands for, it is called as Data Directory
+
+* **id** - Unique ID for each home sold
+
+* **date** - Date of the home sale
+
+* **price** - Price of each home sold
+
+* **bedrooms** - Number of bedrooms
+
+* **bathrooms** - Number of bathrooms, where .5 accounts for a room with a toilet but no shower
+
+* **sqft_living** - Square footage of the apartments interior living space 
+* **sqft_lot** - Square footage of the land space 
+* **floors** - Number of floors 
+* **waterfront** - A dummy variable for whether the apartment was overlooking the waterfront or not 
+* **view** - An index from 0 to 4 of how good the view of the property was 
+* **condition** - An index from 1 to 5 on the condition of the apartment, 
+* **grade** - An index from 1 to 13, where 1-3 falls short of building construction and design, 7 has an average level of construction and design, and 11-13 have a high quality level of construction and design. 
+* **sqft_above** - The square footage of the interior housing space that is above ground level 
+* **sqft_basement** - The square footage of the interior housing space that is below ground level 
+* **yr_built** - The year the house was initially built 
+* **yr_renovated** - The year of the house’s last renovation 
+* **zipcode** - What zipcode area the house is in 
+* **lat** - Lattitude 
+* **long** - Longitude 
+* **sqft_living15** - The square footage of interior housing living space for the nearest 15 neighbors 
+* **sqft_lot15** - The square footage of the land lots of the nearest 15 neighbors 
+
+
+
+# Data Cleaning
+Since all these data may be collected from various resources and attached togethor or there may be any discrepancy in data. Few process are generally done to clean the data for Modeling.
+
+* Removing unusable variables
+* Missing Value
+* Outliers Treatment
+* Bivarient Analysis
+* Variable Transformation
+
+# Removing unusable variables
+We will check the sample of first five data in dataset
+```{r,echo=FALSE,warning=FALSE}
+head(df,5)
+```
+
+We can see that *lat* and *long* are not much useful for model, but they can be visualised, we will be doing that in forecoming series. 
+In this modeling we will have to remove those and *sqft_living15, sqft_lot15* does not add much to the data set, but I dont want to remove it now.
+
+So, we will be removing *lat* and *long* columns and we will also change the price in 1000 units 
+
+
+```{r,echo=FALSE,warning=FALSE}
+df$priceinK <- round(df$price/1000,1)
+
+dfColDeleted <- df[-c(2,17,18)]
+
+```
+We have deleted those two columns and The dataset looks like this 
+```{r,echo=FALSE,warning=FALSE}
+head(dfColDeleted,5)
+
+```
+# Variable Type Changing
+
+```{r,echo=FALSE,warning=FALSE}
+str(dfColDeleted)
+```
+We can see that Bathrooms are in integers, no house can have 1.5 or 2.5 bathrooms so we will round the bathrooms and change Floors, waterfront,view,condition,grade,zipcode,PYears adn Pmonths to factor data type variables
+
+```{r,echo=FALSE,warning=FALSE}
+dfColDeleted$waterfront <- as.factor(dfColDeleted$waterfront)
+dfColDeleted$view <- as.factor(dfColDeleted$view)
+dfColDeleted$condition <- as.factor(dfColDeleted$condition)
+dfColDeleted$grade <- as.factor(dfColDeleted$grade)
+
+dfColDeleted$date <- as.Date(as.character(dfColDeleted$date),'%Y%m%d')
+dfColDeleted$zipcode <- as.factor(dfColDeleted$zipcode)
+dfColDeleted$bathrooms <-as.data.frame(round((as.numeric((dfColDeleted$bathrooms)))))
+```
+
+
+We will create two columns and extract the month and year from date variable. As it may affect the price of the house and we will delete the date column.
+
+```{r,echo=FALSE,warning=FALSE}
+
+dfColDeleted$PYears <- as.factor(year(dfColDeleted$date))
+dfColDeleted$Pmonth <-as.factor(month(dfColDeleted$date))
+#View(df)
+dfColDeleted <- dfColDeleted[,-1]
+```
+
+
+
+# Missing Values.
+
+We are going to find out if any data is missing in dataset. we will do it by visualization.
+```{r,echo=FALSE,warning=FALSE}
+missmap(dfColDeleted,col = c('black','yellow'))
+
+```
+
+From the above graph we can see that there are no missing value, so will proceed furture.
+
+# outliers Treatment
+
+Outliners will highly affect the mean of the variable. and from Univarient analysis, we can find the  outliners.
+```{r,echo=FALSE,warning=FALSE}
+summary(dfColDeleted)
+```
+
+We can see in bedroom column 3rd quartile value is 4 where as the maximum value is 33, Sqft_lost,sfseems odd. so for furture analysis. we will use box and scatter plot
+
+We can see that one particular house has 33 bedrooms, it may be a mansion. we will have to analysis more to decide what to do with this data. So we will plot it with price
+
+```{r,echo=FALSE,warning=FALSE}
+df <- dfColDeleted
+beforeBR<-ggplot(data=df[!is.na(df$bedrooms),], aes(x=bedrooms, y=priceinK))+
+  geom_point(col='blue') +
+  scale_y_continuous(breaks= seq(0, 8000, by=2000)) +
+  geom_text_repel(aes(label = ifelse(bedrooms[!is.na(bedrooms)]>30, rownames(df), '')))
+#beforeBR
+df <- df[-15871,]
+afterBR<-ggplot(data=df[!is.na(df$bedrooms),], aes(x=bedrooms, y=priceinK))+
+  geom_point(col='red') +
+  scale_y_continuous(breaks= seq(0, 8000, by=2000)) +
+  geom_text_repel(aes(label = ifelse(bedrooms[!is.na(bedrooms)]>30, rownames(df), '')))
+
+#afterBR
+plot_grid(beforeBR,afterBR)
+
+
+```
+we can see that for price less than 1000K we are having a house with 33 Bedrooms, we can be sure that it is prety much wronf data. so we will delete that record.
+```{r,echo=FALSE,warning=FALSE}
+df$sqft_lot15 <-df$sqft_lot15/1000
+```
+
+So now we have cleaned the data for modeling, from next post we will be creating various models and will find which model gives the best results
+
+# **Thank You**
