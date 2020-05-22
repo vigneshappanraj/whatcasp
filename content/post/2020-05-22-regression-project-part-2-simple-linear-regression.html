@@ -38,21 +38,21 @@ A simpole linear model gives the relationship between a indipendent variable and
 ##  $ priceinK     : num  222 538 180 604 510 ...
 ##  $ PYears       : Factor w/ 2 levels &quot;2014&quot;,&quot;2015&quot;: 1 1 2 1 2 1 1 2 2 2 ...
 ##  $ Pmonth       : Factor w/ 12 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 10 12 2 12 2 5 6 1 4 3 ...</code></pre>
-<p>Since we are creating a model to predict the future value. we need to train our model in one dataset and test our model in another dataset. So we will be spliting the dataset into train and test dataset. with 80% data in train and 20% data in test</p>
+<p>Since we are creating a model to predict the future value. we need to train our model in one dataset and test our model in another dataset. So we will be spliting the dataset into <strong>train and test dataset</strong>. with <strong>80%</strong> data in train and <strong>20%</strong> data in test</p>
 <pre><code>## Train dataset consist of  17062 entries</code></pre>
 <pre><code>## Test dataset consist of  4550 entries</code></pre>
 <p>We will be training and testing all our models in this same test and train dataset, se it will be easily for comparison.</p>
 <div id="now-creating-simple-linear-regression." class="section level1">
 <h1>Now Creating Simple Linear Regression.</h1>
 <p>First we need to find out of all the variables which variable have a higher relation with the denpendant varibale.</p>
-<p>It can be found by, correlation matrix. We will find the correlation of all variables with the dependent variables which is more than 0.5</p>
+<p>It can be found by, <strong>correlation matrix</strong>. We will find the correlation of all variables with the dependent variables which is more than 0.5</p>
 <pre><code>## There are 12 numeric variables</code></pre>
 <p><img src="/post/2020-05-22-regression-project-part-2-simple-linear-regression_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>From the above correlation matrix we can see that sqft_living has a 0.7 correction with Price. which is the highest correlarted independent variable with the dependent varibale.</p>
-<p>For Furture analysis we will be plotting sqft_living with price</p>
+<p>From the above correlation matrix we can see that sqft_living has a <strong>0.7 correction</strong> with Price. which is the highest correlarted independent variable with the dependent varibale.</p>
+<p>For Furture analysis we will be plotting <strong>sqft_living with price</strong></p>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <p><img src="/post/2020-05-22-regression-project-part-2-simple-linear-regression_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>From the above graph we can see a linear relationship between Price and sqft_living, so we will be building our simple linear model with this independent variable</p>
+<p>From the above graph we can see a <strong>linear relationship</strong> between Price and sqft_living, so we will be building our simple linear model with this independent variable</p>
 </div>
 <div id="model-building" class="section level1">
 <h1><strong>Model Building</strong></h1>
@@ -74,11 +74,11 @@ A simpole linear model gives the relationship between a indipendent variable and
 ## Residual standard error: 260.3 on 17060 degrees of freedom
 ## Multiple R-squared:  0.4936, Adjusted R-squared:  0.4936 
 ## F-statistic: 1.663e+04 on 1 and 17060 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>So Now we have created a model with out traing dataset, from thje summary of the model we can see that</p>
+<p>So Now we have created a model with out traing dataset, from the summary of the model we can see that</p>
 <ul>
-<li>estimate for **sqft_living* is 0.27981, which mean 1 unit increase in sqft_living increase the price by that much.</li>
-<li>and the three starts(***) indicated that the variable is hightly significant to the dependent varible, we can say that with 99% confident the indipendent variable is having an effect on the dependent variable.</li>
-<li>Multipled R square value = 0.4936 indicated that the model explains 0.49% of varaince in the dependent variable. Usually a r square of above 0.8 is considered to be a good model.</li>
+<li>estimate for <strong>sqft_living</strong> is 0.27981, which mean 1 unit increase in sqft_living increase the price by that much</li>
+<li>and the three stars(***) indicated that the variable is hightly significant to the dependent varible, we can say that with 99% confident the indipendent variable is having an effect on the dependent variable.</li>
+<li>Multipled <strong>R square value = 0.4936</strong> indicated that the model explains 0.49% of varaince in the dependent variable. <em>Usually a r square of above 0.8 is considered to be a good model.</em></li>
 </ul>
 </div>
 <div id="testing-our-model" class="section level1">
@@ -90,12 +90,12 @@ A simpole linear model gives the relationship between a indipendent variable and
 </div>
 <div id="mean-sum-of-error" class="section level1">
 <h1>Mean Sum of error</h1>
-<p>So now we will find the mse for both training and testing set.</p>
-<p>We mostly want our testset mse should be as low as possible. we dont want to overfit the model</p>
+<p>So now we will find the <strong>MSE</strong> for both training and testing set.</p>
+<p>We mostly want our testset MSE should be as <em>low</em> as possible. we dont want to <strong>overfit the model</strong></p>
 <pre><code>## Train MSE = 67741.54</code></pre>
 <pre><code>## Test MSE =  71056.53</code></pre>
 <p>We will tabulate this value and we will we will compare it with all other models that we will be creating in this series.</p>
-<p>WWe will name the table as Results</p>
+<p>WWe will name the table as <em>Results</em></p>
 <table>
 <thead>
 <tr class="header">
