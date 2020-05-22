@@ -1,0 +1,119 @@
+---
+title: Regression Project, Part -2, Simple Linear Regression
+author: Vignesh A
+date: '2020-05-22'
+slug: regression-project-part-2-simple-linear-regression
+categories: []
+tags: []
+---
+
+
+
+<p>So now we have a clean data, will be creating a simple model, a simple linear model.
+A simpole linear model gives the relationship between a indipendent variable and a dependant variable. in what way a indipendent variable affect the dedpendent variable.</p>
+<p>Now our dataset consist of the following columns.</p>
+<pre><code>##  [1] &quot;bedrooms&quot;      &quot;bathrooms&quot;     &quot;sqft_living&quot;   &quot;sqft_lot&quot;     
+##  [5] &quot;floors&quot;        &quot;waterfront&quot;    &quot;view&quot;          &quot;condition&quot;    
+##  [9] &quot;grade&quot;         &quot;sqft_above&quot;    &quot;sqft_basement&quot; &quot;yr_built&quot;     
+## [13] &quot;yr_renovated&quot;  &quot;zipcode&quot;       &quot;sqft_living15&quot; &quot;sqft_lot15&quot;   
+## [17] &quot;priceinK&quot;      &quot;PYears&quot;        &quot;Pmonth&quot;</code></pre>
+<p>The structure of our dataset is</p>
+<pre><code>## &#39;data.frame&#39;:    21612 obs. of  19 variables:
+##  $ bedrooms     : int  3 3 2 4 3 4 3 3 3 3 ...
+##  $ bathrooms    : int  1 2 1 3 2 4 2 2 1 2 ...
+##  $ sqft_living  : int  1180 2570 770 1960 1680 5420 1715 1060 1780 1890 ...
+##  $ sqft_lot     : int  5650 7242 10000 5000 8080 101930 6819 9711 7470 6560 ...
+##  $ floors       : num  1 2 1 1 1 1 2 1 1 2 ...
+##  $ waterfront   : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ view         : Factor w/ 5 levels &quot;0&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ condition    : Factor w/ 5 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 3 3 3 5 3 3 3 3 3 3 ...
+##  $ grade        : Factor w/ 12 levels &quot;1&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,..: 6 6 5 6 7 10 6 6 6 6 ...
+##  $ sqft_above   : int  1180 2170 770 1050 1680 3890 1715 1060 1050 1890 ...
+##  $ sqft_basement: int  0 400 0 910 0 1530 0 0 730 0 ...
+##  $ yr_built     : int  1955 1951 1933 1965 1987 2001 1995 1963 1960 2003 ...
+##  $ yr_renovated : int  0 1991 0 0 0 0 0 0 0 0 ...
+##  $ zipcode      : Factor w/ 70 levels &quot;98001&quot;,&quot;98002&quot;,..: 67 56 17 59 38 30 3 69 61 24 ...
+##  $ sqft_living15: int  1340 1690 2720 1360 1800 4760 2238 1650 1780 2390 ...
+##  $ sqft_lot15   : num  5.65 7.64 8.06 5 7.5 ...
+##  $ priceinK     : num  222 538 180 604 510 ...
+##  $ PYears       : Factor w/ 2 levels &quot;2014&quot;,&quot;2015&quot;: 1 1 2 1 2 1 1 2 2 2 ...
+##  $ Pmonth       : Factor w/ 12 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 10 12 2 12 2 5 6 1 4 3 ...</code></pre>
+<p>Since we are creating a model to predict the future value. we need to train our model in one dataset and test our model in another dataset. So we will be spliting the dataset into train and test dataset. with 80% data in train and 20% data in test</p>
+<pre><code>## Train dataset consist of  17062 entries</code></pre>
+<pre><code>## Test dataset consist of  4550 entries</code></pre>
+<p>We will be training and testing all our models in this same test and train dataset, se it will be easily for comparison.</p>
+<div id="now-creating-simple-linear-regression." class="section level1">
+<h1>Now Creating Simple Linear Regression.</h1>
+<p>First we need to find out of all the variables which variable have a higher relation with the denpendant varibale.</p>
+<p>It can be found by, correlation matrix. We will find the correlation of all variables with the dependent variables which is more than 0.5</p>
+<pre><code>## There are 12 numeric variables</code></pre>
+<p><img src="/post/2020-05-22-regression-project-part-2-simple-linear-regression_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>From the above correlation matrix we can see that sqft_living has a 0.7 correction with Price. which is the highest correlarted independent variable with the dependent varibale.</p>
+<p>For Furture analysis we will be plotting sqft_living with price</p>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/post/2020-05-22-regression-project-part-2-simple-linear-regression_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>From the above graph we can see a linear relationship between Price and sqft_living, so we will be building our simple linear model with this independent variable</p>
+</div>
+<div id="model-building" class="section level1">
+<h1><strong>Model Building</strong></h1>
+<pre><code>## 
+## Call:
+## lm(formula = priceinK ~ sqft_living, data = train)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1467.4  -147.0   -25.5   106.6  4369.5 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -41.22518    4.92925  -8.363   &lt;2e-16 ***
+## sqft_living   0.27981    0.00217 128.948   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 260.3 on 17060 degrees of freedom
+## Multiple R-squared:  0.4936, Adjusted R-squared:  0.4936 
+## F-statistic: 1.663e+04 on 1 and 17060 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>So Now we have created a model with out traing dataset, from thje summary of the model we can see that</p>
+<ul>
+<li>estimate for **sqft_living* is 0.27981, which mean 1 unit increase in sqft_living increase the price by that much.</li>
+<li>and the three starts(***) indicated that the variable is hightly significant to the dependent varible, we can say that with 99% confident the indipendent variable is having an effect on the dependent variable.</li>
+<li>Multipled R square value = 0.4936 indicated that the model explains 0.49% of varaince in the dependent variable. Usually a r square of above 0.8 is considered to be a good model.</li>
+</ul>
+</div>
+<div id="testing-our-model" class="section level1">
+<h1>Testing our model</h1>
+<p>Now we have created a model, now we have to predict the price in our test set</p>
+<pre><code>##        5        8       11       16       24 
+## 428.8569 255.3742 954.9011 784.2165 258.1723</code></pre>
+<p>we have predicted the values for our test, now we have to compare with the original value.</p>
+</div>
+<div id="mean-sum-of-error" class="section level1">
+<h1>Mean Sum of error</h1>
+<p>So now we will find the mse for both training and testing set.</p>
+<p>We mostly want our testset mse should be as low as possible. we dont want to overfit the model</p>
+<pre><code>## Train MSE = 67741.54</code></pre>
+<pre><code>## Test MSE =  71056.53</code></pre>
+<p>We will tabulate this value and we will we will compare it with all other models that we will be creating in this series.</p>
+<p>WWe will name the table as Results</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Model</th>
+<th align="right">Train.MSE</th>
+<th align="right">Test.MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Simple Linear Reg</td>
+<td align="right">67741.54</td>
+<td align="right">71056.53</td>
+</tr>
+</tbody>
+</table>
+<p>Next, we will be creating a multiple Linear regression.</p>
+</div>
+<div id="thank-you" class="section level1">
+<h1>Thank You</h1>
+</div>

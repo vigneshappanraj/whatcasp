@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en-US" />
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>Regression Project, Part -2, Simple Linear Regression &middot; </title>
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="canonical" href="/post/regression-project-part-2-simple-linear-regression/" />
+
+     <meta name="description" content="So now we have a clean data, will be creating a simple model, a simple linear model.A simpole linear model gives the relationship between a indipendent variabl" /> 
+
+     
+    
+    <meta name="twitter:card" content="summary"/>
+    
+ 
+    <meta name="twitter:title" content="Regression Project, Part -2, Simple Linear Regression"/>
+    <meta name="twitter:description" content="So now we have a clean data, will be creating a simple model, a simple linear model.A simpole linear model gives the relationship between a indipendent variabl"/>
+    <meta name="twitter:url" content="/post/regression-project-part-2-simple-linear-regression/" />
+    <meta name="twitter:site" content="@Vignesh_Appanraj"/>
+
+    <meta property="og:site_name" content="" />
+    <meta property="og:title" content="Regression Project, Part -2, Simple Linear Regression &middot; DataAnt" />
+    <meta property="og:url" content="/post/regression-project-part-2-simple-linear-regression/" />
+    
+
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="So now we have a clean data, will be creating a simple model, a simple linear model.A simpole linear model gives the relationship between a indipendent variabl" />
+
+    <meta property="article:published_time" content="2020-05-22T00:00:00Z" />
+    
+
+    <meta property="og:image" content="/img/blog-cover.jpg"/>
+
+    <meta name="generator" content="Hugo 0.70.0" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" type="text/css" href="/built/screen.css" /> 
+    <link rel="stylesheet" type="text/css" href="/css/casper-two.css" /> 
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" />
+    
+
+     
+
+</head>
+
+
+<body class="post-template">
+  <div class="site-wrapper"> 
+
+<header class="site-header outer">
+  <div class="inner">
+    <nav class="site-nav">
+      <div class="site-nav-left">
+        <a class="site-nav-logo" href="#"><img src="/da.ico" alt="DataAnt" /></a>
+
+        <ul class="nav" role="menu">
+        
+        
+        
+            <li class="" role="menuitem">
+              <a href="/">Home</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="/about/">About me</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://google.com/">External</a>
+            </li>
+        
+      </ul></div>
+
+      <div class="site-nav-right">
+        <div class="social-links">
+                    
+
+                    <a class="social-link social-link-tw" href="https://twitter.com/Vignesh_Appanraj" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg></a>
+
+                    <a class="social-link" href="https://github.com/madeye28" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+
+                    <a class="social-link" href="https://www.linkedin.com/in/Vignesh%20Appanraj" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 50 512 512"><path d="M150.65,100.682c0,27.992-22.508,50.683-50.273,50.683c-27.765,0-50.273-22.691-50.273-50.683 C50.104,72.691,72.612,50,100.377,50C128.143,50,150.65,72.691,150.65,100.682z M143.294,187.333H58.277V462h85.017V187.333z M279.195,187.333h-81.541V462h81.541c0,0,0-101.877,0-144.181c0-38.624,17.779-61.615,51.807-61.615 c31.268,0,46.289,22.071,46.289,61.615c0,39.545,0,144.181,0,144.181h84.605c0,0,0-100.344,0-173.915 s-41.689-109.131-99.934-109.131s-82.768,45.369-82.768,45.369V187.333z" /></svg></a>
+
+                    
+        </div>  
+            
+      </div>
+
+    </nav>  
+
+  </div>
+</header>
+
+<main id="site-main" class="site-main outer" role="main">
+  <div class="inner">
+    
+      <article class="post-full post"> 
+    <header class="post-full-header">
+        <section class="post-full-meta">
+            <time class="post-full-meta-date" datetime="2020-05-22">22 May 2020</time>
+        </section>
+        <h1 class="post-full-title">Regression Project, Part -2, Simple Linear Regression</h1>
+    </header>
+    
+    <figure class="post-full-image" style="background-image: url(/defimg/5.jpg)">
+    </figure>
+
+    <section class="post-full-content">
+        <div class="kg-card-markdown">
+        
+
+
+<p>So now we have a clean data, will be creating a simple model, a simple linear model.
+A simpole linear model gives the relationship between a indipendent variable and a dependant variable. in what way a indipendent variable affect the dedpendent variable.</p>
+<p>Now our dataset consist of the following columns.</p>
+<pre><code>##  [1] &quot;bedrooms&quot;      &quot;bathrooms&quot;     &quot;sqft_living&quot;   &quot;sqft_lot&quot;     
+##  [5] &quot;floors&quot;        &quot;waterfront&quot;    &quot;view&quot;          &quot;condition&quot;    
+##  [9] &quot;grade&quot;         &quot;sqft_above&quot;    &quot;sqft_basement&quot; &quot;yr_built&quot;     
+## [13] &quot;yr_renovated&quot;  &quot;zipcode&quot;       &quot;sqft_living15&quot; &quot;sqft_lot15&quot;   
+## [17] &quot;priceinK&quot;      &quot;PYears&quot;        &quot;Pmonth&quot;</code></pre>
+<p>The structure of our dataset is</p>
+<pre><code>## &#39;data.frame&#39;:    21612 obs. of  19 variables:
+##  $ bedrooms     : int  3 3 2 4 3 4 3 3 3 3 ...
+##  $ bathrooms    : int  1 2 1 3 2 4 2 2 1 2 ...
+##  $ sqft_living  : int  1180 2570 770 1960 1680 5420 1715 1060 1780 1890 ...
+##  $ sqft_lot     : int  5650 7242 10000 5000 8080 101930 6819 9711 7470 6560 ...
+##  $ floors       : num  1 2 1 1 1 1 2 1 1 2 ...
+##  $ waterfront   : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ view         : Factor w/ 5 levels &quot;0&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ condition    : Factor w/ 5 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 3 3 3 5 3 3 3 3 3 3 ...
+##  $ grade        : Factor w/ 12 levels &quot;1&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,..: 6 6 5 6 7 10 6 6 6 6 ...
+##  $ sqft_above   : int  1180 2170 770 1050 1680 3890 1715 1060 1050 1890 ...
+##  $ sqft_basement: int  0 400 0 910 0 1530 0 0 730 0 ...
+##  $ yr_built     : int  1955 1951 1933 1965 1987 2001 1995 1963 1960 2003 ...
+##  $ yr_renovated : int  0 1991 0 0 0 0 0 0 0 0 ...
+##  $ zipcode      : Factor w/ 70 levels &quot;98001&quot;,&quot;98002&quot;,..: 67 56 17 59 38 30 3 69 61 24 ...
+##  $ sqft_living15: int  1340 1690 2720 1360 1800 4760 2238 1650 1780 2390 ...
+##  $ sqft_lot15   : num  5.65 7.64 8.06 5 7.5 ...
+##  $ priceinK     : num  222 538 180 604 510 ...
+##  $ PYears       : Factor w/ 2 levels &quot;2014&quot;,&quot;2015&quot;: 1 1 2 1 2 1 1 2 2 2 ...
+##  $ Pmonth       : Factor w/ 12 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 10 12 2 12 2 5 6 1 4 3 ...</code></pre>
+<p>Since we are creating a model to predict the future value. we need to train our model in one dataset and test our model in another dataset. So we will be spliting the dataset into train and test dataset. with 80% data in train and 20% data in test</p>
+<pre><code>## Train dataset consist of  17062 entries</code></pre>
+<pre><code>## Test dataset consist of  4550 entries</code></pre>
+<p>We will be training and testing all our models in this same test and train dataset, se it will be easily for comparison.</p>
+<div id="now-creating-simple-linear-regression." class="section level1">
+<h1>Now Creating Simple Linear Regression.</h1>
+<p>First we need to find out of all the variables which variable have a higher relation with the denpendant varibale.</p>
+<p>It can be found by, correlation matrix. We will find the correlation of all variables with the dependent variables which is more than 0.5</p>
+<pre><code>## There are 12 numeric variables</code></pre>
+<p><img src="/post/2020-05-22-regression-project-part-2-simple-linear-regression_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>From the above correlation matrix we can see that sqft_living has a 0.7 correction with Price. which is the highest correlarted independent variable with the dependent varibale.</p>
+<p>For Furture analysis we will be plotting sqft_living with price</p>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/post/2020-05-22-regression-project-part-2-simple-linear-regression_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>From the above graph we can see a linear relationship between Price and sqft_living, so we will be building our simple linear model with this independent variable</p>
+</div>
+<div id="model-building" class="section level1">
+<h1><strong>Model Building</strong></h1>
+<pre><code>## 
+## Call:
+## lm(formula = priceinK ~ sqft_living, data = train)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1467.4  -147.0   -25.5   106.6  4369.5 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -41.22518    4.92925  -8.363   &lt;2e-16 ***
+## sqft_living   0.27981    0.00217 128.948   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 260.3 on 17060 degrees of freedom
+## Multiple R-squared:  0.4936, Adjusted R-squared:  0.4936 
+## F-statistic: 1.663e+04 on 1 and 17060 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>So Now we have created a model with out traing dataset, from thje summary of the model we can see that</p>
+<ul>
+<li>estimate for **sqft_living* is 0.27981, which mean 1 unit increase in sqft_living increase the price by that much.</li>
+<li>and the three starts(***) indicated that the variable is hightly significant to the dependent varible, we can say that with 99% confident the indipendent variable is having an effect on the dependent variable.</li>
+<li>Multipled R square value = 0.4936 indicated that the model explains 0.49% of varaince in the dependent variable. Usually a r square of above 0.8 is considered to be a good model.</li>
+</ul>
+</div>
+<div id="testing-our-model" class="section level1">
+<h1>Testing our model</h1>
+<p>Now we have created a model, now we have to predict the price in our test set</p>
+<pre><code>##        5        8       11       16       24 
+## 428.8569 255.3742 954.9011 784.2165 258.1723</code></pre>
+<p>we have predicted the values for our test, now we have to compare with the original value.</p>
+</div>
+<div id="mean-sum-of-error" class="section level1">
+<h1>Mean Sum of error</h1>
+<p>So now we will find the mse for both training and testing set.</p>
+<p>We mostly want our testset mse should be as low as possible. we dont want to overfit the model</p>
+<pre><code>## Train MSE = 67741.54</code></pre>
+<pre><code>## Test MSE =  71056.53</code></pre>
+<p>We will tabulate this value and we will we will compare it with all other models that we will be creating in this series.</p>
+<p>WWe will name the table as Results</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Model</th>
+<th align="right">Train.MSE</th>
+<th align="right">Test.MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Simple Linear Reg</td>
+<td align="right">67741.54</td>
+<td align="right">71056.53</td>
+</tr>
+</tbody>
+</table>
+<p>Next, we will be creating a multiple Linear regression.</p>
+</div>
+<div id="thank-you" class="section level1">
+<h1>Thank You</h1>
+</div>
+    
+        </div>
+    </section>
+
+    <footer class="post-full-footer">
+      <section class="author-card">
+        <img class="author-profile-image" src="/vikki.jpg" alt="Author" />
+        <section class="author-card-content">
+            <h4 class="author-card-name"><a href="/">Vignesh A</a></h4>
+                <p>Engineer by degree, Data Analyst by heart</p>
+        </section>
+      </section>
+    </footer>
+</article>
+    
+    
+    
+
+  </div>
+</main>
+
+
+<aside class="read-next outer">
+  <div class="inner">
+    <div class="read-next-feed">      
+      
+<article class="read-next-card" 
+            style="background-image: url(/img/blog-cover.jpg);" >
+    <header class="read-next-card-header">
+        <small class="read-next-card-header-sitetitle">&mdash; DataAnt &mdash;</small>
+        
+    </header>
+    <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+    </div>
+
+    <div class="read-next-card-content">
+      
+        <ul>
+          <li><a href="/post/regression-project-part-1-data-preprocessing/">Regression Project, Part -1, Data Preprocessing</a></li>            
+        
+          <li><a href="/post/checking-post/">Whatsapp Chat Data Analysis</a></li>            
+        
+          <li><a href="/post/netflix-movie-and-tv-show-data-analysis/">Netflix Movie and TV Show Data Analysis</a></li>            
+        
+                      
+        </ul>
+    </div>
+    <footer class="read-next-card-footer">
+      
+    </footer>
+</article>
+
+
+      
+      
+      <article class="post-card post"> 
+    
+    <a class="post-card-image-link" href="/post/regression-project-part-1-data-preprocessing/">
+      <div class="post-card-image" style="background-image: url(/defimg/4.jpg)"></div>
+    </a>    
+    
+
+    <div class="post-card-content">
+      <a class="post-card-content-link" href="/post/regression-project-part-1-data-preprocessing/">
+          <header class="post-card-header">
+              
+              <h2 class="post-card-title">Regression Project, Part -1, Data Preprocessing</h2>
+          </header>
+          <section class="post-card-excerpt">
+              
+                <p>Main IdeaThe idea of this new series of data is to understand more obout different types of regressiion and how they works.
+Regression, is to find a relationship between dependant variable and independent variablewhat kind of relationship exists.How Much each Indipendent variblee affect the dependent variableThe few Regressions that we are going to work in this series are givven below1. Simple Linear Regression2. ...  </p>
+              
+          </section>
+      </a>
+
+      <footer class="post-card-meta">
+          <img class="author-profile-image" src="/vikki.jpg" alt="Author" />
+          <span class="post-card-author"><a href="/">Vignesh A</a></span>
+      </footer>
+    </div>
+</article>
+      
+    </div>
+  </div>
+</aside>
+
+<div class="floating-header">
+  <div class="floating-header-logo">
+    <a href="/">
+      <img src="/da.ico" alt="" />
+      <span></span>
+    </a>
+  </div>
+  <span class="floating-header-divider">&mdash;</span>
+  <div class="floating-header-title">Regression Project, Part -2, Simple Linear Regression</div>
+  <div class="floating-header-share">
+    <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+     <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/></svg>
+    </div>
+    
+    <a class="floating-header-share-tw" href="https://twitter.com/share?text=Regression%20Project%2c%20Part%20-2%2c%20Simple%20Linear%20Regression&amp;url=%2fpost%2fregression-project-part-2-simple-linear-regression%2f"
+          onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+      </a>
+      <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=%2fpost%2fregression-project-part-2-simple-linear-regression%2f"
+          onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+      </a>
+  </div>
+
+  <progress class="progress" value="0">
+    <div class="progress-container">
+      <span class="progress-bar"></span>
+    </div>
+  </progress>
+</div>
+
+
+
+<footer class="site-footer outer">
+  <div class="site-footer-content inner">
+    <section class="copyright" style="line-height: 1.3em;">
+      <a href="/">DataAnt</a> © 2020 <br>
+      <span style="font-size: 0.8em; color: #555;">Hugo port of <a href="https://github.com/TryGhost/Casper">Casper 2.1.7</a> by <a href="https://www.telematika.org">EM</a></span>
+    </section>
+    <nav class="site-footer-nav">
+        <a href="/">Latest Posts</a>
+        
+        <a href="https://twitter.com/Vignesh_Appanraj" target="_blank" rel="noopener">Twitter</a>
+        <a href="https://github.com/madeye28" target="_blank" rel="noopener">Github</a>
+        <a href="https://www.linkedin.com/in/Vignesh%20Appanraj" target="_blank" rel="noopener">LinkedIn</a>
+        
+    </nav>  
+  </div>
+</footer>
+
+</div>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    <script>
+
+
+
+
+
+$(document).ready(function () {
+    
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+</body></html>

@@ -1,0 +1,145 @@
+---
+title: Regression Project, Part -2, Simple Linear Regression
+author: Vignesh A
+date: '2020-05-22'
+slug: regression-project-part-2-simple-linear-regression
+categories: []
+tags: []
+---
+
+So now we have a clean data, will be creating a simple model, a simple linear model.
+A simpole linear model gives the relationship between a indipendent variable and a dependant variable. in what way a indipendent variable affect the dedpendent variable.
+
+Now our dataset consist of the following columns.
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+library(caTools)
+library(corrplot)
+library(ggplot2)
+library(ggrepel)
+library(knitr)
+```
+
+```{r,echo=FALSE,warning=FALSE}
+df <- read.csv('cleaned_text.csv')
+names(df)
+df$waterfront <- as.factor(df$waterfront)
+df$view <- as.factor(df$view)
+df$condition <- as.factor(df$condition)
+df$grade <- as.factor(df$grade)
+
+#df$date <- as.Date(as.character(df$date),'%Y%m%d')
+df$zipcode <- as.factor(df$zipcode)
+#str(df)
+
+df$PYears <- as.factor(df$PYears)
+df$Pmonth <-as.factor(df$Pmonth)
+#str(df)
+```
+
+The structure of our dataset is 
+```{r,echo=FALSE,warning=FALSE}
+str(df)
+```
+
+Since we are creating a model to predict the future value. we need to train our model in one dataset and test our model in another dataset. So we will be spliting the dataset into train and test dataset. with 80% data in train and 20% data in test 
+
+```{r,echo=FALSE,warning=FALSE}
+set.seed(123)
+sample <- sample.split(df,0.8)
+train <- subset(df,sample == TRUE)
+test <- subset(df,sample == FALSE)
+cat("Train dataset consist of ",dim(train)[1], "entries")
+cat("Test dataset consist of ",dim(test)[1], "entries")
+
+```
+We will be training and testing all our models in this same test and train dataset, se it will be easily for comparison.
+
+# Now Creating Simple Linear Regression.
+
+First we need to find out of all the variables which variable have a higher relation with the denpendant varibale.
+
+It can be found by, correlation matrix. We will find the correlation of all variables with the dependent variables which is more than 0.5
+
+```{r,echo=FALSE,warning=FALSE}
+numericVars <- which(sapply(df, is.numeric)) #index vector numeric variables
+numericVarNames <- names(numericVars) #saving names vector for use later on
+cat('There are', length(numericVars), 'numeric variables')
+## There are 37 numeric variables
+all_numVar <- df[, numericVars]
+cor_numVar <- cor(all_numVar, use="pairwise.complete.obs") #correlations of all numeric variables
+
+#sort on decreasing correlations with SalePrice
+cor_sorted <- as.matrix(sort(cor_numVar[,'priceinK'], decreasing = TRUE))
+ #select only high corelations
+CorHigh <- names(which(apply(cor_sorted, 1, function(x) abs(x)>0.5)))
+cor_numVar <- cor_numVar[CorHigh, CorHigh]
+
+corrplot.mixed(cor_numVar, tl.col="black", tl.pos = "lt")
+
+```
+
+From the above correlation matrix we can see that sqft_living has a 0.7 correction with Price. which is the highest correlarted independent variable with the dependent varibale.
+       
+       
+For Furture analysis we will be plotting sqft_living with price
+```{r,echo=FALSE,warning=FALSE}
+ggplot(data=df[!is.na(df$priceinK),], 
+       aes(x=sqft_living, y=priceinK))+
+        geom_point(col='blue') + 
+  geom_smooth(method = "lm", se=FALSE, color="black", aes(group=1)) +
+       scale_y_continuous(breaks= seq(0, 8000, by=2000)) #+ 
+  #geom_text_repel(aes(label=ifelse(df$sqft_living[!is.na(df$sqft_living)]>12500,
+                                  # rownames(df), '')))
+```
+
+From the above graph we can see a linear relationship between Price and sqft_living, so we will be building our simple linear model with this independent variable
+
+# **Model Building**
+
+```{r,echo=FALSE,warning=FALSE}
+model <- lm(priceinK~sqft_living,train)
+summary(model)
+```
+
+So Now we have created a model with out traing dataset, from thje summary of the model we can see that
+
+* estimate for **sqft_living* is 0.27981, which mean 1 unit increase in sqft_living increase the price by that much.
+* and the three starts(***) indicated that the variable is hightly significant to the dependent varible, we can say that with 99% confident the indipendent variable is having an effect on the dependent variable.
+* Multipled R square value = 0.4936 indicated that the model explains 0.49% of varaince in the dependent variable. Usually a r square of above 0.8 is considered to be a good model.
+
+
+# Testing our model
+ Now we have created a model, now we have to predict the price in our test set
+ 
+```{r,echo=FALSE,warning=FALSE}
+y_pred <- predict(model,test)
+head(y_pred,5)
+```
+
+we have predicted the values for our test, now we have to compare with the original value.
+
+# Mean Sum of error
+
+So now we will find the mse for both training and testing set.
+
+We mostly want our testset mse should be as low as possible. we dont want to overfit the model
+
+```{r,echo=FALSE,warning=FALSE}
+cat('Train MSE =',mean((predict(model,train) - train$priceinK)^2))
+cat("Test MSE = "  , mean((y_pred - test$priceinK)^2))
+
+```
+
+We will tabulate this value and we will we will compare it with all other models that we will be creating in this series.  
+
+WWe will name the table as Results
+
+```{r,echo=FALSE,warning=FALSE}
+Results <- data.frame('Model' = 'Simple Linear Reg','Train MSE' = mean((predict(model,train) - train$priceinK)^2) , 'Test MSE' = mean((y_pred - test$priceinK)^2))
+kable(Results)
+```
+
+Next, we will be creating a multiple Linear regression.
+
+# Thank You
+

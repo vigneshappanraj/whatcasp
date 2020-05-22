@@ -12,6 +12,17 @@
     
     
     <item>
+      <title>Regression Project, Part -2, Simple Linear Regression</title>
+      <link>/post/regression-project-part-2-simple-linear-regression/</link>
+      <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/regression-project-part-2-simple-linear-regression/</guid>
+      <description>So now we have a clean data, will be creating a simple model, a simple linear model.A simpole linear model gives the relationship between a indipendent variable and a dependant variable. in what way a indipendent variable affect the dedpendent variable.
+Now our dataset consist of the following columns.
+## [1] &amp;quot;bedrooms&amp;quot; &amp;quot;bathrooms&amp;quot; &amp;quot;sqft_living&amp;quot; &amp;quot;sqft_lot&amp;quot; ## [5] &amp;quot;floors&amp;quot; &amp;quot;waterfront&amp;quot; &amp;quot;view&amp;quot; &amp;quot;condition&amp;quot; ## [9] &amp;quot;grade&amp;quot; &amp;quot;sqft_above&amp;quot; &amp;quot;sqft_basement&amp;quot; &amp;quot;yr_built&amp;quot; ## [13] &amp;quot;yr_renovated&amp;quot; &amp;quot;zipcode&amp;quot; &amp;quot;sqft_living15&amp;quot; &amp;quot;sqft_lot15&amp;quot; ## [17] &amp;quot;priceinK&amp;quot; &amp;quot;PYears&amp;quot; &amp;quot;Pmonth&amp;quot;The structure of our dataset is</description>
+    </item>
+    
+    <item>
       <title>Regression Project, Part -1, Data Preprocessing</title>
       <link>/post/regression-project-part-1-data-preprocessing/</link>
       <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
