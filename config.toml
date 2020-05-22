@@ -24,7 +24,7 @@ canonifyurls    = true
   linkedinName = "Vignesh Appanraj"
   mediumName = ""
 
-  logo = "da.ico"
+  logo = ""
   orgName = "DataAnt"
   orgWebsite = ""
   orgDescription = ""
@@ -35,7 +35,7 @@ canonifyurls    = true
   authorAvatar = "vikki.jpg"
   authorLocation = "India"
   authorWebsite = "https://github.com/madeye28"
-  authorDescription = "Engineer by degree, Data Analyst by heart"
+  authorDescription = "யாதும் ஊரே யாவரும் கேளிர் "
 
   pageNotFoundTitle = "404 - Page not found"
 

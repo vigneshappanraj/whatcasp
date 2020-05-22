@@ -135,8 +135,9 @@ We will tabulate this value and we will we will compare it with all other models
 WWe will name the table as *Results*
 
 ```{r,echo=FALSE,warning=FALSE}
-Results <- data.frame('Model' = 'Simple Linear Reg','Train MSE' = mean((predict(model,train) - train$priceinK)^2) , 'Test MSE' = mean((y_pred - test$priceinK)^2))
-kable(Results)
+Results <- data.frame('Model' = 'Simple Linear Reg','R Square' = 0.4936,'Train MSE' = mean((predict(model,train) - train$priceinK)^2) , 'Test MSE' = mean((y_pred - test$priceinK)^2))
+knitr::kable(Results)
+write.csv(Results,'Results.csv',row.names = FALSE)
 ```
 
 Next, we will be creating a multiple Linear regression.

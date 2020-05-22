@@ -1,0 +1,156 @@
+---
+title: ' Regression Project, Part -3, Multiple Linear Regression'
+author: Vignesh A
+date: '2020-05-22'
+slug: regression-project-part-3-multiple-linear-regression
+categories: []
+tags: []
+---
+
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+library(ggplot2)
+library(corrplot)
+library(faraway)
+library(caTools)
+```
+
+# Multiple Linear Regression.
+
+Multiple linear regression is similar to simple linear regression, in this we will be using multiple independent variable to preict the dependent variable. We will be also finding the relation between all those indipendent variable and dependent variable.
+
+The total number of variables we have : 
+```{r,echo=FALSE,warning=FALSE}
+df <- read.csv('cleaned_text.csv')
+names(df)
+df$waterfront <- as.factor(df$waterfront)
+df$view <- as.factor(df$view)
+df$condition <- as.factor(df$condition)
+df$grade <- as.factor(df$grade)
+
+#df$date <- as.Date(as.character(df$date),'%Y%m%d')
+df$zipcode <- as.factor(df$zipcode)
+#str(df)
+
+df$PYears <- as.factor(df$PYears)
+df$Pmonth <-as.factor(df$Pmonth)
+#str(df)
+```
+
+
+```{r,echo=FALSE,warning=FALSE}
+set.seed(123)
+sample <- sample.split(df,0.8)
+train <- subset(df,sample == TRUE)
+test <- subset(df,sample == FALSE)
+cat("Train dataset consist of ",dim(train)[1], "entries")
+cat("Test dataset consist of ",dim(test)[1], "entries")
+
+```
+
+In this *PriceinK* is the dependent variable all the other variables are considered as independent variables.
+
+If we are predicting or classifying or clustering,with many independent varaible we should always consider the point of **Multicolinearity**, correlation between the independent variables are high. Then Both the variables are providing same informaiton to our model. (example,if a table has Age and Date of Birth, mostly they will have higher corelation, hence there will be multicolinearity). So we should remove one varible. which variable should be decided by VIF(Variation Inflation factor)
+
+
+First, we will find the corelation between the independent variables.
+
+```{r,echo=FALSE,warning=FALSE}
+numericVars <- which(sapply(df, is.numeric)) #index vector numeric variables
+numericVarNames <- names(numericVars) #saving names vector for use later on
+cat('There are', length(numericVars), 'numeric variables')
+## There are 37 numeric variables
+all_numVar <- df[,numericVars]
+cor_numVar <- cor(all_numVar, use="pairwise.complete.obs") #correlations of all numeric variables
+
+#sort on decreasing correlations with SalePrice
+cor_sorted <- as.matrix(sort(cor_numVar[,'priceinK'], decreasing = TRUE))
+ #select only high corelations
+CorHigh <- names(which(apply(cor_sorted, 1, function(x) abs(x)>0.5)))
+cor_numVar <- cor_numVar[CorHigh, CorHigh]
+
+corrplot.mixed(cor_numVar, tl.col="black", tl.pos = "lt")
+#cor(df[,numericVars])
+```
+
+We can see that  corelation between **sqft_above** and **sqft_living** is aboout **0.88**
+which is higer when compared to others. So we may have too delete any one of there. We will plot a graph against these two and will have look.  
+
+BUT  
+
+Just because the correlation is very high we *cannot say that there is a causal relationship.*
+
+
+```{r,echo=FALSE,warning=FALSE}
+ggplot(df,aes(x=sqft_above,y = sqft_living)) + 
+  geom_point(col= 'red') + geom_smooth(method = "lm", se=FALSE, color="black", aes(group=1))
+```
+From the above graph we can see, there are **linear** to each other and there is **high correlaion** between then. we will not be deleting them right now. we will be seeing how, this colinearity affects our model.    
+
+
+Since we have already created the training and testing set. we will be creating our model basted in training set and will test on testing set 
+
+# Creating Model
+
+```{r,echo=FALSE,warning=FALSE}
+
+model <- lm(priceinK~.,data = train)
+summary(model)
+#str(df)
+```
+
+# Summary Findings.
+
+* We can see for **sqft_basement** we have **NA**, which indicated even if we remoce that variable we will have a same model.
+* In Multiple Linear regression, we always have to look for the *Adjusted RR square*, in our model the Adjusted R square value is **0.8385**, indication that this model explains 83% of variance iin the dedpendet variable. which is very high when compared to simple linear regression model.
+* we can also see all independent variables except **sqft_basement** are **Highly significant**.
+
+# Now we use the model to predict our test set and training set
+
+```{r,echo=FALSE,warning=FALSE}
+
+y_pred <- predict(model,data = test)
+train_pred <- predict(model,data = train)
+
+cat('Train MSE =',mean((train_pred - train$priceinK)^2))
+cat("Test MSE = ", mean((y_pred - test$priceinK)^2))
+
+modelRes <- data.frame("Model" = "Multiple Linear Reg",
+                       "R Square" = 0.8385,
+                       'Train.MSE' = mean((train_pred - train$priceinK)^2),
+                       "Test.MSE" = mean((y_pred - test$priceinK)^2))
+Results <- read.csv('Results.csv')
+Results1 <- rbind(Results,modelRes)
+knitr :: kable(Results1)
+write.csv(Results1,'Results1.csv',row.names = FALSE)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+From The above result table we can see a great amount of difference in all values, both **error values are reduced** and **R square values in increased**. 
+
+To find **Multicolinearity**, we are calculating **VIF** for our model.
+
+```{r,echo=FALSE,warning=FALSE}
+vif(model)
+```
+ 
+
+
+We can see the VIF value of **sqft_lot** is high but not higher to remove that variable, there is no kind of rule how much above, thumb rule is if **VIF is greater than 10**, we will remove the variable.
+
+We will continue our regression with different model, next time.
+
+# Thank You
+
+

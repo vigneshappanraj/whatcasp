@@ -12,6 +12,17 @@
     
     
     <item>
+      <title> Regression Project, Part -3, Multiple Linear Regression</title>
+      <link>/post/regression-project-part-3-multiple-linear-regression/</link>
+      <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/regression-project-part-3-multiple-linear-regression/</guid>
+      <description>Multiple Linear Regression.Multiple linear regression is similar to simple linear regression, in this we will be using multiple independent variable to preict the dependent variable. We will be also finding the relation between all those indipendent variable and dependent variable.
+The total number of variables we have :
+## [1] &amp;quot;bedrooms&amp;quot; &amp;quot;bathrooms&amp;quot; &amp;quot;sqft_living&amp;quot; &amp;quot;sqft_lot&amp;quot; ## [5] &amp;quot;floors&amp;quot; &amp;quot;waterfront&amp;quot; &amp;quot;view&amp;quot; &amp;quot;condition&amp;quot; ## [9] &amp;quot;grade&amp;quot; &amp;quot;sqft_above&amp;quot; &amp;quot;sqft_basement&amp;quot; &amp;quot;yr_built&amp;quot; ## [13] &amp;quot;yr_renovated&amp;quot; &amp;quot;zipcode&amp;quot; &amp;quot;sqft_living15&amp;quot; &amp;quot;sqft_lot15&amp;quot; ## [17] &amp;quot;priceinK&amp;quot; &amp;quot;PYears&amp;quot; &amp;quot;Pmonth&amp;quot;## Train dataset consist of 17062 entries## Test dataset consist of 4550 entriesIn this PriceinK is the dependent variable all the other variables are considered as independent variables.</description>
+    </item>
+    
+    <item>
       <title>Regression Project, Part -2, Simple Linear Regression</title>
       <link>/post/regression-project-part-2-simple-linear-regression/</link>
       <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
@@ -56,6 +67,17 @@ In this we will be analysing the chat between two persons
 From the below chart we can clearly see the number of messages sent each day
 The Total number of messages were : 5733 
 Number of messages sent by each persons:</description>
+    </item>
+    
+    <item>
+      <title>Hello R Markdown</title>
+      <link>/post/hello-r-markdown/</link>
+      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      
+      <guid>/post/hello-r-markdown/</guid>
+      <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
+You can embed an R code chunk like this:
+summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
     </item>
     
   </channel>
