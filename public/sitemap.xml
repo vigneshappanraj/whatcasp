@@ -3,12 +3,17 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/post/regression-project-part-3-multiple-linear-regression/</loc>
-    <lastmod>2020-05-22T00:00:00+00:00</lastmod>
+    <loc>/post/classification-part-1-logistic-regression/</loc>
+    <lastmod>2020-05-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/post/</loc>
+    <lastmod>2020-05-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/regression-project-part-3-multiple-linear-regression/</loc>
     <lastmod>2020-05-22T00:00:00+00:00</lastmod>
   </url>
   
