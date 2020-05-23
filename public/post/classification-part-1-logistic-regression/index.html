@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="canonical" href="/post/classification-part-1-logistic-regression/" />
 
-     <meta name="description" content="" /> 
+     <meta name="description" content="Classification ModelsIn classification methord, dependant variable will be a categorical variable. In this post we will be looking at one of the methord used f" /> 
 
      
     
@@ -20,7 +20,7 @@
     
  
     <meta name="twitter:title" content="Classification, Part -1 , Logistic Regression"/>
-    <meta name="twitter:description" content=""/>
+    <meta name="twitter:description" content="Classification ModelsIn classification methord, dependant variable will be a categorical variable. In this post we will be looking at one of the methord used f"/>
     <meta name="twitter:url" content="/post/classification-part-1-logistic-regression/" />
     <meta name="twitter:site" content="@Vignesh_Appanraj"/>
 
@@ -30,7 +30,7 @@
     
 
     <meta property="og:type" content="article" />
-    <meta property="og:description" content="" />
+    <meta property="og:description" content="Classification ModelsIn classification methord, dependant variable will be a categorical variable. In this post we will be looking at one of the methord used f" />
 
     <meta property="article:published_time" content="2020-05-23T00:00:00Z" />
     
@@ -115,7 +115,170 @@
         
 
 
-
+<div id="classification-models" class="section level1">
+<h1>Classification Models</h1>
+<p>In classification methord, dependant variable will be a categorical variable. In this post we will be looking at one of the methord used for classification,Logistic Regression.</p>
+<p>Logistic Regression works well when the prediction varibale has two categories, we will be working with Multinomial Classification in future posts.</p>
+<p>The Dataset that we are going to use is obtained from <a href="www.kaggle.com">Kaggle</a></p>
+<p>The Columns in our dataset are</p>
+<pre><code>##  [1] &quot;male&quot;            &quot;age&quot;             &quot;education&quot;       &quot;currentSmoker&quot;  
+##  [5] &quot;cigsPerDay&quot;      &quot;BPMeds&quot;          &quot;prevalentStroke&quot; &quot;prevalentHyp&quot;   
+##  [9] &quot;diabetes&quot;        &quot;totChol&quot;         &quot;sysBP&quot;           &quot;diaBP&quot;          
+## [13] &quot;BMI&quot;             &quot;heartRate&quot;       &quot;glucose&quot;         &quot;TenYearCHD&quot;</code></pre>
+<p>As we did in other regression models, we need to prepare the data for out model construction. We have to clean the data.</p>
+<p>First we will find the Missing Values.</p>
+<p><img src="/post/2020-05-23-classification-part-1-logistic-regression_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+We can see that there are missing values in our dataset, now we will count how many Missing values are there in each columns.</p>
+<pre><code>##    glucose  education     BPMeds    totChol cigsPerDay        BMI  heartRate 
+##        388        105         53         50         29         19          1</code></pre>
+<p>We have found number of missing values in each columns, now we will solve this issue.</p>
+<ul>
+<li>If the Variable is Continueus, we will use mean to fill the missing value.</li>
+<li>If the Varibale is continuous, we will use Mode to fill the missing value.</li>
+</ul>
+<p>After Filling the missing values.
+<img src="/post/2020-05-23-classification-part-1-logistic-regression_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>No we have no missing values. We have checked for outliers and there seems to be no extreme outliers in the dataset.</p>
+<p>NOW, we will change the variables to their respective data type.</p>
+<pre><code>## &#39;data.frame&#39;:    4238 obs. of  16 variables:
+##  $ male           : int  1 0 1 0 0 0 0 0 1 1 ...
+##  $ age            : int  39 46 48 61 46 43 63 45 52 43 ...
+##  $ education      : num  4 2 1 3 3 2 1 2 1 1 ...
+##  $ currentSmoker  : int  0 0 1 1 1 0 0 1 0 1 ...
+##  $ cigsPerDay     : num  0 0 20 30 23 0 0 20 0 30 ...
+##  $ BPMeds         : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ prevalentStroke: int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ prevalentHyp   : int  0 0 0 1 0 1 0 0 1 1 ...
+##  $ diabetes       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ totChol        : num  195 250 245 225 285 228 205 313 260 225 ...
+##  $ sysBP          : num  106 121 128 150 130 ...
+##  $ diaBP          : num  70 81 80 95 84 110 71 71 89 107 ...
+##  $ BMI            : num  27 28.7 25.3 28.6 23.1 ...
+##  $ heartRate      : num  80 95 75 65 85 77 60 79 76 93 ...
+##  $ glucose        : num  77 76 70 103 85 99 85 78 79 88 ...
+##  $ TenYearCHD     : int  0 0 0 1 0 0 1 0 0 0 ...</code></pre>
+<p>We can see that columns, <em>Male,education,currentSmoker,BPMeds,precalentStroke,prevalentHyp,TenYearCHD</em> are in integer, which are categorical variables.</p>
+<pre><code>## &#39;data.frame&#39;:    4238 obs. of  16 variables:
+##  $ male           : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 2 1 2 1 1 1 1 1 2 2 ...
+##  $ age            : num  39 46 48 61 46 43 63 45 52 43 ...
+##  $ education      : Factor w/ 4 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;: 4 2 1 3 3 2 1 2 1 1 ...
+##  $ currentSmoker  : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 1 2 2 2 1 1 2 1 2 ...
+##  $ cigsPerDay     : num  0 0 20 30 23 0 0 20 0 30 ...
+##  $ BPMeds         : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ prevalentStroke: Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ prevalentHyp   : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 1 1 2 1 2 1 1 2 2 ...
+##  $ diabetes       : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ totChol        : num  195 250 245 225 285 228 205 313 260 225 ...
+##  $ sysBP          : num  106 121 128 150 130 ...
+##  $ diaBP          : num  70 81 80 95 84 110 71 71 89 107 ...
+##  $ BMI            : num  27 28.7 25.3 28.6 23.1 ...
+##  $ heartRate      : num  80 95 75 65 85 77 60 79 76 93 ...
+##  $ glucose        : num  77 76 70 103 85 99 85 78 79 88 ...
+##  $ TenYearCHD     : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 1 1 2 1 1 2 1 1 1 ...</code></pre>
+<p>Now we have converted all the categorical variables into factor datatype.</p>
+<p>The Correlation between all numeric independent variables are given below</p>
+<p><img src="/post/2020-05-23-classification-part-1-logistic-regression_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Since there are no Variables that are higher than 0.8, we dont need to worry about this. If you are worried, our futher models for classification will sort this Multicolinearity issues.</p>
+</div>
+<div id="building-the-models" class="section level1">
+<h1>Building The models</h1>
+<pre><code>## 
+## Call:
+## glm(formula = TenYearCHD ~ ., family = binomial(link = &quot;logit&quot;), 
+##     data = train)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.0093  -0.5957  -0.4294  -0.2844   2.8925  
+## 
+## Coefficients:
+##                    Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)      -8.5213904  0.7665024 -11.117  &lt; 2e-16 ***
+## male1             0.4879098  0.1175746   4.150 3.33e-05 ***
+## age               0.0614575  0.0073069   8.411  &lt; 2e-16 ***
+## education2       -0.1670279  0.1334792  -1.251 0.210810    
+## education3       -0.0390145  0.1623626  -0.240 0.810104    
+## education4        0.1226294  0.1738908   0.705 0.480680    
+## currentSmoker1   -0.0649554  0.1654592  -0.393 0.694632    
+## cigsPerDay        0.0247308  0.0065367   3.783 0.000155 ***
+## BPMeds1           0.2859207  0.2474903   1.155 0.247975    
+## prevalentStroke1  1.0808122  0.5604402   1.929 0.053792 .  
+## prevalentHyp1     0.1831812  0.1490687   1.229 0.219133    
+## diabetes1         0.2114754  0.3539446   0.597 0.550186    
+## totChol           0.0026460  0.0011827   2.237 0.025273 *  
+## sysBP             0.0148338  0.0040719   3.643 0.000269 ***
+## diaBP            -0.0050740  0.0068924  -0.736 0.461626    
+## BMI               0.0096754  0.0135035   0.717 0.473675    
+## heartRate         0.0008275  0.0043949   0.188 0.850649    
+## glucose           0.0069467  0.0024706   2.812 0.004927 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 2712.3  on 3178  degrees of freedom
+## Residual deviance: 2397.0  on 3161  degrees of freedom
+## AIC: 2433
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+<p>We have created our model from our trainig data, now we have test this on out test datset. and we will create <strong>Confusion Matrix</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">0</th>
+<th align="right">1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td align="right">892</td>
+<td align="right">147</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td align="right">7</td>
+<td align="right">13</td>
+</tr>
+</tbody>
+</table>
+<p>From the above dataset we can see,</p>
+<ul>
+<li>Our Model have predicted, person not having cancer correctly <strong>892</strong> times and wrongly predicted <strong>147</strong> times - which is knows as <strong>False Positive</strong></li>
+<li>Our Model Predicted, person having cancer correctly <strong>13</strong> times and wrongly <strong>7</strong> times, know as <strong>False Negative</strong></li>
+</ul>
+<p>The Accuracy of the model is given below</p>
+<pre><code>## [1] 0.8545798</code></pre>
+</div>
+<div id="receiver-operator-characteristic-roc" class="section level1">
+<h1>Receiver Operator Characteristic (ROC)</h1>
+<p>ROC determines the accuracy of a classification model at a user defined threshold value. It determines the model’s accuracy using Area Under Curve (AUC). The area under the curve (AUC), also referred to as index of accuracy (A) or concordant index, represents the performance of the ROC curve. Higher the area, better the model. ROC is plotted between True Positive Rate (Y axis) and False Positive Rate (X Axis). In this plot, our aim is to push the red curve (shown below) toward 1 (left corner) and maximize the area under curve. Higher the curve, better the model. The yellow line represents the ROC curve at 0.5 threshold. At this point, sensitivity = specificity.</p>
+<p><img src="/post/2020-05-23-classification-part-1-logistic-regression_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>Area Under The Curve</p>
+<pre><code>## [1] 0.7228865</code></pre>
+<p>We will tabulate the accuracy and Area Under The Cure for Each Model to compare between different Models</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Model</th>
+<th align="right">Accuracy</th>
+<th align="right">AUC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Logistic Regression</td>
+<td align="right">0.8545798</td>
+<td align="right">0.7228865</td>
+</tr>
+</tbody>
+</table>
+<p>In our next post in classification, we will be using different classification algorithm.</p>
+</div>
+<div id="thank-you" class="section level1">
+<h1>Thank You</h1>
+</div>
     
         </div>
     </section>
@@ -154,15 +317,15 @@
     <div class="read-next-card-content">
       
         <ul>
-                      
-        
           <li><a href="/post/regression-project-part-1-data-preprocessing/">Regression Project, Part -1, Data Preprocessing</a></li>            
         
-          <li><a href="/post/netflix-movie-and-tv-show-data-analysis/">Netflix Movie and TV Show Data Analysis</a></li>            
-        
-          <li><a href="/post/regression-project-part-3-multiple-linear-regression/"> Regression Project, Part -3, Multiple Linear Regression</a></li>            
-        
           <li><a href="/post/regression-project-part-2-simple-linear-regression/">Regression Project, Part -2, Simple Linear Regression</a></li>            
+        
+                      
+        
+          <li><a href="/post/hello-r-markdown/">Hello R Markdown</a></li>            
+        
+          <li><a href="/post/checking-post/">Whatsapp Chat Data Analysis</a></li>            
         </ul>
     </div>
     <footer class="read-next-card-footer">
@@ -176,7 +339,7 @@
       <article class="post-card post"> 
     
     <a class="post-card-image-link" href="/post/regression-project-part-3-multiple-linear-regression/">
-      <div class="post-card-image" style="background-image: url(/defimg/1.jpg)"></div>
+      <div class="post-card-image" style="background-image: url(/defimg/5.jpg)"></div>
     </a>    
     
 

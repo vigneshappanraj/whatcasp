@@ -6,3 +6,176 @@ slug: classification-part-1-logistic-regression
 categories: []
 tags: []
 ---
+# Classification Models
+In classification methord, dependant variable will be a categorical variable. In this post we will be looking at one of the methord used for classification,Logistic Regression.     
+
+Logistic Regression works well when the prediction varibale has two categories, we will be working with Multinomial Classification in future posts.
+
+The Dataset that we are going to use is obtained from [Kaggle](www.kaggle.com)
+
+The Columns in our dataset are 
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+library(Amelia)
+library(tidyverse)
+library(caTools)
+library(corrplot)
+library(ROCR)
+```
+
+
+```{r,echo=FALSE,warning=FALSE}
+df <- read.csv('framingham.csv')
+names(df)
+```
+
+As we did in other regression models, we need to prepare the data for out model construction. We have to clean the data.   
+
+First we will find the Missing Values.
+
+```{r,echo=FALSE,warning=FALSE}
+missmap(df,col = c('yellow','black'))
+```
+We can see that there are missing values in our dataset, now we will count how many Missing values are there in each columns.
+
+```{r,echo=FALSE,warning=FALSE}
+NAcol <- which(colSums(is.na(df)) > 0)
+sort(colSums(sapply(df[NAcol], is.na)), decreasing = TRUE)
+```
+
+We have found number of missing values in each columns, now we will solve this issue.
+
+* If the Variable is Continueus, we will use mean to fill the missing value.
+* If the Varibale is continuous, we will use Mode to fill the missing value.
+
+```{r,echo=FALSE,warning=FALSE}
+df$heartRate <- ifelse(is.na(df$heartRate) == TRUE , mean(df$heartRate,na.rm = T),df$heartRate)
+df$cigsPerDay <- ifelse(is.na(df$cigsPerDay) == TRUE,round(mean(df$cigsPerDay, na.rm = TRUE)),df$cigsPerDay )
+df$glucose <- ifelse(is.na(df$glucose) == TRUE,82,df$glucose)
+df$education <- ifelse(is.na(df$education) == TRUE,1,df$education)
+df$totChol <- ifelse(is.na(df$totChol)== TRUE,237,df$totChol)
+df$BMI <- ifelse(is.na(df$BMI)== TRUE,26,df$BMI)
+df$BPMeds <- ifelse(is.na(df$BPMeds)== TRUE,0,df$BPMeds)
+```
+After Filling the missing values.
+```{r,echo=FALSE,warning=FALSE}
+missmap(df,col = c('yellow','black'))
+```
+
+No we have no missing values. We have checked for outliers and there seems to be no extreme outliers in the dataset.
+
+
+NOW, we will change the variables to their respective data type.
+```{r,echo=FALSE,warning=FALSE}
+str(df)
+```
+
+We can see that columns, *Male,education,currentSmoker,BPMeds,precalentStroke,prevalentHyp,TenYearCHD* are in integer, which are categorical variables.
+
+```{r,echo=FALSE,warning=FALSE}
+
+df$BPMeds <- as.factor(df$BPMeds)
+df$male <-as.factor(df$male)
+df$education <- as.factor(df$education)
+df$currentSmoker <- as.factor(df$currentSmoker)
+df$prevalentHyp <-as.factor(df$prevalentHyp)
+df$prevalentStroke <- as.factor(df$prevalentStroke)
+df$TenYearCHD <- as.factor(df$TenYearCHD)
+df$diabetes <- as.factor(df$diabetes)
+df$age <- as.numeric(df$age)
+str(df)
+
+```
+
+Now we have converted all the categorical variables into factor datatype.    
+
+
+The Correlation between all numeric independent variables are given below
+
+```{r,echo=FALSE,warning=FALSE}
+numericVars <- which(sapply(df, is.numeric)) #index vector numeric variables
+numericVarNames <- names(numericVars) #saving names vector for use later on
+#cat('There are', length(numericVars), 'numeric variables')
+## There are 37 numeric variables
+all_numVar <- df[, numericVars]
+corrplot(cor(all_numVar, use="pairwise.complete.obs"),method = 'number')
+```
+
+Since there are no Variables that are higher than 0.8, we dont need to worry about this. If you are worried, our futher models for classification will sort this Multicolinearity issues.
+
+# Building The models
+
+```{r,echo=FALSE,warning=FALSE}
+
+set.seed(123)
+sample <- sample.split(df,.8)
+train <- subset(df,sample == TRUE)
+test <- subset(df,sample == F)
+
+log_model <- glm(TenYearCHD ~.,train,family = binomial(link = 'logit'))
+summary(log_model)
+#anova(log_model, test = 'Chisq')
+```
+
+We have created our model from our trainig data, now we have test this on out test datset. and we will create **Confusion Matrix**
+```{r,echo=FALSE,warning=FALSE}
+
+#library(faraway)
+#vif(log_model)
+
+y_pred <- predict(log_model,test,type = 'response')
+y_pred1 <- ifelse(y_pred >0.5,1,0)
+#table(y_pred,test$TenYearCHD)
+knitr :: kable(table('NO'=y_pred1,'Yes' = test$TenYearCHD))
+```
+
+
+
+
+
+From the above dataset we can see,
+
+* Our Model have predicted, person not having cancer correctly **892** times and wrongly predicted **147** times - which is knows as **False Positive**
+* Our Model Predicted, person having cancer correctly **13** times and wrongly **7** times, know as **False Negative**
+
+
+
+The Accuracy of the model is given below
+
+
+```{r,echo=FALSE,warning=FALSE}
+accuracy <- table(y_pred1,test$TenYearCHD)
+print(sum(diag(accuracy))/sum(accuracy))
+
+```
+
+# Receiver Operator Characteristic (ROC)
+
+ROC determines the accuracy of a classification model at a user defined threshold value. It determines the model's accuracy using Area Under Curve (AUC). The area under the curve (AUC), also referred to as index of accuracy (A) or concordant index, represents the performance of the ROC curve. Higher the area, better the model. ROC is plotted between True Positive Rate (Y axis) and False Positive Rate (X Axis). In this plot, our aim is to push the red curve (shown below) toward 1 (left corner) and maximize the area under curve. Higher the curve, better the model. The yellow line represents the ROC curve at 0.5 threshold. At this point, sensitivity = specificity.
+
+```{r,echo=FALSE,warning=FALSE}
+#library(ROCR)
+pred <- prediction(y_pred, test$TenYearCHD)
+perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+plot(perf,col = 'red')
+
+```
+
+Area Under The Curve
+
+
+```{r,echo=FALSE,warning=FALSE}
+auc <- performance(pred, measure = "auc")
+auc <- auc@y.values[[1]]
+auc
+```
+
+We will tabulate the accuracy and Area Under The Cure for Each Model to compare between different Models
+
+```{r,echo=FALSE,warning=FALSE}
+Results <- data.frame('Model' = 'Logistic Regression','Accuracy' = sum(diag(accuracy))/sum(accuracy),"AUC" = auc)
+knitr:: kable(Results)
+```
+
+In our next post in classification, we will be using different classification algorithm.
+
+# Thank You

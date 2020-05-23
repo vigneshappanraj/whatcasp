@@ -17,7 +17,11 @@
       <pubDate>Sat, 23 May 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/classification-part-1-logistic-regression/</guid>
-      <description></description>
+      <description>Classification ModelsIn classification methord, dependant variable will be a categorical variable. In this post we will be looking at one of the methord used for classification,Logistic Regression.
+Logistic Regression works well when the prediction varibale has two categories, we will be working with Multinomial Classification in future posts.
+The Dataset that we are going to use is obtained from Kaggle
+The Columns in our dataset are
+## [1] &amp;quot;male&amp;quot; &amp;quot;age&amp;quot; &amp;quot;education&amp;quot; &amp;quot;currentSmoker&amp;quot; ## [5] &amp;quot;cigsPerDay&amp;quot; &amp;quot;BPMeds&amp;quot; &amp;quot;prevalentStroke&amp;quot; &amp;quot;prevalentHyp&amp;quot; ## [9] &amp;quot;diabetes&amp;quot; &amp;quot;totChol&amp;quot; &amp;quot;sysBP&amp;quot; &amp;quot;diaBP&amp;quot; ## [13] &amp;quot;BMI&amp;quot; &amp;quot;heartRate&amp;quot; &amp;quot;glucose&amp;quot; &amp;quot;TenYearCHD&amp;quot;As we did in other regression models, we need to prepare the data for out model construction.</description>
     </item>
     
     <item>
