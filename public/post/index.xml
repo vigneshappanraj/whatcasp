@@ -12,6 +12,18 @@
     
     
     <item>
+      <title>Classification, Part - 2, Multinominal logistic Regression.</title>
+      <link>/post/classification-part-2-multinominal-logistic-regression/</link>
+      <pubDate>Sat, 23 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/classification-part-2-multinominal-logistic-regression/</guid>
+      <description>This will eb small Post, we will be discusing about Multinominal Logistic Regression, When the predicted i.e when dependent variable has multiple category.
+We will be using the famous iris dataset
+The dataset consist of columns:
+## [1] &amp;quot;Sepal.Length&amp;quot; &amp;quot;Sepal.Width&amp;quot; &amp;quot;Petal.Length&amp;quot; &amp;quot;Petal.Width&amp;quot; &amp;quot;Species&amp;quot;## &amp;#39;data.frame&amp;#39;: 150 obs. of 5 variables:## $ Sepal.Length: num 5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...## $ Sepal.Width : num 3.</description>
+    </item>
+    
+    <item>
       <title>Classification, Part -1 , Logistic Regression</title>
       <link>/post/classification-part-1-logistic-regression/</link>
       <pubDate>Sat, 23 May 2020 00:00:00 +0000</pubDate>

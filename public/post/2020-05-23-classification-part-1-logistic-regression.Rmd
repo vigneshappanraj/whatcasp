@@ -83,7 +83,7 @@ df$TenYearCHD <- as.factor(df$TenYearCHD)
 df$diabetes <- as.factor(df$diabetes)
 df$age <- as.numeric(df$age)
 str(df)
-
+write.csv(df,'classifier_cleaned_data.csv',row.names = F)
 ```
 
 Now we have converted all the categorical variables into factor datatype.    

@@ -4,36 +4,39 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-    <title>Hello R Markdown &middot; </title>
+    <title>Classification, Part - 2, Multinominal logistic Regression. &middot; </title>
 
     <meta name="HandheldFriendly" content="True" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="canonical" href="/post/hello-r-markdown/" />
+    <link rel="canonical" href="/post/classification-part-2-multinominal-logistic-regression/" />
 
-     <meta name="description" content="R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Ma" /> 
+     <meta name="description" content="This will eb small Post, we will be discusing about Multinominal Logistic Regression, When the predicted i.e when dependent variable has multiple category.
+We w" /> 
 
      
     
     <meta name="twitter:card" content="summary"/>
     
  
-    <meta name="twitter:title" content="Hello R Markdown"/>
-    <meta name="twitter:description" content="R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Ma"/>
-    <meta name="twitter:url" content="/post/hello-r-markdown/" />
+    <meta name="twitter:title" content="Classification, Part - 2, Multinominal logistic Regression."/>
+    <meta name="twitter:description" content="This will eb small Post, we will be discusing about Multinominal Logistic Regression, When the predicted i.e when dependent variable has multiple category.
+We w"/>
+    <meta name="twitter:url" content="/post/classification-part-2-multinominal-logistic-regression/" />
     <meta name="twitter:site" content="@Vignesh_Appanraj"/>
 
     <meta property="og:site_name" content="" />
-    <meta property="og:title" content="Hello R Markdown &middot; DataAnt" />
-    <meta property="og:url" content="/post/hello-r-markdown/" />
+    <meta property="og:title" content="Classification, Part - 2, Multinominal logistic Regression. &middot; DataAnt" />
+    <meta property="og:url" content="/post/classification-part-2-multinominal-logistic-regression/" />
     
 
     <meta property="og:type" content="article" />
-    <meta property="og:description" content="R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Ma" />
+    <meta property="og:description" content="This will eb small Post, we will be discusing about Multinominal Logistic Regression, When the predicted i.e when dependent variable has multiple category.
+We w" />
 
-    <meta property="article:published_time" content="2015-07-23T21:13:14-05:00" />
-    <meta property="article:tag" content="R Markdown" /><meta property="article:tag" content="plot" /><meta property="article:tag" content="regression" />
+    <meta property="article:published_time" content="2020-05-23T00:00:00Z" />
+    
 
     <meta property="og:image" content="/img/blog-cover.jpg"/>
 
@@ -102,10 +105,9 @@
       <article class="post-full post"> 
     <header class="post-full-header">
         <section class="post-full-meta">
-            <time class="post-full-meta-date" datetime="2015-07-23">23 July 2015</time>
-                <span class="date-divider">/</span> <a href="/tags/r-markdown/">#R Markdown</a>&nbsp;<a href="/tags/plot/">#plot</a>&nbsp;
+            <time class="post-full-meta-date" datetime="2020-05-23">23 May 2020</time>
         </section>
-        <h1 class="post-full-title">Hello R Markdown</h1>
+        <h1 class="post-full-title">Classification, Part - 2, Multinominal logistic Regression.</h1>
     </header>
     
     <figure class="post-full-image" style="background-image: url(/defimg/3.jpg)">
@@ -116,44 +118,59 @@
         
 
 
-<div id="r-markdown" class="section level1">
-<h1>R Markdown</h1>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>You can embed an R code chunk like this:</p>
-<pre class="r"><code>summary(cars)
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
-fit &lt;- lm(dist ~ speed, data = cars)
-fit
-## 
-## Call:
-## lm(formula = dist ~ speed, data = cars)
+<p>This will eb small Post, we will be discusing about Multinominal Logistic Regression, When the predicted i.e when dependent variable has multiple category.</p>
+<p>We will be using the famous <strong>iris</strong> dataset</p>
+<p>The dataset consist of columns:</p>
+<pre><code>## [1] &quot;Sepal.Length&quot; &quot;Sepal.Width&quot;  &quot;Petal.Length&quot; &quot;Petal.Width&quot;  &quot;Species&quot;</code></pre>
+<pre><code>## &#39;data.frame&#39;:    150 obs. of  5 variables:
+##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+##  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+##  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+<p>We can see, we arte trying to predict Species, which has 3 factors.</p>
+<p>We will be creating training and test set</p>
+<pre><code>## Training set has 120 entries</code></pre>
+<pre><code>## Testing set has 30 entries</code></pre>
+<div id="model-creation" class="section level1">
+<h1>Model Creation</h1>
+<p>Now, we will be creating the model with our training data.</p>
+<pre><code>## # weights:  18 (10 variable)
+## initial  value 131.833475 
+## iter  10 value 14.537939
+## iter  20 value 4.489823
+## iter  30 value 3.639148
+## iter  40 value 2.956851
+## iter  50 value 2.806269
+## iter  60 value 2.496827
+## iter  70 value 1.897817
+## iter  80 value 1.726458
+## iter  90 value 1.669028
+## iter 100 value 1.630859
+## final  value 1.630859 
+## stopped after 100 iterations</code></pre>
+<pre><code>## Call:
+## nnet::multinom(formula = Species ~ ., data = train.data)
 ## 
 ## Coefficients:
-## (Intercept)        speed  
-##     -17.579        3.932</code></pre>
+##            (Intercept) Sepal.Length Sepal.Width Petal.Length Petal.Width
+## versicolor    44.88584    -50.14588   -125.0783     191.7161    76.71824
+## virginica   -132.54466    -62.24794   -142.1385     224.9369   155.84279
+## 
+## Std. Errors:
+##            (Intercept) Sepal.Length Sepal.Width Petal.Length Petal.Width
+## versicolor    88.17893     8.376113    7.603081     17.40335    38.25906
+## virginica     88.17893     8.376113    7.603081     17.40335    38.25906
+## 
+## Residual Deviance: 3.261719 
+## AIC: 23.26172</code></pre>
+<p>And We will test the model, on our testing data adn we will find the accuracy of our model.</p>
+<p>The Accuracy of our Model is</p>
+<pre><code>## [1] 0.9333333</code></pre>
+<p>This is just a basic model, we will be analyse this in detail in upcoming post.</p>
 </div>
-<div id="including-plots" class="section level1">
-<h1>Including Plots</h1>
-<p>You can also embed plots. See Figure <a href="#fig:pie">1</a> for example:</p>
-<pre class="r"><code>par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c(&#39;Sky&#39;, &#39;Sunny side of pyramid&#39;, &#39;Shady side of pyramid&#39;),
-  col = c(&#39;#0292D8&#39;, &#39;#F7EA39&#39;, &#39;#C4B632&#39;),
-  init.angle = -50, border = NA
-)</code></pre>
-<div class="figure"><span id="fig:pie"></span>
-<img src="/post/2015-07-23-r-rmarkdown_files/figure-html/pie-1.png" alt="A fancy pie chart." width="672" />
-<p class="caption">
-Figure 1: A fancy pie chart.
-</p>
-</div>
+<div id="thank-you" class="section level1">
+<h1>Thank You</h1>
 </div>
     
         </div>
@@ -163,7 +180,7 @@ Figure 1: A fancy pie chart.
       <section class="author-card">
         <img class="author-profile-image" src="/vikki.jpg" alt="Author" />
         <section class="author-card-content">
-            <h4 class="author-card-name"><a href="/">Frida Gomam</a></h4>
+            <h4 class="author-card-name"><a href="/">Vignesh A</a></h4>
                 <p>யாதும் ஊரே யாவரும் கேளிர் </p>
         </section>
       </section>
@@ -186,7 +203,6 @@ Figure 1: A fancy pie chart.
     <header class="read-next-card-header">
         <small class="read-next-card-header-sitetitle">&mdash; DataAnt &mdash;</small>
         
-        <h3 class="read-next-card-header-title"><a href="/tags/r-markdown/">#R Markdown</a></h3>
     </header>
     <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
     </div>
@@ -196,54 +212,51 @@ Figure 1: A fancy pie chart.
         <ul>
           <li><a href="/post/regression-project-part-2-simple-linear-regression/">Regression Project, Part -2, Simple Linear Regression</a></li>            
         
-          <li><a href="/post/checking-post/">Whatsapp Chat Data Analysis</a></li>            
-        
-                      
-        
           <li><a href="/post/regression-project-part-3-multiple-linear-regression/"> Regression Project, Part -3, Multiple Linear Regression</a></li>            
         
           <li><a href="/post/classification-part-1-logistic-regression/">Classification, Part -1 , Logistic Regression</a></li>            
+        
+          <li><a href="/post/regression-project-part-1-data-preprocessing/">Regression Project, Part -1, Data Preprocessing</a></li>            
         </ul>
     </div>
     <footer class="read-next-card-footer">
       
-        <a href="/tags/r-markdown/">See all related posts →</a>
     </footer>
 </article>
 
 
       
+      
       <article class="post-card post"> 
     
-    <a class="post-card-image-link" href="/post/checking-post/">
-      <div class="post-card-image" style="background-image: url(/defimg/1.jpg)"></div>
+    <a class="post-card-image-link" href="/post/classification-part-1-logistic-regression/">
+      <div class="post-card-image" style="background-image: url(/defimg/7.jpg)"></div>
     </a>    
     
 
     <div class="post-card-content">
-      <a class="post-card-content-link" href="/post/checking-post/">
+      <a class="post-card-content-link" href="/post/classification-part-1-logistic-regression/">
           <header class="post-card-header">
               
-              <h2 class="post-card-title">Whatsapp Chat Data Analysis</h2>
+              <h2 class="post-card-title">Classification, Part -1 , Logistic Regression</h2>
           </header>
           <section class="post-card-excerpt">
               
-                <p>AboutThe Whole Idea about this analysis, is to Understand about the persons chatting behavior and finding pattern in Whatsapp Messaging
-In this we will be analysing the chat between two persons
-From the below chart we can clearly see the number of messages sent each day
-The Total number of messages were : 5733 
-Number of messages sent by each persons: ...  </p>
+                <p>Classification ModelsIn classification methord, dependant variable will be a categorical variable. In this post we will be looking at one of the methord used for classification,Logistic Regression.
+Logistic Regression works well when the prediction varibale has two categories, we will be working with Multinomial Classification in future posts.
+The Dataset that we are going to use is obtained from Kaggle
+The Columns in our dataset are
+## [1] &quot;male&quot; &quot;age&quot; &quot;education&quot; &quot;currentSmoker&quot; ## [5] &quot;cigsPerDay&quot; &quot;BPMeds&quot; &quot;prevalentStroke&quot; &quot;prevalentHyp&quot; ## [9] &quot;diabetes&quot; &quot;totChol&quot; &quot;sysBP&quot; &quot;diaBP&quot; ## [13] &quot;BMI&quot; &quot;heartRate&quot; &quot;glucose&quot; &quot;TenYearCHD&quot;As we did in other regression models, we need to prepare the data for out model construction. ...  </p>
               
           </section>
       </a>
 
       <footer class="post-card-meta">
           <img class="author-profile-image" src="/vikki.jpg" alt="Author" />
-          <span class="post-card-author"><a href="/">Vignesh</a></span>
+          <span class="post-card-author"><a href="/">Vignesh A</a></span>
       </footer>
     </div>
 </article>
-      
       
     </div>
   </div>
@@ -257,17 +270,17 @@ Number of messages sent by each persons: ...  </p>
     </a>
   </div>
   <span class="floating-header-divider">&mdash;</span>
-  <div class="floating-header-title">Hello R Markdown</div>
+  <div class="floating-header-title">Classification, Part - 2, Multinominal logistic Regression.</div>
   <div class="floating-header-share">
     <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
      <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/></svg>
     </div>
     
-    <a class="floating-header-share-tw" href="https://twitter.com/share?text=Hello%20R%20Markdown&amp;url=%2fpost%2fhello-r-markdown%2f"
+    <a class="floating-header-share-tw" href="https://twitter.com/share?text=Classification%2c%20Part%20-%202%2c%20Multinominal%20logistic%20Regression.&amp;url=%2fpost%2fclassification-part-2-multinominal-logistic-regression%2f"
           onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
       </a>
-      <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=%2fpost%2fhello-r-markdown%2f"
+      <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=%2fpost%2fclassification-part-2-multinominal-logistic-regression%2f"
           onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
       </a>

@@ -1,0 +1,78 @@
+---
+title: Classification, Part - 2, Multinominal logistic Regression.
+author: Vignesh A
+date: '2020-05-23'
+slug: classification-part-2-multinominal-logistic-regression
+categories: []
+tags: []
+---
+
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+library(tidyverse)
+library(caret)
+library(nnet)
+
+```
+
+
+This will eb small Post, we will be discusing about Multinominal Logistic Regression, When the predicted i.e when dependent variable has multiple category.    
+
+We will be using the  famous **iris** dataset
+
+The dataset consist of columns:
+```{r,echo=FALSE,warning=FALSE}
+names(iris)
+```
+
+```{r,echo=FALSE,warning=FALSE}
+str(iris)
+```
+
+We can see, we arte trying to predict Species, which has 3 factors.
+
+We will be creating training and test set
+
+
+```{r,echo=FALSE,warning=FALSE}
+#data("iris")
+
+# Inspect the data
+#sample_n(iris, 3)
+#iris %>%
+ # count(Species)
+#count(iris$Species)
+# Split the data into training and test set
+set.seed(123)
+training.samples <- iris$Species %>% 
+  createDataPartition(p = 0.8, list = FALSE)
+train.data  <- iris[training.samples, ]
+test.data <- iris[-training.samples, ]
+cat("Training set has",dim(train.data)[1], 'entries')
+cat("Testing set has",dim(test.data)[1] ,'entries')
+```
+
+# Model Creation
+
+Now, we will be creating the model with our training data.
+
+```{r,echo=FALSE,warning=FALSE}
+model <- nnet::multinom(Species ~., data = train.data)
+# Summarize the model
+summary(model)
+
+```
+
+And We will test the model, on our testing data adn we will find the accuracy of our model.
+
+The Accuracy of our Model is
+
+```{r,echo=FALSE,warning=FALSE}
+predicted.classes <- model %>% predict(test.data)
+#head(predicted.classes)
+# Model accuracy
+mean(predicted.classes == test.data$Species)
+```
+
+This is just a basic model, we will be analyse this in detail in upcoming post.
+
+# Thank You
