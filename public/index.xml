@@ -12,6 +12,18 @@
     
     
     <item>
+      <title>Regression Project, Part - 4, Variable Selection Methord. </title>
+      <link>/post/regression-project-part-4-variable-selection-methord/</link>
+      <pubDate>Sun, 24 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/regression-project-part-4-variable-selection-methord/</guid>
+      <description>In This Project we will using variable selection methord to find the best combination of variables for a product. Drawback of this variable selection is it doesnot do will with variables with more than two categorical variables.
+In this post we will bec using the mtcars dataset.
+There are three types of Variable Selection Methord.1. Best Subset Methord2. Forward Stepwise Methord3. Backward Stepwise Methord
+We will be comparing Adjusted R Square values of all the above models with linear regression model.</description>
+    </item>
+    
+    <item>
       <title>Classification, Part - 2, Multinominal logistic Regression.</title>
       <link>/post/classification-part-2-multinominal-logistic-regression/</link>
       <pubDate>Sat, 23 May 2020 00:00:00 +0000</pubDate>

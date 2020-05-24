@@ -1,0 +1,133 @@
+---
+title: 'Regression Project, Part - 4, Variable Selection Methord. '
+author: A Vignesh
+date: '2020-05-24'
+slug: regression-project-part-4-variable-selection-methord
+categories: []
+tags: []
+---
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+library(leaps)
+```
+
+
+In This Project we will using variable selection methord to find the best combination of variables for a product. Drawback of this variable selection is it doesnot do will with variables with more than two categorical variables.
+
+In this post we will bec using the **mtcars** dataset. 
+
+There are three types of Variable Selection Methord.
+1. Best Subset Methord
+2. Forward Stepwise Methord
+3. Backward Stepwise Methord
+
+
+We will be comparing **Adjusted R Square** values of all the above models with linear regression model.
+
+# Variable Selection Methord.
+
+**Variable Selection Methord** (or stepwise selection) consists of iteratively adding and removing predictors, in the predictive model, in order to find the subset of variables in the data set resulting in the best performing model, that is a model that lowers prediction error.
+
+**Forward selection**, which starts with no predictors in the model, iteratively adds the most contributive predictors, and stops when the improvement is no longer statistically significant.     
+
+**Backward selection** (or backward elimination), which starts with all predictors in the model (full model), iteratively removes the least contributive predictors, and stops when you have a model where all predictors are statistically significant.
+
+**Best Subset**, which is a combination of forward and backward selections. You start with no predictors, then sequentially add the most contributive predictors (like forward selection). After adding each new variable, remove any variables that no longer provide an improvement in the model fit (like backward selection).
+
+# Dataset
+First we will be looking at the dataset, columns in the dataset.
+```{r,echo=FALSE,warning=FALSE}
+names(mtcars)
+```
+
+We would like to predict the mpg variable.
+
+# Create Multiple Regression Model
+
+```{r,echo=FALSE,warning=FALSE}
+lin_reg <- lm(mpg~.,data = mtcars)
+summary(lin_reg)
+lm_tab <- data.frame('Model' = 'Multiple Linear Regression',
+           'Adjusted R-squared' = 0.8066)
+```
+
+We have created a linear model which has a adjusted R Square of **0.8066**. We will tabulate and compare this with other stepwise models.
+
+
+```{r,echo=FALSE,warning=FALSE}
+best_model <- regsubsets(mpg~., data = mtcars, nvmax = 10)
+summary(best_model)
+```
+
+We already know that, best subset model goes from zero variable to all variables. the star at each level indicates, that variable has **highest Adjusted R Square**
+
+We will the Adjusted R Square Values of all the models created by Best Subset Model.
+
+```{r,echo=FALSE,warning=FALSE}
+summary(best_model)$adjr2
+```
+
+From the above R Square Values we will select a model with **highest R Square Value**
+
+```{r,echo=FALSE,warning=FALSE}
+which.max(summary(best_model)$adjr2)
+summary(best_model)$adjr2[5]
+```
+We can see that model at **index 5** has the highest R square value.
+
+```{r,echo=FALSE,warning=FALSE}
+bst_tab <- data.frame('Model' = 'Best Subset Regression',
+           'Adjusted R-squared' = summary(best_model)$adjr2[5])
+
+
+```
+
+The Co-efficent of the model is
+```{r,echo=FALSE,warning=FALSE}
+coef(best_model,5)
+```
+
+We will be repeating this for the remaining both     
+
+* Forward Stepwise Model
+* Backward Stepwise Model
+ 
+And Tablulating the results, with linear regression Model.
+
+The Final Tabular column.
+
+```{r,echo=FALSE,warning=FALSE}
+forward_model <- regsubsets(mpg~., data = mtcars, nvmax = 10,method = 'forward')
+#summary(forward_model)
+
+#summary(forward_model)$adjr2
+
+#summary(forward_model)$adjr2[6]
+#which.max(summary(forward_model)$adjr2)
+frw_tab <- data.frame('Model' = 'Forward Stepwise Regression',
+           'Adjusted R-squared' = summary(forward_model)$adjr2[6])
+#coef(forward_model,6)
+
+
+
+backward_model <- regsubsets(mpg~., data = mtcars, nvmax = 10,method = 'backward')
+#summary(backward_model)
+
+#summary(backward_model)$adjr2
+#summary(backward_model)$adjr2[5]
+#which.max(summary(backward_model)$adjr2)
+bkw_tab <- data.frame('Model' = 'Backward Stepwise Regression',
+           'Adjusted R-squared' = summary(backward_model)$adjr2[5])
+
+#coef(backward_model,5)
+
+knitr::kable(rbind(lm_tab,bst_tab,frw_tab,bkw_tab))
+
+```
+
+From the above table we can see, Subset Selection methord performs better that our normal Multiple regression. In Subset Methord, we can see that **Best Subset Methord and Backward Stepwise Methord** have the highest R Square Value.
+
+We can see that Stepwise performs well, but the main drawback is it will not work well, where there are variables with more than 2 categories, in a variable.
+
+We will be discussion more models in future posts.
+
+# Thank You

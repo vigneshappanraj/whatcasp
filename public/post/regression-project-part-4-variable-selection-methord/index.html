@@ -4,38 +4,35 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-    <title>Classification, Part - 2, Multinominal logistic Regression. &middot; </title>
+    <title>Regression Project, Part - 4, Variable Selection Methord.  &middot; </title>
 
     <meta name="HandheldFriendly" content="True" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="canonical" href="/post/classification-part-2-multinominal-logistic-regression/" />
+    <link rel="canonical" href="/post/regression-project-part-4-variable-selection-methord/" />
 
-     <meta name="description" content="This will eb small Post, we will be discusing about Multinominal Logistic Regression, When the predicted i.e when dependent variable has multiple category.
-We w" /> 
+     <meta name="description" content="In This Project we will using variable selection methord to find the best combination of variables for a product. Drawback of this variable selection is it does" /> 
 
      
     
     <meta name="twitter:card" content="summary"/>
     
  
-    <meta name="twitter:title" content="Classification, Part - 2, Multinominal logistic Regression."/>
-    <meta name="twitter:description" content="This will eb small Post, we will be discusing about Multinominal Logistic Regression, When the predicted i.e when dependent variable has multiple category.
-We w"/>
-    <meta name="twitter:url" content="/post/classification-part-2-multinominal-logistic-regression/" />
+    <meta name="twitter:title" content="Regression Project, Part - 4, Variable Selection Methord. "/>
+    <meta name="twitter:description" content="In This Project we will using variable selection methord to find the best combination of variables for a product. Drawback of this variable selection is it does"/>
+    <meta name="twitter:url" content="/post/regression-project-part-4-variable-selection-methord/" />
     <meta name="twitter:site" content="@Vignesh_Appanraj"/>
 
     <meta property="og:site_name" content="" />
-    <meta property="og:title" content="Classification, Part - 2, Multinominal logistic Regression. &middot; DataAnt" />
-    <meta property="og:url" content="/post/classification-part-2-multinominal-logistic-regression/" />
+    <meta property="og:title" content="Regression Project, Part - 4, Variable Selection Methord.  &middot; DataAnt" />
+    <meta property="og:url" content="/post/regression-project-part-4-variable-selection-methord/" />
     
 
     <meta property="og:type" content="article" />
-    <meta property="og:description" content="This will eb small Post, we will be discusing about Multinominal Logistic Regression, When the predicted i.e when dependent variable has multiple category.
-We w" />
+    <meta property="og:description" content="In This Project we will using variable selection methord to find the best combination of variables for a product. Drawback of this variable selection is it does" />
 
-    <meta property="article:published_time" content="2020-05-23T00:00:00Z" />
+    <meta property="article:published_time" content="2020-05-24T00:00:00Z" />
     
 
     <meta property="og:image" content="/img/blog-cover.jpg"/>
@@ -105,9 +102,9 @@ We w" />
       <article class="post-full post"> 
     <header class="post-full-header">
         <section class="post-full-meta">
-            <time class="post-full-meta-date" datetime="2020-05-23">23 May 2020</time>
+            <time class="post-full-meta-date" datetime="2020-05-24">24 May 2020</time>
         </section>
-        <h1 class="post-full-title">Classification, Part - 2, Multinominal logistic Regression.</h1>
+        <h1 class="post-full-title">Regression Project, Part - 4, Variable Selection Methord. </h1>
     </header>
     
     <figure class="post-full-image" style="background-image: url(/defimg/2.jpg)">
@@ -118,56 +115,131 @@ We w" />
         
 
 
-<p>This will eb small Post, we will be discusing about Multinominal Logistic Regression, When the predicted i.e when dependent variable has multiple category.</p>
-<p>We will be using the famous <strong>iris</strong> dataset</p>
-<p>The dataset consist of columns:</p>
-<pre><code>## [1] &quot;Sepal.Length&quot; &quot;Sepal.Width&quot;  &quot;Petal.Length&quot; &quot;Petal.Width&quot;  &quot;Species&quot;</code></pre>
-<pre><code>## &#39;data.frame&#39;:    150 obs. of  5 variables:
-##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
-##  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
-##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
-##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
-##  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
-<p>We can see, we arte trying to predict Species, which has 3 factors.</p>
-<p>We will be creating training and test set</p>
-<pre><code>## Training set has 120 entries</code></pre>
-<pre><code>## Testing set has 30 entries</code></pre>
-<div id="model-creation" class="section level1">
-<h1>Model Creation</h1>
-<p>Now, we will be creating the model with our training data.</p>
-<pre><code>## # weights:  18 (10 variable)
-## initial  value 131.833475 
-## iter  10 value 14.537939
-## iter  20 value 4.489823
-## iter  30 value 3.639148
-## iter  40 value 2.956851
-## iter  50 value 2.806269
-## iter  60 value 2.496827
-## iter  70 value 1.897817
-## iter  80 value 1.726458
-## iter  90 value 1.669028
-## iter 100 value 1.630859
-## final  value 1.630859 
-## stopped after 100 iterations</code></pre>
-<pre><code>## Call:
-## nnet::multinom(formula = Species ~ ., data = train.data)
+<p>In This Project we will using variable selection methord to find the best combination of variables for a product. Drawback of this variable selection is it doesnot do will with variables with more than two categorical variables.</p>
+<p>In this post we will bec using the <strong>mtcars</strong> dataset.</p>
+<p>There are three types of Variable Selection Methord.
+1. Best Subset Methord
+2. Forward Stepwise Methord
+3. Backward Stepwise Methord</p>
+<p>We will be comparing <strong>Adjusted R Square</strong> values of all the above models with linear regression model.</p>
+<div id="variable-selection-methord." class="section level1">
+<h1>Variable Selection Methord.</h1>
+<p><strong>Variable Selection Methord</strong> (or stepwise selection) consists of iteratively adding and removing predictors, in the predictive model, in order to find the subset of variables in the data set resulting in the best performing model, that is a model that lowers prediction error.</p>
+<p><strong>Forward selection</strong>, which starts with no predictors in the model, iteratively adds the most contributive predictors, and stops when the improvement is no longer statistically significant.</p>
+<p><strong>Backward selection</strong> (or backward elimination), which starts with all predictors in the model (full model), iteratively removes the least contributive predictors, and stops when you have a model where all predictors are statistically significant.</p>
+<p><strong>Best Subset</strong>, which is a combination of forward and backward selections. You start with no predictors, then sequentially add the most contributive predictors (like forward selection). After adding each new variable, remove any variables that no longer provide an improvement in the model fit (like backward selection).</p>
+</div>
+<div id="dataset" class="section level1">
+<h1>Dataset</h1>
+<p>First we will be looking at the dataset, columns in the dataset.</p>
+<pre><code>##  [1] &quot;mpg&quot;  &quot;cyl&quot;  &quot;disp&quot; &quot;hp&quot;   &quot;drat&quot; &quot;wt&quot;   &quot;qsec&quot; &quot;vs&quot;   &quot;am&quot;   &quot;gear&quot;
+## [11] &quot;carb&quot;</code></pre>
+<p>We would like to predict the mpg variable.</p>
+</div>
+<div id="create-multiple-regression-model" class="section level1">
+<h1>Create Multiple Regression Model</h1>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ ., data = mtcars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.4506 -1.6044 -0.1196  1.2193  4.6271 
 ## 
 ## Coefficients:
-##            (Intercept) Sepal.Length Sepal.Width Petal.Length Petal.Width
-## versicolor    44.88584    -50.14588   -125.0783     191.7161    76.71824
-## virginica   -132.54466    -62.24794   -142.1385     224.9369   155.84279
+##             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept) 12.30337   18.71788   0.657   0.5181  
+## cyl         -0.11144    1.04502  -0.107   0.9161  
+## disp         0.01334    0.01786   0.747   0.4635  
+## hp          -0.02148    0.02177  -0.987   0.3350  
+## drat         0.78711    1.63537   0.481   0.6353  
+## wt          -3.71530    1.89441  -1.961   0.0633 .
+## qsec         0.82104    0.73084   1.123   0.2739  
+## vs           0.31776    2.10451   0.151   0.8814  
+## am           2.52023    2.05665   1.225   0.2340  
+## gear         0.65541    1.49326   0.439   0.6652  
+## carb        -0.19942    0.82875  -0.241   0.8122  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Std. Errors:
-##            (Intercept) Sepal.Length Sepal.Width Petal.Length Petal.Width
-## versicolor    88.17893     8.376113    7.603081     17.40335    38.25906
-## virginica     88.17893     8.376113    7.603081     17.40335    38.25906
-## 
-## Residual Deviance: 3.261719 
-## AIC: 23.26172</code></pre>
-<p>And We will test the model, on our testing data adn we will find the accuracy of our model.</p>
-<p>The Accuracy of our Model is</p>
-<pre><code>## [1] 0.9333333</code></pre>
-<p>This is just a basic model, we will be analyse this in detail in upcoming post.</p>
+## Residual standard error: 2.65 on 21 degrees of freedom
+## Multiple R-squared:  0.869,  Adjusted R-squared:  0.8066 
+## F-statistic: 13.93 on 10 and 21 DF,  p-value: 3.793e-07</code></pre>
+<p>We have created a linear model which has a adjusted R Square of <strong>0.8066</strong>. We will tabulate and compare this with other stepwise models.</p>
+<pre><code>## Subset selection object
+## Call: regsubsets.formula(mpg ~ ., data = mtcars, nvmax = 10)
+## 10 Variables  (and intercept)
+##      Forced in Forced out
+## cyl      FALSE      FALSE
+## disp     FALSE      FALSE
+## hp       FALSE      FALSE
+## drat     FALSE      FALSE
+## wt       FALSE      FALSE
+## qsec     FALSE      FALSE
+## vs       FALSE      FALSE
+## am       FALSE      FALSE
+## gear     FALSE      FALSE
+## carb     FALSE      FALSE
+## 1 subsets of each size up to 10
+## Selection Algorithm: exhaustive
+##           cyl disp hp  drat wt  qsec vs  am  gear carb
+## 1  ( 1 )  &quot; &quot; &quot; &quot;  &quot; &quot; &quot; &quot;  &quot;*&quot; &quot; &quot;  &quot; &quot; &quot; &quot; &quot; &quot;  &quot; &quot; 
+## 2  ( 1 )  &quot;*&quot; &quot; &quot;  &quot; &quot; &quot; &quot;  &quot;*&quot; &quot; &quot;  &quot; &quot; &quot; &quot; &quot; &quot;  &quot; &quot; 
+## 3  ( 1 )  &quot; &quot; &quot; &quot;  &quot; &quot; &quot; &quot;  &quot;*&quot; &quot;*&quot;  &quot; &quot; &quot;*&quot; &quot; &quot;  &quot; &quot; 
+## 4  ( 1 )  &quot; &quot; &quot; &quot;  &quot;*&quot; &quot; &quot;  &quot;*&quot; &quot;*&quot;  &quot; &quot; &quot;*&quot; &quot; &quot;  &quot; &quot; 
+## 5  ( 1 )  &quot; &quot; &quot;*&quot;  &quot;*&quot; &quot; &quot;  &quot;*&quot; &quot;*&quot;  &quot; &quot; &quot;*&quot; &quot; &quot;  &quot; &quot; 
+## 6  ( 1 )  &quot; &quot; &quot;*&quot;  &quot;*&quot; &quot;*&quot;  &quot;*&quot; &quot;*&quot;  &quot; &quot; &quot;*&quot; &quot; &quot;  &quot; &quot; 
+## 7  ( 1 )  &quot; &quot; &quot;*&quot;  &quot;*&quot; &quot;*&quot;  &quot;*&quot; &quot;*&quot;  &quot; &quot; &quot;*&quot; &quot;*&quot;  &quot; &quot; 
+## 8  ( 1 )  &quot; &quot; &quot;*&quot;  &quot;*&quot; &quot;*&quot;  &quot;*&quot; &quot;*&quot;  &quot; &quot; &quot;*&quot; &quot;*&quot;  &quot;*&quot; 
+## 9  ( 1 )  &quot; &quot; &quot;*&quot;  &quot;*&quot; &quot;*&quot;  &quot;*&quot; &quot;*&quot;  &quot;*&quot; &quot;*&quot; &quot;*&quot;  &quot;*&quot; 
+## 10  ( 1 ) &quot;*&quot; &quot;*&quot;  &quot;*&quot; &quot;*&quot;  &quot;*&quot; &quot;*&quot;  &quot;*&quot; &quot;*&quot; &quot;*&quot;  &quot;*&quot;</code></pre>
+<p>We already know that, best subset model goes from zero variable to all variables. the star at each level indicates, that variable has <strong>highest Adjusted R Square</strong></p>
+<p>We will the Adjusted R Square Values of all the models created by Best Subset Model.</p>
+<pre><code>##  [1] 0.7445939 0.8185189 0.8335561 0.8367919 0.8375334 0.8347177 0.8296261
+##  [8] 0.8230390 0.8153314 0.8066423</code></pre>
+<p>From the above R Square Values we will select a model with <strong>highest R Square Value</strong></p>
+<pre><code>## [1] 5</code></pre>
+<pre><code>## [1] 0.8375334</code></pre>
+<p>We can see that model at <strong>index 5</strong> has the highest R square value.</p>
+<p>The Co-efficent of the model is</p>
+<pre><code>## (Intercept)        disp          hp          wt        qsec          am 
+## 14.36190396  0.01123765 -0.02117055 -4.08433206  1.00689683  3.47045340</code></pre>
+<p>We will be repeating this for the remaining both</p>
+<ul>
+<li>Forward Stepwise Model</li>
+<li>Backward Stepwise Model</li>
+</ul>
+<p>And Tablulating the results, with linear regression Model.</p>
+<p>The Final Tabular column.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Model</th>
+<th align="right">Adjusted.R.squared</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Multiple Linear Regression</td>
+<td align="right">0.8066000</td>
+</tr>
+<tr class="even">
+<td align="left">Best Subset Regression</td>
+<td align="right">0.8375334</td>
+</tr>
+<tr class="odd">
+<td align="left">Forward Stepwise Regression</td>
+<td align="right">0.8337290</td>
+</tr>
+<tr class="even">
+<td align="left">Backward Stepwise Regression</td>
+<td align="right">0.8375334</td>
+</tr>
+</tbody>
+</table>
+<p>From the above table we can see, Subset Selection methord performs better that our normal Multiple regression. In Subset Methord, we can see that <strong>Best Subset Methord and Backward Stepwise Methord</strong> have the highest R Square Value.</p>
+<p>We can see that Stepwise performs well, but the main drawback is it will not work well, where there are variables with more than 2 categories, in a variable.</p>
+<p>We will be discussion more models in future posts.</p>
 </div>
 <div id="thank-you" class="section level1">
 <h1>Thank You</h1>
@@ -180,7 +252,7 @@ We w" />
       <section class="author-card">
         <img class="author-profile-image" src="/vikki.jpg" alt="Author" />
         <section class="author-card-content">
-            <h4 class="author-card-name"><a href="/">Vignesh A</a></h4>
+            <h4 class="author-card-name"><a href="/">A Vignesh</a></h4>
                 <p>யாதும் ஊரே யாவரும் கேளிர் </p>
         </section>
       </section>
@@ -210,15 +282,15 @@ We w" />
     <div class="read-next-card-content">
       
         <ul>
+          <li><a href="/post/netflix-movie-and-tv-show-data-analysis/">Netflix Movie and TV Show Data Analysis</a></li>            
+        
+          <li><a href="/post/hello-r-markdown/">Hello R Markdown</a></li>            
+        
           <li><a href="/post/regression-project-part-2-simple-linear-regression/">Regression Project, Part -2, Simple Linear Regression</a></li>            
         
                       
         
           <li><a href="/post/checking-post/">Whatsapp Chat Data Analysis</a></li>            
-        
-          <li><a href="/post/regression-project-part-1-data-preprocessing/">Regression Project, Part -1, Data Preprocessing</a></li>            
-        
-          <li><a href="/post/regression-project-part-4-variable-selection-methord/">Regression Project, Part - 4, Variable Selection Methord. </a></li>            
         </ul>
     </div>
     <footer class="read-next-card-footer">
@@ -228,57 +300,26 @@ We w" />
 
 
       
+      
       <article class="post-card post"> 
     
-    <a class="post-card-image-link" href="/post/regression-project-part-4-variable-selection-methord/">
-      <div class="post-card-image" style="background-image: url(/defimg/7.jpg)"></div>
+    <a class="post-card-image-link" href="/post/classification-part-2-multinominal-logistic-regression/">
+      <div class="post-card-image" style="background-image: url(/defimg/3.jpg)"></div>
     </a>    
     
 
     <div class="post-card-content">
-      <a class="post-card-content-link" href="/post/regression-project-part-4-variable-selection-methord/">
+      <a class="post-card-content-link" href="/post/classification-part-2-multinominal-logistic-regression/">
           <header class="post-card-header">
               
-              <h2 class="post-card-title">Regression Project, Part - 4, Variable Selection Methord. </h2>
+              <h2 class="post-card-title">Classification, Part - 2, Multinominal logistic Regression.</h2>
           </header>
           <section class="post-card-excerpt">
               
-                <p>In This Project we will using variable selection methord to find the best combination of variables for a product. Drawback of this variable selection is it doesnot do will with variables with more than two categorical variables.
-In this post we will bec using the mtcars dataset.
-There are three types of Variable Selection Methord.1. Best Subset Methord2. Forward Stepwise Methord3. Backward Stepwise Methord
-We will be comparing Adjusted R Square values of all the above models with linear regression model. ...  </p>
-              
-          </section>
-      </a>
-
-      <footer class="post-card-meta">
-          <img class="author-profile-image" src="/vikki.jpg" alt="Author" />
-          <span class="post-card-author"><a href="/">A Vignesh</a></span>
-      </footer>
-    </div>
-</article>
-      
-      
-      <article class="post-card post"> 
-    
-    <a class="post-card-image-link" href="/post/classification-part-1-logistic-regression/">
-      <div class="post-card-image" style="background-image: url(/defimg/2.jpg)"></div>
-    </a>    
-    
-
-    <div class="post-card-content">
-      <a class="post-card-content-link" href="/post/classification-part-1-logistic-regression/">
-          <header class="post-card-header">
-              
-              <h2 class="post-card-title">Classification, Part -1 , Logistic Regression</h2>
-          </header>
-          <section class="post-card-excerpt">
-              
-                <p>Classification ModelsIn classification methord, dependant variable will be a categorical variable. In this post we will be looking at one of the methord used for classification,Logistic Regression.
-Logistic Regression works well when the prediction varibale has two categories, we will be working with Multinomial Classification in future posts.
-The Dataset that we are going to use is obtained from Kaggle
-The Columns in our dataset are
-## [1] &quot;male&quot; &quot;age&quot; &quot;education&quot; &quot;currentSmoker&quot; ## [5] &quot;cigsPerDay&quot; &quot;BPMeds&quot; &quot;prevalentStroke&quot; &quot;prevalentHyp&quot; ## [9] &quot;diabetes&quot; &quot;totChol&quot; &quot;sysBP&quot; &quot;diaBP&quot; ## [13] &quot;BMI&quot; &quot;heartRate&quot; &quot;glucose&quot; &quot;TenYearCHD&quot;As we did in other regression models, we need to prepare the data for out model construction. ...  </p>
+                <p>This will eb small Post, we will be discusing about Multinominal Logistic Regression, When the predicted i.e when dependent variable has multiple category.
+We will be using the famous iris dataset
+The dataset consist of columns:
+## [1] &quot;Sepal.Length&quot; &quot;Sepal.Width&quot; &quot;Petal.Length&quot; &quot;Petal.Width&quot; &quot;Species&quot;## &#39;data.frame&#39;: 150 obs. of 5 variables:## $ Sepal.Length: num 5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...## $ Sepal.Width : num 3. ...  </p>
               
           </section>
       </a>
@@ -302,17 +343,17 @@ The Columns in our dataset are
     </a>
   </div>
   <span class="floating-header-divider">&mdash;</span>
-  <div class="floating-header-title">Classification, Part - 2, Multinominal logistic Regression.</div>
+  <div class="floating-header-title">Regression Project, Part - 4, Variable Selection Methord. </div>
   <div class="floating-header-share">
     <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
      <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/></svg>
     </div>
     
-    <a class="floating-header-share-tw" href="https://twitter.com/share?text=Classification%2c%20Part%20-%202%2c%20Multinominal%20logistic%20Regression.&amp;url=%2fpost%2fclassification-part-2-multinominal-logistic-regression%2f"
+    <a class="floating-header-share-tw" href="https://twitter.com/share?text=Regression%20Project%2c%20Part%20-%204%2c%20Variable%20Selection%20Methord.%20&amp;url=%2fpost%2fregression-project-part-4-variable-selection-methord%2f"
           onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
       </a>
-      <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=%2fpost%2fclassification-part-2-multinominal-logistic-regression%2f"
+      <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=%2fpost%2fregression-project-part-4-variable-selection-methord%2f"
           onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
       </a>
