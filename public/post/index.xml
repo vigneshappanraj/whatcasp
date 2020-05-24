@@ -24,6 +24,16 @@ We will be comparing Adjusted R Square values of all the above models with linea
     </item>
     
     <item>
+      <title>Regression Project, Part - 5, Ridge, Lasso and Elastic Net Regression </title>
+      <link>/post/regression-project-part-5-ridge-lasso-and-elastic-net-regression/</link>
+      <pubDate>Sun, 24 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/regression-project-part-5-ridge-lasso-and-elastic-net-regression/</guid>
+      <description>Shrinkage Methods in Linear RegressionThe need for shrinkage method arises due to the issues of underfitting or overfitting the data. When we want to minimize the mean error (Mean Squared Error(MSE) in case of Linear Regression), we need to optimize the bias-variance trade-off.
+What is this bias-variance trade-off?The bias-variance trade-off indicates the level of underfitting or overfitting of the data with respect to the Linear Regression model applied to it.</description>
+    </item>
+    
+    <item>
       <title>Classification, Part - 2, Multinominal logistic Regression.</title>
       <link>/post/classification-part-2-multinominal-logistic-regression/</link>
       <pubDate>Sat, 23 May 2020 00:00:00 +0000</pubDate>

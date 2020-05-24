@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en-US" />
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>Regression Project, Part - 5, Ridge, Lasso and Elastic Net Regression  &middot; </title>
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="canonical" href="/post/regression-project-part-5-ridge-lasso-and-elastic-net-regression/" />
+
+     <meta name="description" content="Shrinkage Methods in Linear RegressionThe need for shrinkage method arises due to the issues of underfitting or overfitting the data. When we want to minimize " /> 
+
+     
+    
+    <meta name="twitter:card" content="summary"/>
+    
+ 
+    <meta name="twitter:title" content="Regression Project, Part - 5, Ridge, Lasso and Elastic Net Regression "/>
+    <meta name="twitter:description" content="Shrinkage Methods in Linear RegressionThe need for shrinkage method arises due to the issues of underfitting or overfitting the data. When we want to minimize "/>
+    <meta name="twitter:url" content="/post/regression-project-part-5-ridge-lasso-and-elastic-net-regression/" />
+    <meta name="twitter:site" content="@Vignesh_Appanraj"/>
+
+    <meta property="og:site_name" content="" />
+    <meta property="og:title" content="Regression Project, Part - 5, Ridge, Lasso and Elastic Net Regression  &middot; DataAnt" />
+    <meta property="og:url" content="/post/regression-project-part-5-ridge-lasso-and-elastic-net-regression/" />
+    
+
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="Shrinkage Methods in Linear RegressionThe need for shrinkage method arises due to the issues of underfitting or overfitting the data. When we want to minimize " />
+
+    <meta property="article:published_time" content="2020-05-24T00:00:00Z" />
+    
+
+    <meta property="og:image" content="/img/blog-cover.jpg"/>
+
+    <meta name="generator" content="Hugo 0.70.0" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" type="text/css" href="/built/screen.css" /> 
+    <link rel="stylesheet" type="text/css" href="/css/casper-two.css" /> 
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" />
+    
+
+     
+
+</head>
+
+
+<body class="post-template">
+  <div class="site-wrapper"> 
+
+<header class="site-header outer">
+  <div class="inner">
+    <nav class="site-nav">
+      <div class="site-nav-left">
+
+        <ul class="nav" role="menu">
+        
+        
+        
+            <li class="" role="menuitem">
+              <a href="/">Home</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="/about/">About me</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://google.com/">External</a>
+            </li>
+        
+      </ul></div>
+
+      <div class="site-nav-right">
+        <div class="social-links">
+                    
+
+                    <a class="social-link social-link-tw" href="https://twitter.com/Vignesh_Appanraj" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg></a>
+
+                    <a class="social-link" href="https://github.com/madeye28" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+
+                    <a class="social-link" href="https://www.linkedin.com/in/Vignesh%20Appanraj" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 50 512 512"><path d="M150.65,100.682c0,27.992-22.508,50.683-50.273,50.683c-27.765,0-50.273-22.691-50.273-50.683 C50.104,72.691,72.612,50,100.377,50C128.143,50,150.65,72.691,150.65,100.682z M143.294,187.333H58.277V462h85.017V187.333z M279.195,187.333h-81.541V462h81.541c0,0,0-101.877,0-144.181c0-38.624,17.779-61.615,51.807-61.615 c31.268,0,46.289,22.071,46.289,61.615c0,39.545,0,144.181,0,144.181h84.605c0,0,0-100.344,0-173.915 s-41.689-109.131-99.934-109.131s-82.768,45.369-82.768,45.369V187.333z" /></svg></a>
+
+                    
+        </div>  
+            
+      </div>
+
+    </nav>  
+
+  </div>
+</header>
+
+<main id="site-main" class="site-main outer" role="main">
+  <div class="inner">
+    
+      <article class="post-full post"> 
+    <header class="post-full-header">
+        <section class="post-full-meta">
+            <time class="post-full-meta-date" datetime="2020-05-24">24 May 2020</time>
+        </section>
+        <h1 class="post-full-title">Regression Project, Part - 5, Ridge, Lasso and Elastic Net Regression </h1>
+    </header>
+    
+    <figure class="post-full-image" style="background-image: url(/defimg/5.jpg)">
+    </figure>
+
+    <section class="post-full-content">
+        <div class="kg-card-markdown">
+        
+
+
+<div id="shrinkage-methods-in-linear-regression" class="section level1">
+<h1>Shrinkage Methods in Linear Regression</h1>
+<p>The need for shrinkage method arises due to the issues of <strong>underfitting or overfitting</strong> the data. When we want to minimize the mean error (Mean Squared Error(MSE) in case of Linear Regression), we need to optimize the <strong>bias-variance trade-off.</strong></p>
+</div>
+<div id="what-is-this-bias-variance-trade-off" class="section level1">
+<h1>What is this bias-variance trade-off?</h1>
+<p>The bias-variance trade-off indicates the level of <strong>underfitting or overfitting of the data</strong> with respect to the Linear Regression model applied to it. A <strong>high bias-low variance</strong> means the model is <strong>underfitted</strong> and a <strong>low bias-high variance</strong> means that the model is <strong>overfitted</strong>. We need to trade-off between bias and variance to achieve the <strong>perfect combination for the minimum Mean Squared Error</strong></p>
+</div>
+<div id="how-shrinkage-methord-works" class="section level1">
+<h1>How Shrinkage Methord works?</h1>
+<p>These methods apply a <strong>penalty term</strong> to the Loss function used in the model. <strong>Minimizing the loss function is equal to maximizing the accuracy.</strong> To understand this better, we need to go into the depths of Loss function in Linear Regression.</p>
+<p>Linear Regression uses <strong>Least Squares</strong> to calculate the minimum error between the actual values and the predicted values. The aim is to minimize the squared difference between the actual and predicted values to draw the best possible regression curve for the best prediction accuracy.</p>
+<p>There are <strong>Three Shrinkage Methors.</strong></p>
+<ol style="list-style-type: decimal">
+<li>Ridge Regression</li>
+<li>Lasso Regression</li>
+<li>Elastico-Net Regression</li>
+</ol>
+</div>
+<div id="ridge-regression" class="section level1">
+<h1>Ridge Regression</h1>
+<p>Ridge regression also adds an <strong>additional term to the cost function</strong>, but instead sums the squares of coefficient values <strong>(the L-2 norm)</strong> and multiplies it by some constant <strong>lambda</strong>. This regularization term will decrease the values of coefficients, but is unable to force a coefficient to exactly 0. This makes ridge regression’s use limited with regards to feature selection. However, when p &gt; n, it is capable of selecting more than n relevant predictors if necessary unlike Lasso. It will also select groups of colinear features, which its inventors dubbed the ‘grouping effect.’</p>
+<p>we can vary lambda to get models with different levels of regularization with lambda=0 corresponding to OLS and lambda approaching infinity corresponding to a constant function.</p>
+</div>
+<div id="lasso-regression" class="section level1">
+<h1>Lasso Regression</h1>
+<p>Lasso (sometimes stylized as LASSO or lasso) adds an additional term to the cost function, adding the sum of the coefficient values (the L-1 norm) multiplied by a constant lambda. This additional term penalizes the model for having coefficients that do not explain a sufficient amount of variance in the data. It also has a tendency to <strong>set the coefficients of the bad predictors mentioned above 0</strong>. This makes Lasso useful in <strong>feature selection</strong>.</p>
+<p>Lasso however <strong>struggles with some types of data</strong>. If the number of predictors (p) is greater than the number of observations (n), Lasso will pick at most n predictors as non-zero, even if all predictors are relevant. Lasso will also struggle with colinear features (they’re related/correlated strongly), in which it will select only one predictor to represent the full suite of correlated predictors. This selection will also be done in a random way, which is bad for reproducibility and interpretation.</p>
+</div>
+<div id="elastic-net" class="section level1">
+<h1>Elastic Net</h1>
+<p>Elastic Net includes both <strong>L-1 and L-2 norm regularization terms</strong>. This gives us the benefits of both <strong>Lasso and Ridge regression</strong>. It has been found to have predictive power <strong>better than Lasso</strong>, while still performing feature selection. We therefore get the best of both worlds, performing feature selection of Lasso with the feature-group selection of Ridge.
+Elastic Net comes with the additional overhead of determining the <strong>two lambda values for optimal solutions</strong>.</p>
+<ul>
+<li><p>We will be using the same dataset used to create <strong>Simple Linear Regression and Multiple Linear Regression</strong>.</p></li>
+<li><p>We will be calculation <strong>R Square Values</strong> for all three shrinkage methord and we will compare it with previously created <strong>OLS Models</strong>.</p></li>
+</ul>
+</div>
+<div id="ridge-regression-model." class="section level1">
+<h1>Ridge Regression Model.</h1>
+<pre><code>##           Length Class     Mode   
+## a0          100  -none-    numeric
+## beta      11500  dgCMatrix S4     
+## df          100  -none-    numeric
+## dim           2  -none-    numeric
+## lambda      100  -none-    numeric
+## dev.ratio   100  -none-    numeric
+## nulldev       1  -none-    numeric
+## npasses       1  -none-    numeric
+## jerr          1  -none-    numeric
+## offset        1  -none-    logical
+## call          5  -none-    call   
+## nobs          1  -none-    numeric</code></pre>
+<p>Now we have created a model to find the best lamda value for our model.</p>
+<p>In order to find the best value for Lambda, we have created a grid of higher values to lower valus. and we will <strong>cross-valdidate</strong> to find the lambda value which has a <strong>minimum MSE</strong></p>
+<p><img src="/post/2020-05-24-regression-project-part-5-ridge-lasso-and-elastic-net-regression_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>We have plotted a graph between different <strong>Lambda value and its respective MSE</strong>.</p>
+<p>The lambda value with <strong>minimum MSE</strong> is given below.</p>
+<pre><code>## [1] 0.01</code></pre>
+<p>Now we will create a model with this <strong>(0.01) lambda value</strong> and pridict the value in test set, and we will see R Square of the model along with training set and testing set MSE.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Model</th>
+<th align="right">R.Square</th>
+<th align="right">Train.MSE</th>
+<th align="right">Test.MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Ridge Regression</td>
+<td align="right">0.8412</td>
+<td align="right">21265.85</td>
+<td align="right">25079.55</td>
+</tr>
+</tbody>
+</table>
+<p>The above table gives us the <strong>train MSE, Test MSE and R Square</strong> value of the model.</p>
+<p>We will be doing this for remaing 2 model.</p>
+<p>The <strong>Overal table</strong> with all these three model results looks like.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Model</th>
+<th align="right">R.Square</th>
+<th align="right">Train.MSE</th>
+<th align="right">Test.MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Ridge Regression</td>
+<td align="right">0.8412</td>
+<td align="right">21265.85</td>
+<td align="right">25079.55</td>
+</tr>
+<tr class="even">
+<td align="left">Lasso Regression</td>
+<td align="right">0.8412</td>
+<td align="right">21267.98</td>
+<td align="right">25076.26</td>
+</tr>
+<tr class="odd">
+<td align="left">Elastic Net Regression</td>
+<td align="right">0.8412</td>
+<td align="right">21266.91</td>
+<td align="right">25077.95</td>
+</tr>
+</tbody>
+</table>
+<p>Now we will compare this table with our previous created <strong>OLS Models</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Model</th>
+<th align="right">R.Square</th>
+<th align="right">Train.MSE</th>
+<th align="right">Test.MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Simple Linear Reg</td>
+<td align="right">0.4936</td>
+<td align="right">67741.54</td>
+<td align="right">71056.53</td>
+</tr>
+<tr class="even">
+<td align="left">Multiple Linear Reg</td>
+<td align="right">0.8385</td>
+<td align="right">21465.37</td>
+<td align="right">24076.69</td>
+</tr>
+<tr class="odd">
+<td align="left">Ridge Regression</td>
+<td align="right">0.8412</td>
+<td align="right">21265.85</td>
+<td align="right">25079.55</td>
+</tr>
+<tr class="even">
+<td align="left">Lasso Regression</td>
+<td align="right">0.8412</td>
+<td align="right">21267.98</td>
+<td align="right">25076.26</td>
+</tr>
+<tr class="odd">
+<td align="left">Elastic Net Regression</td>
+<td align="right">0.8412</td>
+<td align="right">21266.91</td>
+<td align="right">25077.95</td>
+</tr>
+</tbody>
+</table>
+<p>From above table all the shrinkage methors methord have <strong>higher R Square</strong> value than all OLS Models, and training MSE close to OLS Models, <strong>but shrinkage methords have a higher Test MSE</strong>, since we dont want our model to be <strong>overfitted</strong> to the training data we were already aware of this.</p>
+<p>Thats it for Shrinkage Methord. We will using Various Models in this Series.</p>
+</div>
+<div id="thank-you." class="section level1">
+<h1>Thank You.</h1>
+</div>
+    
+        </div>
+    </section>
+
+    <footer class="post-full-footer">
+      <section class="author-card">
+        <img class="author-profile-image" src="/vikki.jpg" alt="Author" />
+        <section class="author-card-content">
+            <h4 class="author-card-name"><a href="/">Vignesh A</a></h4>
+                <p>யாதும் ஊரே யாவரும் கேளிர் </p>
+        </section>
+      </section>
+    </footer>
+</article>
+    
+    
+    
+
+  </div>
+</main>
+
+
+<aside class="read-next outer">
+  <div class="inner">
+    <div class="read-next-feed">      
+      
+<article class="read-next-card" 
+            style="background-image: url(/img/blog-cover.jpg);" >
+    <header class="read-next-card-header">
+        <small class="read-next-card-header-sitetitle">&mdash; DataAnt &mdash;</small>
+        
+    </header>
+    <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+    </div>
+
+    <div class="read-next-card-content">
+      
+        <ul>
+          <li><a href="/post/classification-part-2-multinominal-logistic-regression/">Classification, Part - 2, Multinominal logistic Regression.</a></li>            
+        
+          <li><a href="/post/regression-project-part-2-simple-linear-regression/">Regression Project, Part -2, Simple Linear Regression</a></li>            
+        
+          <li><a href="/post/netflix-movie-and-tv-show-data-analysis/">Netflix Movie and TV Show Data Analysis</a></li>            
+        
+          <li><a href="/post/hello-r-markdown/">Hello R Markdown</a></li>            
+        </ul>
+    </div>
+    <footer class="read-next-card-footer">
+      
+    </footer>
+</article>
+
+
+      
+      <article class="post-card post"> 
+    
+    <a class="post-card-image-link" href="/post/regression-project-part-4-variable-selection-methord/">
+      <div class="post-card-image" style="background-image: url(/defimg/1.jpg)"></div>
+    </a>    
+    
+
+    <div class="post-card-content">
+      <a class="post-card-content-link" href="/post/regression-project-part-4-variable-selection-methord/">
+          <header class="post-card-header">
+              
+              <h2 class="post-card-title">Regression Project, Part - 4, Variable Selection Methord. </h2>
+          </header>
+          <section class="post-card-excerpt">
+              
+                <p>In This Project we will using variable selection methord to find the best combination of variables for a product. Drawback of this variable selection is it doesnot do will with variables with more than two categorical variables.
+In this post we will bec using the mtcars dataset.
+There are three types of Variable Selection Methord.1. Best Subset Methord2. Forward Stepwise Methord3. Backward Stepwise Methord
+We will be comparing Adjusted R Square values of all the above models with linear regression model. ...  </p>
+              
+          </section>
+      </a>
+
+      <footer class="post-card-meta">
+          <img class="author-profile-image" src="/vikki.jpg" alt="Author" />
+          <span class="post-card-author"><a href="/">A Vignesh</a></span>
+      </footer>
+    </div>
+</article>
+      
+      
+      <article class="post-card post"> 
+    
+    <a class="post-card-image-link" href="/post/classification-part-2-multinominal-logistic-regression/">
+      <div class="post-card-image" style="background-image: url(/defimg/6.jpg)"></div>
+    </a>    
+    
+
+    <div class="post-card-content">
+      <a class="post-card-content-link" href="/post/classification-part-2-multinominal-logistic-regression/">
+          <header class="post-card-header">
+              
+              <h2 class="post-card-title">Classification, Part - 2, Multinominal logistic Regression.</h2>
+          </header>
+          <section class="post-card-excerpt">
+              
+                <p>This will eb small Post, we will be discusing about Multinominal Logistic Regression, When the predicted i.e when dependent variable has multiple category.
+We will be using the famous iris dataset
+The dataset consist of columns:
+## [1] &quot;Sepal.Length&quot; &quot;Sepal.Width&quot; &quot;Petal.Length&quot; &quot;Petal.Width&quot; &quot;Species&quot;## &#39;data.frame&#39;: 150 obs. of 5 variables:## $ Sepal.Length: num 5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...## $ Sepal.Width : num 3. ...  </p>
+              
+          </section>
+      </a>
+
+      <footer class="post-card-meta">
+          <img class="author-profile-image" src="/vikki.jpg" alt="Author" />
+          <span class="post-card-author"><a href="/">Vignesh A</a></span>
+      </footer>
+    </div>
+</article>
+      
+    </div>
+  </div>
+</aside>
+
+<div class="floating-header">
+  <div class="floating-header-logo">
+    <a href="/">
+      
+      <span></span>
+    </a>
+  </div>
+  <span class="floating-header-divider">&mdash;</span>
+  <div class="floating-header-title">Regression Project, Part - 5, Ridge, Lasso and Elastic Net Regression </div>
+  <div class="floating-header-share">
+    <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+     <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/></svg>
+    </div>
+    
+    <a class="floating-header-share-tw" href="https://twitter.com/share?text=Regression%20Project%2c%20Part%20-%205%2c%20Ridge%2c%20Lasso%20and%20Elastic%20Net%20Regression%20&amp;url=%2fpost%2fregression-project-part-5-ridge-lasso-and-elastic-net-regression%2f"
+          onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+      </a>
+      <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=%2fpost%2fregression-project-part-5-ridge-lasso-and-elastic-net-regression%2f"
+          onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+      </a>
+  </div>
+
+  <progress class="progress" value="0">
+    <div class="progress-container">
+      <span class="progress-bar"></span>
+    </div>
+  </progress>
+</div>
+
+
+
+<footer class="site-footer outer">
+  <div class="site-footer-content inner">
+    <section class="copyright" style="line-height: 1.3em;">
+      <a href="/">DataAnt</a> © 2020 <br>
+      <span style="font-size: 0.8em; color: #555;">Hugo port of <a href="https://github.com/TryGhost/Casper">Casper 2.1.7</a> by <a href="https://www.telematika.org">EM</a></span>
+    </section>
+    <nav class="site-footer-nav">
+        <a href="/">Latest Posts</a>
+        
+        <a href="https://twitter.com/Vignesh_Appanraj" target="_blank" rel="noopener">Twitter</a>
+        <a href="https://github.com/madeye28" target="_blank" rel="noopener">Github</a>
+        <a href="https://www.linkedin.com/in/Vignesh%20Appanraj" target="_blank" rel="noopener">LinkedIn</a>
+        
+    </nav>  
+  </div>
+</footer>
+
+</div>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    <script>
+
+
+
+
+
+$(document).ready(function () {
+    
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+</body></html>

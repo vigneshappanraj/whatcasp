@@ -1,0 +1,230 @@
+---
+title: 'Regression Project, Part - 5, Ridge, Lasso and Elastic Net Regression '
+author: Vignesh A
+date: '2020-05-24'
+slug: regression-project-part-5-ridge-lasso-and-elastic-net-regression
+categories: []
+tags: []
+---
+# Shrinkage Methods in Linear Regression
+
+
+The need for shrinkage method arises due to the issues of **underfitting or overfitting** the data. When we want to minimize the mean error (Mean Squared Error(MSE) in case of Linear Regression), we need to optimize the **bias-variance trade-off.**
+
+# What is this bias-variance trade-off?
+
+The bias-variance trade-off indicates the level of **underfitting or overfitting of the data** with respect to the Linear Regression model applied to it. A **high bias-low variance** means the model is **underfitted** and a **low bias-high variance** means that the model is **overfitted**. We need to trade-off between bias and variance to achieve the **perfect combination for the minimum Mean Squared Error**
+
+# How Shrinkage Methord works?
+
+These methods apply a **penalty term** to the Loss function used in the model. **Minimizing the loss function is equal to maximizing the accuracy.** To understand this better, we need to go into the depths of Loss function in Linear Regression.
+
+Linear Regression uses **Least Squares** to calculate the minimum error between the actual values and the predicted values. The aim is to minimize the squared difference between the actual and predicted values to draw the best possible regression curve for the best prediction accuracy.
+
+There are **Three Shrinkage Methors.**
+
+1. Ridge Regression
+2. Lasso Regression
+3. Elastico-Net Regression
+
+# Ridge Regression
+
+Ridge regression also adds an **additional term to the cost function**, but instead sums the squares of coefficient values **(the L-2 norm)** and multiplies it by some constant **lambda**. This regularization term will decrease the values of coefficients, but is unable to force a coefficient to exactly 0. This makes ridge regression’s use limited with regards to feature selection. However, when p > n, it is capable of selecting more than n relevant predictors if necessary unlike Lasso. It will also select groups of colinear features, which its inventors dubbed the ‘grouping effect.’   
+
+we can vary lambda to get models with different levels of regularization with lambda=0 corresponding to OLS and lambda approaching infinity corresponding to a constant function.
+
+# Lasso Regression
+
+Lasso (sometimes stylized as LASSO or lasso) adds an additional term to the cost function, adding the sum of the coefficient values (the L-1 norm) multiplied by a constant lambda. This additional term penalizes the model for having coefficients that do not explain a sufficient amount of variance in the data. It also has a tendency to **set the coefficients of the bad predictors mentioned above 0**. This makes Lasso useful in **feature selection**.   
+
+Lasso however **struggles with some types of data**. If the number of predictors (p) is greater than the number of observations (n), Lasso will pick at most n predictors as non-zero, even if all predictors are relevant. Lasso will also struggle with colinear features (they’re related/correlated strongly), in which it will select only one predictor to represent the full suite of correlated predictors. This selection will also be done in a random way, which is bad for reproducibility and interpretation.
+
+# Elastic Net
+
+Elastic Net includes both **L-1 and L-2 norm regularization terms**. This gives us the benefits of both **Lasso and Ridge regression**. It has been found to have predictive power **better than Lasso**, while still performing feature selection. We therefore get the best of both worlds, performing feature selection of Lasso with the feature-group selection of Ridge.
+Elastic Net comes with the additional overhead of determining the **two lambda values for optimal solutions**.
+
+* We will be using the same dataset used to create **Simple Linear Regression and Multiple Linear Regression**.
+
+* We will be calculation **R Square Values** for all three shrinkage methord and we will compare it with previously created **OLS Models**.
+
+# Ridge Regression Model.
+
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+library(dummies)
+library(caTools)
+library(glmnet)
+```
+
+```{r,echo=FALSE,warning=FALSE}
+df <- read.csv('cleaned_text.csv')
+df$waterfront <- factor(df$waterfront,levels = c(0,1) )
+df$view <- factor(df$view,levels = c(0,1,2,3,4))
+df$condition <- factor(df$condition,labels = c(1,2,3,4,5))
+df$grade <- factor(df$grade,labels = c(1,3,4,5,6,7,8,9,10,11,12,13))
+df$zipcode <- as.factor(df$zipcode)
+df$PYears <- as.factor(df$PYears)
+df$Pmonth <-as.factor(df$Pmonth)
+
+df <- dummy.data.frame(df)
+df <- df[,-c(6,8,13,18,34,177,179)]
+
+set.seed(123)
+sample <- sample.split(df,.8)
+train <- subset(df,sample == TRUE)
+test <- subset(df,sample == FALSE)
+
+
+
+x = model.matrix(priceinK~.,data=train)[,-166]
+y = train$priceinK
+grid = 10^seq(10,-2, length =100)
+testx = model.matrix(priceinK~.,data=test)[,-166]
+testy = test$priceinK
+
+```
+
+```{r,echo=FALSE,warning=FALSE}
+lm_ridge = glmnet(x,y,alpha = 0, lambda =grid)
+summary(lm_ridge)
+
+```
+
+Now we have created a model to find the best lamda value for our model.
+   
+   
+In order to find the best value for Lambda, we have created a grid of higher values to lower valus. and we will **cross-valdidate** to find the lambda value which has a **minimum MSE**
+
+```{r,echo=FALSE,warning=FALSE}
+cv_fit = cv.glmnet(x,y,alpha = 0, lambda = grid )
+plot(cv_fit)
+
+```
+
+We have plotted a graph between different **Lambda value and its respective MSE**.
+
+The lambda value with **minimum MSE** is given below.
+```{r,echo=FALSE,warning=FALSE}
+opt_lambda = cv_fit$lambda.min
+cv_fit$lambda.min
+#tss = sum((y-mean(y))^2)
+
+```
+
+Now we will create a model with this **(0.01) lambda value** and pridict the value in test set, and we will see R Square of the model along with training set and testing set MSE.
+
+```{r,echo=FALSE,warning=FALSE}
+
+y_ate = predict(lm_ridge,s=opt_lambda , newx = testx)
+
+#rss = sum((y_a-testy)^2)
+#mean(((y_ate-testy)^2))
+#rsq = 1 - rss/tss
+
+#lm_lasso = glmnet(x,y,alpha = 1, lambda =grid)
+
+tss = sum((y-mean(y))^2)
+
+y_a = predict(lm_ridge,s=opt_lambda , newx = x)
+
+rss = sum((y_a-y)^2)
+#mean(((y_a-y)^2))
+rsq = 1 - rss/tss
+
+rid_tab <- data.frame('Model' = 'Ridge Regression',
+                      "R Square" = round(rsq,4),
+           'Train MSE' = mean(((y_a-y)^2)),
+           'Test MSE' = mean(((y_ate-testy)^2)) )
+knitr::kable(rid_tab)
+
+```
+
+The above table gives us the **train MSE, Test MSE and R Square** value of the model.
+
+We will be doing this for remaing 2 model.
+
+The **Overal table** with all these three model results looks like.
+
+```{r,echo=FALSE,warning=FALSE}
+
+lm_ridge = glmnet(x,y,alpha = 1, lambda =grid)
+#summary(lm_ridge)
+cv_fit = cv.glmnet(x,y,alpha = 1, lambda = grid )
+#plot(cv_fit)
+
+opt_lambda = cv_fit$lambda.min
+#tss = sum((y-mean(y))^2)
+
+y_ate = predict(lm_ridge,s=opt_lambda , newx = testx)
+
+#rss = sum((y_a-testy)^2)
+#mean(((y_a-testy)^2))
+#rsq = 1 - rss/tss
+
+#lm_lasso = glmnet(x,y,alpha = 1, lambda =grid)
+
+tss = sum((y-mean(y))^2)
+
+y_a = predict(lm_ridge,s=opt_lambda , newx = x)
+
+rss = sum((y_a-y)^2)
+#mean(((y_a-y)^2))
+rsq = 1 - rss/tss
+las_tab <- data.frame('Model' = 'Lasso Regression',
+                      "R Square" = round(rsq,4),
+                      'Train MSE' = mean(((y_a-y)^2)),
+                      'Test MSE' = mean(((y_ate-testy)^2)) )
+#las_tab
+########################################################################
+
+lm_ridge = glmnet(x,y,alpha = 0.5, lambda =grid)
+#summary(lm_ridge)
+cv_fit = cv.glmnet(x,y,alpha = 0.5, lambda = grid )
+#plot(cv_fit)
+
+opt_lambda = cv_fit$lambda.min
+#tss = sum((y-mean(y))^2)
+
+y_ate = predict(lm_ridge,s=opt_lambda , newx = testx)
+
+#rss = sum((y_a-testy)^2)
+#mean(((y_a-testy)^2))
+#rsq = 1 - rss/tss
+
+#lm_lasso = glmnet(x,y,alpha = 1, lambda =grid)
+
+tss = sum((y-mean(y))^2)
+
+y_a = predict(lm_ridge,s=opt_lambda , newx = x)
+
+rss = sum((y_a-y)^2)
+#mean(((y_a-y)^2))
+rsq = 1 - rss/tss
+
+net_tab <- data.frame('Model' = 'Elastic Net Regression',
+                      "R Square" = round(rsq,4),
+                      'Train MSE' = mean(((y_a-y)^2)),
+                      'Test MSE' = mean(((y_ate-testy)^2)) )
+#result1 <- read.csv('Results1.csv')
+knitr::kable(rbind(rid_tab,las_tab,net_tab))
+#result2 <- rbind(result1,rid_tab,las_tab,net_tab)
+#write.csv(result2,'Results2.csv',row.names = F)
+
+```
+
+Now we will compare this table with our previous created **OLS Models**
+
+```{r,echo=FALSE,warning=FALSE}
+result1 <- read.csv('Results1.csv')
+
+result2 <- rbind(result1,rid_tab,las_tab,net_tab)
+
+write.csv(result2,'Results2.csv',row.names = F)
+knitr::kable(rbind(result1,rid_tab,las_tab,net_tab))
+```
+
+From above table all the shrinkage methors methord have **higher R Square** value than all OLS Models, and training MSE close to OLS Models, **but shrinkage methords have a higher Test MSE**, since we dont want our model to be **overfitted** to the training data we were already aware of this.
+
+Thats it for Shrinkage Methord. We will using Various Models in this Series.
+
+# Thank You.

@@ -1,0 +1,171 @@
+---
+title: 'Regression Project, Part - 5, Ridge, Lasso and Elastic Net Regression '
+author: Vignesh A
+date: '2020-05-24'
+slug: regression-project-part-5-ridge-lasso-and-elastic-net-regression
+categories: []
+tags: []
+---
+
+
+
+<div id="shrinkage-methods-in-linear-regression" class="section level1">
+<h1>Shrinkage Methods in Linear Regression</h1>
+<p>The need for shrinkage method arises due to the issues of <strong>underfitting or overfitting</strong> the data. When we want to minimize the mean error (Mean Squared Error(MSE) in case of Linear Regression), we need to optimize the <strong>bias-variance trade-off.</strong></p>
+</div>
+<div id="what-is-this-bias-variance-trade-off" class="section level1">
+<h1>What is this bias-variance trade-off?</h1>
+<p>The bias-variance trade-off indicates the level of <strong>underfitting or overfitting of the data</strong> with respect to the Linear Regression model applied to it. A <strong>high bias-low variance</strong> means the model is <strong>underfitted</strong> and a <strong>low bias-high variance</strong> means that the model is <strong>overfitted</strong>. We need to trade-off between bias and variance to achieve the <strong>perfect combination for the minimum Mean Squared Error</strong></p>
+</div>
+<div id="how-shrinkage-methord-works" class="section level1">
+<h1>How Shrinkage Methord works?</h1>
+<p>These methods apply a <strong>penalty term</strong> to the Loss function used in the model. <strong>Minimizing the loss function is equal to maximizing the accuracy.</strong> To understand this better, we need to go into the depths of Loss function in Linear Regression.</p>
+<p>Linear Regression uses <strong>Least Squares</strong> to calculate the minimum error between the actual values and the predicted values. The aim is to minimize the squared difference between the actual and predicted values to draw the best possible regression curve for the best prediction accuracy.</p>
+<p>There are <strong>Three Shrinkage Methors.</strong></p>
+<ol style="list-style-type: decimal">
+<li>Ridge Regression</li>
+<li>Lasso Regression</li>
+<li>Elastico-Net Regression</li>
+</ol>
+</div>
+<div id="ridge-regression" class="section level1">
+<h1>Ridge Regression</h1>
+<p>Ridge regression also adds an <strong>additional term to the cost function</strong>, but instead sums the squares of coefficient values <strong>(the L-2 norm)</strong> and multiplies it by some constant <strong>lambda</strong>. This regularization term will decrease the values of coefficients, but is unable to force a coefficient to exactly 0. This makes ridge regression’s use limited with regards to feature selection. However, when p &gt; n, it is capable of selecting more than n relevant predictors if necessary unlike Lasso. It will also select groups of colinear features, which its inventors dubbed the ‘grouping effect.’</p>
+<p>we can vary lambda to get models with different levels of regularization with lambda=0 corresponding to OLS and lambda approaching infinity corresponding to a constant function.</p>
+</div>
+<div id="lasso-regression" class="section level1">
+<h1>Lasso Regression</h1>
+<p>Lasso (sometimes stylized as LASSO or lasso) adds an additional term to the cost function, adding the sum of the coefficient values (the L-1 norm) multiplied by a constant lambda. This additional term penalizes the model for having coefficients that do not explain a sufficient amount of variance in the data. It also has a tendency to <strong>set the coefficients of the bad predictors mentioned above 0</strong>. This makes Lasso useful in <strong>feature selection</strong>.</p>
+<p>Lasso however <strong>struggles with some types of data</strong>. If the number of predictors (p) is greater than the number of observations (n), Lasso will pick at most n predictors as non-zero, even if all predictors are relevant. Lasso will also struggle with colinear features (they’re related/correlated strongly), in which it will select only one predictor to represent the full suite of correlated predictors. This selection will also be done in a random way, which is bad for reproducibility and interpretation.</p>
+</div>
+<div id="elastic-net" class="section level1">
+<h1>Elastic Net</h1>
+<p>Elastic Net includes both <strong>L-1 and L-2 norm regularization terms</strong>. This gives us the benefits of both <strong>Lasso and Ridge regression</strong>. It has been found to have predictive power <strong>better than Lasso</strong>, while still performing feature selection. We therefore get the best of both worlds, performing feature selection of Lasso with the feature-group selection of Ridge.
+Elastic Net comes with the additional overhead of determining the <strong>two lambda values for optimal solutions</strong>.</p>
+<ul>
+<li><p>We will be using the same dataset used to create <strong>Simple Linear Regression and Multiple Linear Regression</strong>.</p></li>
+<li><p>We will be calculation <strong>R Square Values</strong> for all three shrinkage methord and we will compare it with previously created <strong>OLS Models</strong>.</p></li>
+</ul>
+</div>
+<div id="ridge-regression-model." class="section level1">
+<h1>Ridge Regression Model.</h1>
+<pre><code>##           Length Class     Mode   
+## a0          100  -none-    numeric
+## beta      11500  dgCMatrix S4     
+## df          100  -none-    numeric
+## dim           2  -none-    numeric
+## lambda      100  -none-    numeric
+## dev.ratio   100  -none-    numeric
+## nulldev       1  -none-    numeric
+## npasses       1  -none-    numeric
+## jerr          1  -none-    numeric
+## offset        1  -none-    logical
+## call          5  -none-    call   
+## nobs          1  -none-    numeric</code></pre>
+<p>Now we have created a model to find the best lamda value for our model.</p>
+<p>In order to find the best value for Lambda, we have created a grid of higher values to lower valus. and we will <strong>cross-valdidate</strong> to find the lambda value which has a <strong>minimum MSE</strong></p>
+<p><img src="/post/2020-05-24-regression-project-part-5-ridge-lasso-and-elastic-net-regression_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>We have plotted a graph between different <strong>Lambda value and its respective MSE</strong>.</p>
+<p>The lambda value with <strong>minimum MSE</strong> is given below.</p>
+<pre><code>## [1] 0.01</code></pre>
+<p>Now we will create a model with this <strong>(0.01) lambda value</strong> and pridict the value in test set, and we will see R Square of the model along with training set and testing set MSE.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Model</th>
+<th align="right">R.Square</th>
+<th align="right">Train.MSE</th>
+<th align="right">Test.MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Ridge Regression</td>
+<td align="right">0.8412</td>
+<td align="right">21265.85</td>
+<td align="right">25079.55</td>
+</tr>
+</tbody>
+</table>
+<p>The above table gives us the <strong>train MSE, Test MSE and R Square</strong> value of the model.</p>
+<p>We will be doing this for remaing 2 model.</p>
+<p>The <strong>Overal table</strong> with all these three model results looks like.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Model</th>
+<th align="right">R.Square</th>
+<th align="right">Train.MSE</th>
+<th align="right">Test.MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Ridge Regression</td>
+<td align="right">0.8412</td>
+<td align="right">21265.85</td>
+<td align="right">25079.55</td>
+</tr>
+<tr class="even">
+<td align="left">Lasso Regression</td>
+<td align="right">0.8412</td>
+<td align="right">21267.98</td>
+<td align="right">25076.26</td>
+</tr>
+<tr class="odd">
+<td align="left">Elastic Net Regression</td>
+<td align="right">0.8412</td>
+<td align="right">21266.91</td>
+<td align="right">25077.95</td>
+</tr>
+</tbody>
+</table>
+<p>Now we will compare this table with our previous created <strong>OLS Models</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Model</th>
+<th align="right">R.Square</th>
+<th align="right">Train.MSE</th>
+<th align="right">Test.MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Simple Linear Reg</td>
+<td align="right">0.4936</td>
+<td align="right">67741.54</td>
+<td align="right">71056.53</td>
+</tr>
+<tr class="even">
+<td align="left">Multiple Linear Reg</td>
+<td align="right">0.8385</td>
+<td align="right">21465.37</td>
+<td align="right">24076.69</td>
+</tr>
+<tr class="odd">
+<td align="left">Ridge Regression</td>
+<td align="right">0.8412</td>
+<td align="right">21265.85</td>
+<td align="right">25079.55</td>
+</tr>
+<tr class="even">
+<td align="left">Lasso Regression</td>
+<td align="right">0.8412</td>
+<td align="right">21267.98</td>
+<td align="right">25076.26</td>
+</tr>
+<tr class="odd">
+<td align="left">Elastic Net Regression</td>
+<td align="right">0.8412</td>
+<td align="right">21266.91</td>
+<td align="right">25077.95</td>
+</tr>
+</tbody>
+</table>
+<p>From above table all the shrinkage methors methord have <strong>higher R Square</strong> value than all OLS Models, and training MSE close to OLS Models, <strong>but shrinkage methords have a higher Test MSE</strong>, since we dont want our model to be <strong>overfitted</strong> to the training data we were already aware of this.</p>
+<p>Thats it for Shrinkage Methord. We will using Various Models in this Series.</p>
+</div>
+<div id="thank-you." class="section level1">
+<h1>Thank You.</h1>
+</div>
