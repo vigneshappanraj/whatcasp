@@ -3,7 +3,7 @@ title: Whatsapp Chat Data Analysis
 author: Vignesh
 date: '2020-05-11'
 slug: checking-post
-categories: []
+categories: Descriptive
 tags: []
 ---
 

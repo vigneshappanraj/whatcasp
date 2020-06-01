@@ -309,6 +309,7 @@ df %>% filter(country == 'India') %>%
 
 *We were confused, what happened in 2016 ?!!!*
 
+![](https://i.ibb.co/5KFxGMQ/jio.jpg)
 
 **Yes, JIO Happened. **
 

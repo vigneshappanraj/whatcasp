@@ -32,7 +32,7 @@ canonifyurls    = true
   showSupport = true
 
   author = "Vignesh A"
-  authorAvatar = "vikki.jpg"
+  authorAvatar = "img/vikki.jpg"
   authorLocation = "India"
   authorWebsite = "https://github.com/madeye28"
   authorDescription = "யாதும் ஊரே யாவரும் கேளிர் "
@@ -51,8 +51,13 @@ canonifyurls    = true
   weight = 200
 
 [[menu.main]]
-  name = "External"
-  url = "https://google.com/"
+  name = "Post"
+  url = "/post/"
+  weight = 200
+
+[[menu.main]]
+  name = "Twitter"
+  url = "https://twitter.com/AppanrajVignesh"
   weight = 95
 
 

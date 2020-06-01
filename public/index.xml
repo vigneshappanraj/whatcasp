@@ -6,7 +6,7 @@
     <description>Recent content on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Tue, 14 Apr 2015 22:17:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 14 Apr 2020 22:17:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
@@ -130,6 +130,15 @@ Number of messages sent by each persons:</description>
     </item>
     
     <item>
+      <title>About me</title>
+      <link>/about/</link>
+      <pubDate>Tue, 14 Apr 2020 22:17:00 +0000</pubDate>
+      
+      <guid>/about/</guid>
+      <description>Engineer By Degree, Data Analyst by heart.</description>
+    </item>
+    
+    <item>
       <title>Hello R Markdown</title>
       <link>/post/hello-r-markdown/</link>
       <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
@@ -138,15 +147,6 @@ Number of messages sent by each persons:</description>
       <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
 You can embed an R code chunk like this:
 summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
-    </item>
-    
-    <item>
-      <title>About me</title>
-      <link>/about/</link>
-      <pubDate>Tue, 14 Apr 2015 22:17:00 +0000</pubDate>
-      
-      <guid>/about/</guid>
-      <description>Engineer By Degree, Data Analyst by heart.</description>
     </item>
     
   </channel>
