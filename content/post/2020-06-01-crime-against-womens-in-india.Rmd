@@ -99,9 +99,9 @@ colnames(Total_case) <- c('Year','Cases')
 
 
 
-The **Total Number Of cases Filed against womens in India between 2001 to 2015** : `r sum(Total_case$Cases)`
+The *Total Number Of cases Filed against womens in India between 2001 to 2015* : **`r sum(Total_case$Cases)`**
 
-Average Number of cases per year is : `r round(mean(Total_case$Cases))`
+Average Number of cases per year is : **194586**
 
 # Cases Filled Year-Wise
 
