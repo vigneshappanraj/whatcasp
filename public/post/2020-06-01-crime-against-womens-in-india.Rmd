@@ -1,0 +1,637 @@
+---
+title: Crime Against Womens in India
+author: Vignesh A
+date: '2020-06-01'
+slug: crime-against-womens-in-india
+categories: []
+tags: []
+---
+
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+library(Amelia)
+#missmap(df)
+library(tidyverse)
+#names(df)
+library(ggplot2)
+#unique(df$STATE.UT)
+library(tidyverse)
+library(ggrepel)
+library(cowplot)
+library(dplyr)
+library(plotly)
+library(rjson)
+```
+
+# Cases Against Womens In India
+
+In this discriptive analysis we will be looking into CRime Against Womens that are filed dataset from [data.gov.in](https://data.gov.in/).
+
+This data type consist of different types of complains against womens in India from 2001 to 2015.
+
+```{r,echo=FALSE,warning=FALSE}
+df <- read.csv('datasets_423357_807380_crimes_against_women_2001-2014.csv')
+#back_df <- df
+#names(df)
+df <-df[,-1]
+#head(df,2)
+#colnames(df)
+#dim(df)
+df15 <- read.csv('District-wise_Crimes_committed_against_Women_2015_1(1).csv')
+colnames(df15) <- colnames(df)
+#colnames(df15)
+df <- rbind(df,df15)
+
+```
+Columns in dataset:
+```{r,echo=FALSE,warning=FALSE}
+names(df)
+```
+
+From Above we can see the cases against womens are classifier under 7 Categories.
+
+1. Rape
+2. Kidnapping and Abduction
+3. Dowry Deaths
+4. Assault on women with intent to outrage her modesty
+5. Insult to modesty of Women
+6. Cruelty by Husband or his Relatives
+7. Importation of Girls
+
+```{r,echo=FALSE,warning=FALSE}
+df$Year <- factor(df$Year)
+#str(df$Year)
+
+df$STATE.UT <- tolower(df$STATE.UT) 
+#str(df)
+#unique(df$STATE.UT)
+df$STATE.UT <- ifelse(df$STATE.UT == 'd&n haveli',"d & n haveli",df$STATE.UT)
+df$STATE.UT <- ifelse(df$STATE.UT == 'a&n islands',"a & n islands",df$STATE.UT)
+df$STATE.UT <- ifelse(df$STATE.UT == 'delhi ut',"delhi",df$STATE.UT)
+#unique(df$STATE.UT)
+df$DISTRICT <- tolower(df$DISTRICT)
+df$DISTRICT <- ifelse(df$DISTRICT == 'zz total',"total",df$DISTRICT)
+df$DISTRICT <- ifelse(df$DISTRICT == 'total district(s)',"total",df$DISTRICT)
+#Total District(s)
+#unique(df$DISTRICT)
+#ZZ TOTAL
+#state_list <- as.list(unique(df$STATE.UT))
+#df <- as.table(df)
+#data <- read.table(text = df,header=TRUE)
+#split(df,df$STATE.UT)[1]
+#df$Year <- as.integer(df$Year)
+
+
+#########################################################################
+
+Total_case <- df %>%
+  filter(DISTRICT == 'total') %>% 
+  group_by(Year) %>%
+  summarise(sum(Rape,Kidnapping.and.Abduction,Dowry.Deaths,
+                Assault.on.women.with.intent.to.outrage.her.modesty,
+                Insult.to.modesty.of.Women,
+                Cruelty.by.Husband.or.his.Relatives,
+                Importation.of.Girls))
+
+colnames(Total_case) <- c('Year','Cases')
+
+
+```
+
+
+
+The **Total Number Of cases Filed against womens in India between 2001 to 2015** : `r sum(Total_case$Cases)`
+
+Average Number of cases per year is : `r round(mean(Total_case$Cases))`
+
+# Cases Filled Year-Wise
+
+```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+
+
+total_bar <- ggplot(Total_case,aes(x = Year,y=Cases)) + 
+    geom_bar(stat = 'identity',fill = "red",col = 'black',alpha = 0.4) +
+  scale_y_continuous(limits = c(0,320000),
+                     breaks = seq(from = 0, to = 320000, by = 50000),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = Cases,label = Cases),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Cases Filed') +
+  ggtitle('Number of Cases Filled between 2001 and 2015 in INDIA')
+
+Total_case <- Total_case %>%
+  mutate(cumsum = cumsum(Cases))
+####################################################################
+total_line <- ggplot(Total_case,aes(x = Year,y=cumsum(Cases),group = 1)) + 
+  geom_line(col = "light blue",size =2)+
+  geom_point(col='blue',size = 4)+
+  scale_y_continuous(limits = c(0,3000000),
+                     breaks = seq(from = 0, to = 3000000, by = 500000),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = cumsum,label = cumsum),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Cases Filed') +
+  ggtitle('Number of Cases Filled between 2001 and 2015 in INDIA')
+
+
+
+plot_grid(total_line,total_bar)
+
+```
+
+* Line Chart indiacates aggregated number of cases over the years. We can see that the rate of increase has been increased and reducing.
+
+* Bar Graph shows the number of cases per year, which clearly hows that has been increasing over the years. 
+
+* Number of cases Filed in 2015 is **More Than Twice the cases Files in 2001**.
+* Maximum Number of cases were filed on **2014 with 317361 Cases**
+
+* Minimum Number of cases were filed on **2001 with 128537 Cases**     
+
+# NUMBER OF CASES, STATE WISE.
+
+The Below Map will give us a clear picture about the number of cases per State in India
+
+```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=12,out.width='100%'}
+state_map <- as.data.frame(df %>%
+                             filter(DISTRICT == 'total') %>% 
+                             group_by(STATE.UT) %>%
+                             summarise(sum(Rape,Kidnapping.and.Abduction,Dowry.Deaths,
+                                           Assault.on.women.with.intent.to.outrage.her.modesty,
+                                           Insult.to.modesty.of.Women,
+                                           Cruelty.by.Husband.or.his.Relatives,
+                                           Importation.of.Girls)))
+state_map$STATE.UT <- toupper(state_map$STATE.UT)  
+state_map$STATE.UT <- ifelse(state_map$STATE.UT == 'A & N ISLANDS',
+                             'ANDAMAN & NICOBAR ISLAND',
+                             state_map$STATE.UT)
+state_map$STATE.UT <- ifelse(state_map$STATE.UT == 'D & N HAVELI',
+                             'DADARA & NAGAR HAVELLI',
+                             state_map$STATE.UT)
+state_map$STATE.UT <- ifelse(state_map$STATE.UT == 'DELHI',
+                             'NCT OF DELHI',
+                             state_map$STATE.UT)
+state_map <- state_map[order(state_map$STATE.UT),]
+rm(xy)
+rm(x)
+rm(y)
+x <- as.character()
+y <- as.character()
+geojson <- rjson::fromJSON(file = 'states_india.geojson')
+for(i in 1:length(geojson$features)){
+  x[i] <-  geojson$features[[i]]$properties$state_code
+  y[i] <-  geojson$features[[i]]$properties$st_nm
+} 
+
+xy <- data.frame(x,y)
+xy$y <- toupper(xy$y)
+xy <- xy[order(xy$y),]
+state_map <-cbind(state_map,xy$x)
+geojson <- rjson::fromJSON(file = 'states_india.geojson')
+g <- list(
+  fitbounds = "locations",
+  visible = FALSE
+)
+fig1 <- plot_ly() 
+fig1 <- fig1 %>% add_trace(
+  type="choropleth",
+  geojson=geojson,
+  locations=state_map$`xy$x`,
+  z=state_map$`sum(...)`,
+  colorscale="OrRd",
+  featureidkey="properties.state_code",
+  text = state_map$STATE.UT
+)
+fig1 <- fig1 %>% layout(
+  geo = g
+)
+fig1 <- fig1 %>% colorbar(title = "Number Of Case")
+fig1 <- fig1 %>% layout(
+  title = "Total Cases Filed Statewise India 2001-2015"
+)
+fig1
+
+```
+
+
+* The Maximum Number of cases are from **Uttar Pradesh** followed by **Andra Pradesh and West Bengal**.
+
+* **Nagalaya** has the minimum number of cased followed by **Sikkim**
+
+* The Cental States have a higher number of cases when compared to other parts of India.
+
+
+Now we will seeing how the cases are categorised.
+```{r,echo=FALSE,warning=FALSE}
+india_ind_case <- as.data.frame(df %>%
+                                  filter(DISTRICT == 'total')  %>%
+                                  #group_by(STATE.UT) %>%
+                                  summarise(Rape = sum(Rape),
+                                            Kidnapping.and.Abduction = sum(Kidnapping.and.Abduction),
+                                            Dowry.Deaths = sum(Dowry.Deaths),
+                                            Assault.on.women.with.intent.to.outrage.her.modesty = sum(Assault.on.women.with.intent.to.outrage.her.modesty),
+                                            Insult.to.modesty.of.Women = sum(Insult.to.modesty.of.Women),
+                                            Cruelty.by.Husband.or.his.Relatives = sum(Cruelty.by.Husband.or.his.Relatives),
+                                            Importation.of.Girls = sum(Importation.of.Girls)) %>%
+                                  t())
+#names(india_ind_case)
+india_ind_case$Case <- rownames(india_ind_case)
+#colnames(india_ind_case) <- c('Case','Total')
+#colnames(india_ind_case)
+
+#library(highcharter)
+rownames(india_ind_case) <- NULL
+colnames(india_ind_case) <- c('Total','Case')
+
+#install.packages("ggpubr")
+#india_ind_case
+#View(india_ind_case)
+#names(india_ind_case)
+#library(ggpubr)
+#library(plotly)
+fig <- plot_ly(india_ind_case, labels = ~Case, values = ~Total, type = 'pie')
+fig <- fig %>% layout(title = 'Types Of Cases Againt Womens ')
+
+fig
+```
+
+* We can see that more than **41%** cases are classified under **Cruelty by Husband or his Relatives**, followed by **Assault on women with intent to outrage her modesty** with **23.3%**.
+* **Importation of Womens and Dowry Death** Hold the bottem Position of the tabel with **0.32% and 3.9%** respectively.
+
+## NOW, We will be analysis each category separately.
+
+# Rape
+
+The below graphs will give a clear understanding of Number of Rape Cases Over the years.
+
+```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+year_ind <- as.data.frame(df %>%
+                            filter(DISTRICT == 'total') %>%
+                            group_by(Year) %>% 
+                            summarise(Rape = sum(Rape),
+                                      Kidnapping.and.Abduction = sum(Kidnapping.and.Abduction),
+                                      Dowry.Deaths = sum(Dowry.Deaths),
+                                      Assault.on.women.with.intent.to.outrage.her.modesty = sum(Assault.on.women.with.intent.to.outrage.her.modesty),
+                                      Insult.to.modesty.of.Women = sum(Insult.to.modesty.of.Women),
+                                      Cruelty.by.Husband.or.his.Relatives = sum(Cruelty.by.Husband.or.his.Relatives),
+                                      Importation.of.Girls = sum(Importation.of.Girls)))
+
+#############################rape########################################
+Rape_bar <- ggplot(year_ind,aes(x = Year,y=Rape)) + 
+  geom_bar(stat = 'identity',fill = "red",col = 'black',alpha = 0.4) +
+  scale_y_continuous(limits = c(0,40000),
+                     breaks = seq(from = 0, to = 40000, by = 8000),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = Rape,label = Rape),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Rape Cases Filed') +
+  ggtitle('Number of Rape Cases Filled each Year in INDIA')
+year_ind <- as.data.frame(year_ind %>%
+                            mutate(Rape_cumsum = cumsum(Rape)))
+
+Rape_line <- ggplot(year_ind,aes(x = Year,y=cumsum(Rape),group = 1)) + 
+  geom_line(col = "light blue",size =2)+
+  geom_point(col='blue',size = 4)+
+  scale_y_continuous(limits = c(0,400000),
+                     breaks = seq(from = 0, to = 400000, by = 80000),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = Rape_cumsum,label = Rape_cumsum),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Rape Cases Filed') +
+  ggtitle('Number of Rape Cases Filled between 2001 and 2015 in INDIA')
+
+rm(yr_rp_pr_hr)
+year <- numeric()
+Per_hour <- numeric()
+
+
+for(i in 1:dim(year_ind)[1]){
+  year[i] <- as.character(year_ind$Year[i])
+  Per_hour[i] <- year_ind$Rape[i]/8760
+}
+yr_rp_pr_hr <- data.frame(year,Per_hour)
+yr_rp_pr_hr$Per_hour <- as.numeric(yr_rp_pr_hr$Per_hour)
+
+  
+plot_grid(Rape_bar,Rape_line)
+
+```
+
+* Bar Graph indicates that the cases per year keeps on increasing, **when compared to 2001 the number of cases in 2015 increased more than twice**.
+
+* Maximum number of Rape cases were filed in the year 2014, **36735** cases were filed. 
+
+* Minimum Number of Rape cases were filed in 2003 with **15357**.
+
+* Line chart indicates, this is increasing at an alarming rate with year. From 2010 to 2015 the number of cases have almost doubled.
+
+# Number Of Rape Cases Filed Per Hour In India Over Years.
+
+```{r,echo=FALSE,warning=FALSE}
+ggplot(yr_rp_pr_hr,aes(x = year,y=round(Per_hour,3))) + 
+  geom_bar(stat = 'identity',fill = "light blue",col = 'black',alpha = 0.4) +
+  scale_y_continuous(limits = c(0,5),
+                     breaks = seq(from = 0, to = 5, by = 0.5),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = year,y = round(Per_hour,3),label = round(Per_hour,3)),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Rape Cases Filed') +
+  ggtitle('Number of Rape Cases Filled per HOUR ')
+
+```
+
+We can see the number Rape of cases filed per year, in each year.     
+
+* We can see that in **2015**, around **4** cases were filed per hour, all over india.
+
+* in 2014 , more than 4 Rape cases were filed.
+
+# Kidnapping and Abduction
+
+```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+KA_bar <- ggplot(year_ind,aes(x = Year,y=Kidnapping.and.Abduction)) + 
+  geom_bar(stat = 'identity',fill = "red",col = 'black',alpha = 0.4) +
+  scale_y_continuous(limits = c(0,60000),
+                     breaks = seq(from = 0, to = 60000, by = 10000),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = Kidnapping.and.Abduction,label = Kidnapping.and.Abduction),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of  Cases Filed') +
+  ggtitle('Number of Kidnapping and Abduction Cases Filled each Year in INDIA')
+#year_ind <- as.data.frame(year_ind %>%
+                            #mutate(Rape_cumsum = cumsum(Rape)))
+#cumsum(year_ind$Kidnapping.and.Abduction)
+
+KA_line <- ggplot(year_ind,aes(x = Year,y=cumsum(Kidnapping.and.Abduction),group = 1)) + 
+  geom_line(col = "light blue",size =2)+
+  geom_point(col='blue',size = 4)+
+  scale_y_continuous(limits = c(0,420000),
+                     breaks = seq(from = 0, to = 4200000, by = 80000),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = cumsum(Kidnapping.and.Abduction),label = cumsum(Kidnapping.and.Abduction)),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Cases Filed') +
+  ggtitle('Number of Kidnapping and Abduction Cases Filled between 2001 and 2015 in INDIA')
+
+
+plot_grid(KA_bar,KA_line)
+
+```
+
+* There is a steap increse in the Number of Kidnapping and Abduction Cases Filled between 2001 and 2015. 
+
+* from around **1.5 lak in 2010 to more than 4 lak in 2015**, greater than 2 times cases over a period of 5 years 
+
+
+# Dowry Deaths
+
+```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+DD_bar <- ggplot(year_ind,aes(x = Year,y=Dowry.Deaths)) + 
+  geom_bar(stat = 'identity',fill = "red",col = 'black',alpha = 0.4) +
+  scale_y_continuous(limits = c(0,9000),
+                     breaks = seq(from = 0, to = 9000, by = 2000),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = Dowry.Deaths,label = Dowry.Deaths),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Cases Filed') +
+  ggtitle('Number of Dowry Death Cases Filled each Year in INDIA')
+#year_ind <- as.data.frame(year_ind %>%
+#mutate(Rape_cumsum = cumsum(Rape)))
+#cumsum(year_ind$Dowry.Deaths)
+
+DD_line <- ggplot(year_ind,aes(x = Year,y=cumsum(Dowry.Deaths),group = 1)) + 
+  geom_line(col = "light blue",size =2)+
+  geom_point(col='blue',size = 4)+
+  scale_y_continuous(limits = c(0,120000),
+                     breaks = seq(from = 0, to = 1200000, by = 30000),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = cumsum(Dowry.Deaths),label = cumsum(Dowry.Deaths)),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Cases Filed') +
+  ggtitle('Number of Dowry Death Cases Filled between 2001 and 2015 in INDIA')
+
+
+plot_grid(DD_bar,DD_line)
+
+```
+
+
+* From The Graph we can see that Dowry Death has been **more or less constant over** the years, since many laws has been implemented it still remains the same.
+
+
+# Assault on women with intent to outrage her modesty
+
+
+```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+AW_bar <- ggplot(year_ind,aes(x = Year,y=Assault.on.women.with.intent.to.outrage.her.modesty)) + 
+  geom_bar(stat = 'identity',fill = "red",col = 'black',alpha = 0.4) +
+  scale_y_continuous(limits = c(0,85000),
+                     breaks = seq(from = 0, to = 85000, by = 12000),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = Assault.on.women.with.intent.to.outrage.her.modesty,label = Assault.on.women.with.intent.to.outrage.her.modesty),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Cases Filed') +
+  ggtitle('Number of Assault on women Cases Filled each Year in INDIA')
+#year_ind <- as.data.frame(year_ind %>%
+#mutate(Rape_cumsum = cumsum(Rape)))
+#cumsum(year_ind$Assault.on.women.with.intent.to.outrage.her.modesty)
+
+AW_line <- ggplot(year_ind,aes(x = Year,y=cumsum(Assault.on.women.with.intent.to.outrage.her.modesty),group = 1)) + 
+  geom_line(col = "light blue",size =2)+
+  geom_point(col='blue',size = 4)+
+  scale_y_continuous(limits = c(0,700000),
+                     breaks = seq(from = 0, to = 700000, by = 120000),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = cumsum(Assault.on.women.with.intent.to.outrage.her.modesty),label = cumsum(Assault.on.women.with.intent.to.outrage.her.modesty)),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Cases Filed') +
+  ggtitle('Number of Assault on women Cases Filled between 2001 and 2015 in INDIA')
+
+
+plot_grid(AW_bar,AW_line)
+
+```
+
+* We can see there was a sudden increase in the number of cases **after 2012**, and the trend been continuing.
+
+* It should be noted that **Sexual Harassment of Women at Workplace (Po. evention, Prohibition and Redressal) Act, 2013** passed in 2013.
+
+# Insult to modesty of Women
+
+
+
+```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+###############################Insult.to.modesty.of.Women
+#names(year_ind)
+#year_ind$Insult.to.modesty.of.Women
+AW_bar <- ggplot(year_ind,aes(x = Year,y=Insult.to.modesty.of.Women)) + 
+  geom_bar(stat = 'identity',fill = "red",col = 'black',alpha = 0.4) +
+  scale_y_continuous(limits = c(0,14000),
+                     breaks = seq(from = 0, to = 14000, by = 2500),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = Insult.to.modesty.of.Women,label = Insult.to.modesty.of.Women),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Cases Filed') +
+  ggtitle('Number of Insult to modesty of Women Cases Filled each Year in INDIA')
+#year_ind <- as.data.frame(year_ind %>%
+#mutate(Rape_cumsum = cumsum(Rape)))
+#cumsum(year_ind$Insult.to.modesty.of.Women)
+
+AW_line <- ggplot(year_ind,aes(x = Year,y=cumsum(Insult.to.modesty.of.Women),group = 1)) + 
+  geom_line(col = "light blue",size =2)+
+  geom_point(col='blue',size = 4)+
+  scale_y_continuous(limits = c(0,160000),
+                     breaks = seq(from = 0, to = 160000, by = 30000),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = cumsum(Insult.to.modesty.of.Women),label = cumsum(Insult.to.modesty.of.Women)),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Cases Filed') +
+  ggtitle('Number of Insult to modesty of Women Cases Filled between 2001 and 2015 in INDIA')
+
+
+plot_grid(AW_bar,AW_line)
+```
+
+* Similar to **Dowry Death**, this graph is also a constant one. With **Steady number of cases** every year.
+
+
+# Cruelty by Husband or his Relatives
+
+
+
+```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+################################Cruelty.by.Husband.or.his.Relatives
+
+#names(year_ind)
+#year_ind$Cruelty.by.Husband.or.his.Relatives
+HR_bar <- ggplot(year_ind,aes(x = Year,y=Cruelty.by.Husband.or.his.Relatives)) + 
+  geom_bar(stat = 'identity',fill = "red",col = 'black',alpha = 0.4) +
+  scale_y_continuous(limits = c(0,125000),
+                     breaks = seq(from = 0, to = 125000, by = 30000),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = Cruelty.by.Husband.or.his.Relatives,label = Cruelty.by.Husband.or.his.Relatives),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Cases Filed') +
+  ggtitle('Number of Cruelty by Husband or his Relatives Cases Filled each Year in INDIA')
+#year_ind <- as.data.frame(year_ind %>%
+#mutate(Rape_cumsum = cumsum(Rape)))
+#cumsum(year_ind$Cruelty.by.Husband.or.his.Relatives)
+
+HR_line <- ggplot(year_ind,aes(x = Year,y=cumsum(Cruelty.by.Husband.or.his.Relatives),group = 1)) + 
+  geom_line(col = "light blue",size =2)+
+  geom_point(col='blue',size = 4)+
+  scale_y_continuous(limits = c(0,1300000),
+                     breaks = seq(from = 0, to = 1300000, by = 200000),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = cumsum(Cruelty.by.Husband.or.his.Relatives),label = cumsum(Cruelty.by.Husband.or.his.Relatives)),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Cases Filed') +
+  ggtitle('Number of Cruelty by Husband or his Relatives Cases Filled between 2001 and 2015 in INDIA')
+
+
+plot_grid(HR_bar,HR_line)
+
+
+
+```
+
+* We know from the above pie chat that **41%** of total cases belong to this category.
+* After 2005, there is a steady increase in the number of cases till 2015.
+* In 2015, The number of **Cruelty by Husband or his Relatives** cases filed across india is **13**
+
+# 
+
+
+```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+###############################Importation.of.Girls
+#names(year_ind)
+#year_ind %>%
+  #select(Importation.of.Girls,Year)
+IG_bar <- ggplot(year_ind,aes(x = Year,y=Importation.of.Girls)) + 
+  geom_bar(stat = 'identity',fill = "red",col = 'black',alpha = 0.4) +
+  scale_y_continuous(limits = c(0,160),
+                     breaks = seq(from = 0, to = 160, by = 30),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = Importation.of.Girls,label = Importation.of.Girls),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Cases Filed') +
+  ggtitle('Number of Importation of Girls Cases Filled each Year in INDIA')
+#year_ind <- as.data.frame(year_ind %>%
+#mutate(Rape_cumsum = cumsum(Rape)))
+#cumsum(year_ind$Importation.of.Girls)
+
+IG_line <- ggplot(year_ind,aes(x = Year,y=cumsum(Importation.of.Girls),group = 1)) + 
+  geom_line(col = "light blue",size =2)+
+  geom_point(col='blue',size = 4)+
+  scale_y_continuous(limits = c(0,1000),
+                     breaks = seq(from = 0, to = 1000, by = 200),
+                     labels = scales::comma) + theme_bw()+
+  geom_label_repel(aes(x = Year,y = cumsum(Importation.of.Girls),label = cumsum(Importation.of.Girls)),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +scale_fill_discrete(name = 'Type Of Case') +
+  xlab('Year') +
+  ylab('Number of Cases Filed') +
+  ggtitle('Number of Importation of Girls Cases Filled over 2001-15 in INDIA')
+
+
+plot_grid(IG_bar,IG_line)
+
+```
+
+* We can see the number of cases filed in this category has been decreasing over the years. and in **2015 only 6** cases were filed under this category.
+
+* The Highest Number of cases were filed in **2005 about 148 cases**.
+
+
+
+We cannot come to a conclusing that all these cases were true, But still seeing the number of cases applied, which seems to be very high.
+
+
+We Will be seeing a depth analysis of case againt womens in Tamil Nadu, District wise in Future post.
+
+
+# Thank You
+
+
+
+
+
+
+
+
+
+
+
+
+

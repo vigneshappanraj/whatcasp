@@ -6,10 +6,22 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 24 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Crime Against Womens in India</title>
+      <link>/post/crime-against-womens-in-india/</link>
+      <pubDate>Mon, 01 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/crime-against-womens-in-india/</guid>
+      <description>Cases Against Womens In IndiaIn this discriptive analysis we will be looking into CRime Against Womens that are filed dataset from data.gov.in.
+This data type consist of different types of complains against womens in India from 2001 to 2015.
+Columns in dataset:
+## [1] &amp;quot;STATE.UT&amp;quot; ## [2] &amp;quot;DISTRICT&amp;quot; ## [3] &amp;quot;Year&amp;quot; ## [4] &amp;quot;Rape&amp;quot; ## [5] &amp;quot;Kidnapping.and.Abduction&amp;quot; ## [6] &amp;quot;Dowry.Deaths&amp;quot; ## [7] &amp;quot;Assault.</description>
+    </item>
     
     <item>
       <title>Regression Project, Part - 4, Variable Selection Methord. </title>
