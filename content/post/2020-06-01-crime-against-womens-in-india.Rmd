@@ -24,6 +24,14 @@ library(rjson)
 
 # Cases Against Womens In India
 
+# *Key Findings*
+
+* *4 Rape cases were filed per hour in India*
+* *13 "Cruelty by Husband or his Relatives" cases filed per hour in India*
+* *Average Number of crimes Against women per year is : 194586*
+* *41% cases are classified under "Cruelty by Husband or his Relatives"*
+
+
 In this discriptive analysis we will be looking into CRime Against Womens that are filed dataset from [data.gov.in](https://data.gov.in/).
 
 This data type consist of different types of complains against womens in India from 2001 to 2015.

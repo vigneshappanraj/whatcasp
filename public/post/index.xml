@@ -17,10 +17,7 @@
       <pubDate>Mon, 01 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/crime-against-womens-in-india/</guid>
-      <description>Cases Against Womens In IndiaIn this discriptive analysis we will be looking into CRime Against Womens that are filed dataset from data.gov.in.
-This data type consist of different types of complains against womens in India from 2001 to 2015.
-Columns in dataset:
-## [1] &amp;quot;STATE.UT&amp;quot; ## [2] &amp;quot;DISTRICT&amp;quot; ## [3] &amp;quot;Year&amp;quot; ## [4] &amp;quot;Rape&amp;quot; ## [5] &amp;quot;Kidnapping.and.Abduction&amp;quot; ## [6] &amp;quot;Dowry.Deaths&amp;quot; ## [7] &amp;quot;Assault.</description>
+      <description>Cases Against Womens In IndiaKey Findings4 Rape cases were filed per hour in India13 Cruelty by Husband or his Relatives per hour in IndiaAverage Number of crimes Against women per year is : 19458641% cases are classified under “Cruelty by Husband or his Relatives”In this discriptive analysis we will be looking into CRime Against Womens that are filed dataset from data.</description>
     </item>
     
     <item>
@@ -114,30 +111,6 @@ Simple Linear RegressionMultiple Linear RegressionLogistic RegressionRidge Re
 67% of TV Shows never made to Second Season.
 Only 6% TV Shows have more than 5 Seasons
 Netflix and Chill, That famous saying, So netflix has entertaining us for almost a decade now.</description>
-    </item>
-    
-    <item>
-      <title>Whatsapp Chat Data Analysis</title>
-      <link>/post/checking-post/</link>
-      <pubDate>Mon, 11 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/post/checking-post/</guid>
-      <description>AboutThe Whole Idea about this analysis, is to Understand about the persons chatting behavior and finding pattern in Whatsapp Messaging
-In this we will be analysing the chat between two persons
-From the below chart we can clearly see the number of messages sent each day
-The Total number of messages were : 5733 
-Number of messages sent by each persons:</description>
-    </item>
-    
-    <item>
-      <title>Hello R Markdown</title>
-      <link>/post/hello-r-markdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
-      
-      <guid>/post/hello-r-markdown/</guid>
-      <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
     </item>
     
   </channel>
