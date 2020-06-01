@@ -27,7 +27,7 @@ library(rjson)
 # *Key Findings*
 
 * *4 Rape cases were filed per hour in India*
-* *13 Cruelty by Husband or his Relatives per hour in India*
+* *13 "Cruelty by Husband or his Relatives" cases filed per hour in India*
 * *Average Number of crimes Against women per year is : 194586*
 * *41% cases are classified under "Cruelty by Husband or his Relatives"*
 
