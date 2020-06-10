@@ -1,0 +1,172 @@
+---
+title: COVID-19, Tamil Nadu, Live Update
+author: Vignesh A
+date: '2020-06-11'
+slug: covid-19-tamil-nadu-live-update
+categories: []
+tags: []
+---
+
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+library(rgdal)
+library(tidyverse)
+library(leaflet)
+library(ggplot2)
+library(ggrepel)
+library(cowplot)
+```
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
+rm(nycounties)
+nycounties <- rgdal::readOGR("https://raw.githubusercontent.com/covid19india/covid19india-react/master/public/maps/tamilnadu.json")
+csv <- read.csv('https://api.covid19india.org/csv/latest/district_wise.csv')
+dist_daily <- csv %>%
+  filter(State_Code == 'TN') %>%
+  select(District,Confirmed,Active,Delta_Confirmed,Delta_Recovered)
+colnames(dist_daily) <- c('district','Cases','Active','Today','Today_rec')
+nycounties <- merge(nycounties,dist_daily,by = 'district')
+state_daily <- read.csv('https://api.covid19india.org/csv/latest/state_wise_daily.csv')
+#head(state_daily)
+
+#View(state_daily)
+state_daily <- state_daily[,c(1,2,35)]
+#names(state_daily)
+state_daily$Date <- as.character(state_daily$Date)
+state_daily$Date <- as.Date(state_daily$Date, '%d-%b-%y')
+
+
+
+```
+
+## **COVID-19 TAMIL NADU** 
+(last update : `r Sys.time()`)
+
+## Total Number of cases : **`r state_daily %>%filter(Status =='Confirmed') %>%summarise(sum(TN)) `**
+
+### Total Number of cases in Tamil Nadu - DISTRICT WISE
+
+```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+bins1 <- c(0, 50, 100, 200, 300, 400, 500, 1000, 10000,20000,30000,Inf)
+pal1 <- colorBin("Reds",domain = nycounties$Cases,bins = bins1)
+leaflet(nycounties) %>%
+  setView(lng = 78.63, lat = 11.12, zoom = 7) %>%
+  #addTiles() %>%
+  addPolygons(stroke = TRUE, 
+              weight = 2,
+              #popup = cat(paste("District:", nycounties$district,'\n',
+                           # "Today:", nycounties$Today)), 
+              #label = ~cat(nycounties$district,':',nycounties$Case,'\nTotal:',nycounties$Total),
+              smoothFactor = 0.3, fillOpacity = 2,
+              fillColor = ~pal1(Cases),
+              color = "black ", opacity = 10,
+              label = ~paste0(district, ": ", formatC(Cases, big.mark = ","),
+                              "\n",'Today :',formatC(Today,big.mark = ',')),
+              labelOptions = labelOptions(noHide = F, textsize='15px')) %>% 
+  addLegend(pal = pal1, values = ~Cases, opacity = 0.7, title = NULL,position = "bottomright")
+
+```
+
+```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+state_daily_line <- state_daily %>%
+  filter(Status == 'Confirmed',between(Date,Sys.Date()-20,Sys.Date())) %>%
+  ggplot(aes(x=Date,y = cumsum(TN))) +
+  geom_line(col = "pink",size =2)+
+  geom_point(col='red',size = 4)+
+  ylab('Number of Cases') +
+  xlab('Date') +
+  ggtitle("Daywise cases in TN ")+
+  #scale_x_continuous(limits = c(2008,2020),
+  #                   breaks = seq(from = 2008, to = 2019, by = 1)) + 
+  theme_bw()+
+  geom_label_repel(aes(label = cumsum(TN)),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50')
+  
+state_daily_bar <- state_daily %>%
+  filter(Status == 'Confirmed',between(Date,Sys.Date()-7,Sys.Date())) %>%
+  ggplot(aes(x=Date,y=TN)) + 
+  geom_bar(fill = 'blue',color ='black',alpha = .4,stat = 'identity',width = 0.4) +
+  ylab('Number of Cases') +
+  xlab('Date') +
+  ggtitle("Number of Cases in last 7 Days ")+
+  #scale_x_continuous(limits = c(2008,2020),
+   #                  breaks = seq(from = 2008, to = 2019, by = 1)) + 
+  scale_x_date(date_breaks = "1 day")+
+  theme_bw()+
+  geom_label_repel(aes(label = TN),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50')
+
+
+
+plot_grid(state_daily_line,state_daily_bar)
+
+```
+
+
+### Active Cases in Tamil Nadu - District Wise
+
+```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+bins <- c(0,10,20, 50, 100, 200,500, 1000, 2000,10000,Inf)
+pal <- colorBin("Blues",domain = nycounties$Cases,bins = bins)
+
+
+leaflet(nycounties) %>%
+  setView(lng = 78.63, lat = 11.12, zoom = 7) %>%
+  #addTiles() %>%
+  addPolygons(stroke = TRUE, 
+              weight = 2,
+              smoothFactor = 0.3, fillOpacity = 2,
+              fillColor = ~pal(Active),
+              color = "black ", opacity = 10,
+              label = ~paste0(district, ": ", formatC(Active, big.mark = ",")),
+              labelOptions = labelOptions(noHide = F, textsize='15px')) %>% 
+  addLegend(pal = pal, values = ~Active, opacity = 0.7, title = NULL,position = "bottomright")
+
+
+```
+
+
+### Number of People Recovered : **`r state_daily %>%filter(Status == 'Recovered') %>%summarise(sum(TN))` **
+
+```{r,echo=FALSE,warning=FALSE}
+
+state_daily %>%
+  filter(Status == 'Recovered',between(Date,Sys.Date()-7,Sys.Date())) %>%
+  ggplot(aes(x=Date,y=TN)) + 
+  geom_bar(fill = 'green',color ='black',alpha = .4,stat = 'identity',width = 0.4) +
+  ylab('Number of Recovery') +
+  xlab('Date') +
+  ggtitle("Number of Recovery in last 7 Days ")+
+  #scale_x_continuous(limits = c(2008,2020),
+  #                  breaks = seq(from = 2008, to = 2019, by = 1)) + 
+  scale_x_date(date_breaks = "1 day")+
+  theme_bw()+
+  geom_label_repel(aes(label = TN),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50')
+
+```
+
+
+### TOTAL NUMBER OF DECEASED : **`r state_daily %>%filter(Status == 'Deceased') %>%summarise(sum(TN))`**
+
+```{r,echo=FALSE,warning=FALSE}
+state_daily %>%
+  filter(Status == 'Deceased',between(Date,Sys.Date()-7,Sys.Date())) %>%
+  ggplot(aes(x=Date,y=TN)) + 
+  geom_bar(fill = 'red',color ='black',alpha = .4,stat = 'identity',width = 0.4) +
+  ylab('Number of Deceased') +
+  xlab('Date') +
+  ggtitle("Number of Deceased in last 7 Days ")+
+  #scale_x_continuous(limits = c(2008,2020),
+  #                  breaks = seq(from = 2008, to = 2019, by = 1)) + 
+  scale_x_date(date_breaks = "1 day")+
+  theme_bw()+
+  geom_label_repel(aes(label = TN),box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50')
+```
+
+
+
+
