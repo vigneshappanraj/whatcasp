@@ -18,13 +18,13 @@ library(cowplot)
 ```{r,echo=FALSE,warning=FALSE}
 rm(nycounties)
 nycounties <- rgdal::readOGR("tamilnadu.json")
-csv <- read.csv('https://api.covid19india.org/csv/latest/district_wise.csv')
+csv <- read.csv('district_wise.csv')
 dist_daily <- csv %>%
   filter(State_Code == 'TN') %>%
   select(District,Confirmed,Active,Delta_Confirmed,Delta_Recovered)
 colnames(dist_daily) <- c('district','Cases','Active','Today','Today_rec')
 nycounties <- merge(nycounties,dist_daily,by = 'district')
-state_daily <- read.csv('https://api.covid19india.org/csv/latest/state_wise_daily.csv')
+state_daily <- read.csv('state_wise_daily.csv')
 #head(state_daily)
 
 #View(state_daily)
