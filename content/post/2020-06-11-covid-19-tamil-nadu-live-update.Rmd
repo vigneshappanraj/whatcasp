@@ -15,9 +15,9 @@ library(ggplot2)
 library(ggrepel)
 library(cowplot)
 ```
-```{r,echo=FALSE,warning=FALSE,include=FALSE}
+```{r,echo=FALSE,warning=FALSE}
 rm(nycounties)
-nycounties <- rgdal::readOGR("https://raw.githubusercontent.com/covid19india/covid19india-react/master/public/maps/tamilnadu.json")
+nycounties <- rgdal::readOGR("tamilnadu.json")
 csv <- read.csv('https://api.covid19india.org/csv/latest/district_wise.csv')
 dist_daily <- csv %>%
   filter(State_Code == 'TN') %>%
