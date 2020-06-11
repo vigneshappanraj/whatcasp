@@ -40,7 +40,12 @@ state_daily$Date <- as.Date(state_daily$Date, '%d-%b-%y')
 ## **COVID-19 TAMIL NADU** 
 (last update : `r Sys.time()`)
 
-## Total Number of cases : **`r state_daily %>%filter(Status =='Confirmed') %>%summarise(sum(TN)) `**
+## Total Number of cases : **`r csv %>% filter(State_Code == 'TN') %>% summarise(sum(Confirmed)) `**
+### Today increase : **+`r dist_daily %>% summarise(sum(Today))`**
+
+
+
+
 
 ### Total Number of cases in Tamil Nadu - DISTRICT WISE
 
@@ -105,6 +110,9 @@ plot_grid(state_daily_line,state_daily_bar)
 
 ### Active Cases in Tamil Nadu - District Wise
 
+## Active Cases in TN: **`r csv %>% filter(State_Code == 'TN') %>% summarise(sum(Active))`**
+
+
 ```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
 bins <- c(0,10,20, 50, 100, 200,500, 1000, 2000,10000,Inf)
 pal <- colorBin("Blues",domain = nycounties$Cases,bins = bins)
@@ -126,7 +134,8 @@ leaflet(nycounties) %>%
 ```
 
 
-### Number of People Recovered : **`r state_daily %>%filter(Status == 'Recovered') %>%summarise(sum(TN))` **
+## Number of People Recovered : **`r state_daily %>%filter(Status == 'Recovered') %>%summarise(sum(TN))` **
+### Today Recovered : **+`r tail(state_daily %>%filter(Status == 'Recovered') %>% select(TN),1)`**
 
 ```{r,echo=FALSE,warning=FALSE}
 
@@ -148,8 +157,8 @@ state_daily %>%
 ```
 
 
-### TOTAL NUMBER OF DECEASED : **`r state_daily %>%filter(Status == 'Deceased') %>%summarise(sum(TN))`**
-
+## TOTAL NUMBER OF DECEASED : **`r state_daily %>%filter(Status == 'Deceased') %>%summarise(sum(TN))`**
+### Today Deseased : **+`r tail(state_daily %>%filter(Status == 'Deceased') %>% select(TN),1)`**
 ```{r,echo=FALSE,warning=FALSE}
 state_daily %>%
   filter(Status == 'Deceased',between(Date,Sys.Date()-7,Sys.Date())) %>%
