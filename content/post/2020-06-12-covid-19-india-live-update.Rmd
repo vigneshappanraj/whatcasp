@@ -1,0 +1,148 @@
+---
+title: COVID-19, India, Live Update
+author: Vignesh A
+date: '2020-06-12'
+slug: covid-19-india-live-update
+categories: []
+tags: []
+---
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+library(xts)
+library(dygraphs)
+library(plotly)
+library(scales)
+library(ggplot2)
+library(ggrepel)
+library(tidyverse)
+library(leaflet)
+```
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
+test <- read.csv('https://api.covid19india.org/csv/latest/state_wise.csv')
+colnames(test) <- c("ST_NM","Confirmed","Recovered","Deaths" ,"Active","Last_Updated_Time"
+                    ,"Migrated_Other"  ,  "State_code"  ,      "Delta_Confirmed"  
+                    ,"Delta_Recovered"  , "Delta_Deaths",      "State_Notes")
+nycounties <- rgdal::readOGR("india_states.geojson")
+test$ST_NM <- as.character(test$ST_NM)
+test$ST_NM <- ifelse(test$ST_NM == 'Jammu and Kashmir',"Jammu & Kashmir",test$ST_NM)
+test$ST_NM <- ifelse(test$ST_NM == 'Dadra and Nagar Haveli and Daman and Diu',"Daman & Diu",test$ST_NM)
+test$ST_NM <- ifelse(test$ST_NM == 'Andaman and Nicobar Islands',"Andaman & Nicobar Island",test$ST_NM)
+test$ST_NM <- ifelse(test$ST_NM == 'Delhi',"NCT of Delhi",test$ST_NM)
+
+
+india <- sp::merge(nycounties,test,by = 'ST_NM')
+bins <- c( 0,500,600,700,800,900, 1000, 2000,3000,4000,5000,6000,7000,8000,10000,15000,20000,25000,30000,Inf)
+pal1 <- colorBin("Reds",domain = nycounties$Cases,bins = bins)
+labels <- sprintf(
+  '<strong>%s</strong><br/>
+  <b>Total Cases</b>:<b style="color:#F70D1A">%g</b><br/>
+  <b>Today:</b> <b style="color:#F70D1A">+ %g </b><br/>
+  <b>Active :</b> <b style="color:#F70D1A">%g</b><br/>
+  <b>Death :</b> <b style="color:#F70D1A">%g</b> ',
+  india$ST_NM, india$Confirmed, india$Delta_Confirmed,india$Active,india$Deaths
+) %>% 
+  lapply(htmltools::HTML)
+
+
+
+```
+
+# COVID-19 INDIA LIVE UPDATE
+Last Update : `r Sys.time()`
+
+### Number Of cases in India : **`r test %>% filter(ST_NM == 'Total') %>%select(Confirmed)`**
+Today : **+`r test %>% filter(ST_NM == 'Total') %>%select(Delta_Confirmed)` **
+
+
+### Number of Active Cases : **`r test %>% filter(ST_NM == 'Total') %>%select(Active)`**
+
+
+### Number of Recovered : **`r test %>% filter(ST_NM == 'Total') %>%select(Recovered)`**
+Today : **+`r test %>% filter(ST_NM == 'Total') %>%select(Delta_Recovered)`**
+
+
+### Number of Deceased : **`r test %>% filter(ST_NM == 'Total') %>%select(Deaths)`**
+ Today : **+`r test %>% filter(ST_NM == 'Total') %>%select(Delta_Deaths)`**
+
+## STATE-WISE
+
+```{r,echo=FALSE,warning=FALSE}
+leaflet(india) %>%
+  #setView(lng = 78.96, lat = 20.59, zoom = 4) %>%
+  addPolygons(stroke = TRUE, 
+              weight = 2,
+              smoothFactor = 0.3, fillOpacity = 2,
+              fillColor = ~pal1(Active),
+              color = "black ", opacity = 10,
+              label = labels,
+              highlight = highlightOptions(weight = 2,
+                                           color = "white",
+                                           fillOpacity = 0.3,
+                                           bringToFront = TRUE),
+              labelOptions = labelOptions(noHide = F, textsize='15px'))
+```
+
+```{r,echo=FALSE,warning=FALSE}
+knitr::kable(test[-1,c("ST_NM","Confirmed","Recovered","Active","Deaths" )])
+```
+
+
+```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+india_daily <- read.csv('https://api.covid19india.org/csv/latest/state_wise_daily.csv')
+
+india_daily <- india_daily[,c(1,2,3)]
+
+
+india_daily$Date <- as.Date(india_daily$Date, '%d-%b-%y')
+cnf <- india_daily %>% 
+  filter(Status == "Confirmed",between(Date,Sys.Date()-60,Sys.Date()) ) %>%
+  select(Date,TT)
+
+rec <- india_daily %>% 
+  filter(Status == "Recovered",between(Date,Sys.Date()-60,Sys.Date()) ) %>%
+  select(Date,TT)
+dec <- india_daily %>% 
+  filter(Status == "Deceased",between(Date,Sys.Date()-60,Sys.Date()) ) %>%
+  select(Date,TT)
+
+crd <- cbind(cnf,rec,dec)
+
+crd <- crd[,c(1,2,4,6)]
+names(crd) <- c('Date','Confirmed','Recovered','Deceased')
+dygraph(xts(x = crd[,-1],order.by = crd$Date),
+        main = "Confirmed , Recovered and Deceased Count Day-Wise",
+        ylab = "Number of cases / Day",
+        xlab = 'Date') %>%
+  dySeries("Confirmed",drawPoints = TRUE,pointSize = 3, label = "Confirmed",color = 'red') %>%
+  dySeries("Recovered",drawPoints = TRUE,pointSize = 3, label = "Recovered",color = 'green') %>%
+  dySeries("Deceased",drawPoints = TRUE,pointSize = 3, label = "Deceased") %>%
+  dyOptions(stackedGraph = TRUE) %>%
+  dyRangeSelector(height = 40)
+
+```
+* Adjust the date slider for data between particular dates *
+
+
+
+
+
+
+```{r,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6.5,out.width='100%'}
+cumsum_crd <- crd %>%
+  mutate(TotalC = cumsum(Confirmed),TotalR = cumsum(Recovered),
+         TotalD = cumsum(Deceased)) %>%
+  select(Date,TotalC,TotalR,TotalD)
+
+dygraph(xts(x = cumsum_crd[,-1],order.by = cumsum_crd$Date),
+        main = "Confirmed , Recovered and Deceased Count",
+        ylab = "Number of cases",
+        xlab = 'Date') %>%
+  dySeries("TotalC",drawPoints = TRUE,pointSize = 3, label = "Confirmed",color = 'red') %>%
+  dySeries("TotalR",drawPoints = TRUE,pointSize = 3, label = "Recovered",color = 'green') %>%
+  dySeries("TotalD",drawPoints = TRUE,pointSize = 3, label = "Deceased") %>%
+  dyOptions(stackedGraph = TRUE) %>%
+  dyRangeSelector(height = 40)
+
+```
+
+* Adjust the date slider for data between particular dates *
