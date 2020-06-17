@@ -17,6 +17,30 @@ library(tidyverse)
 library(leaflet)
 ```
 
+**COVID-19 affects different people in different ways. Most infected people will develop mild to moderate illness and recover without hospitalization.**
+
+Most common symptoms:
+
+1. fever
+2. dry cough
+3. tiredness
+4. Less common symptoms:
+5. aches and pains
+6. sore throat
+7. diarrhoea
+8. conjunctivitis
+9. headache
+10. loss of taste or smell
+11. a rash on skin, or discolouration of fingers or toes
+
+
+For informational purposes only. Consult your local medical authority for advice.
+
+
+
+
+
+
 ```{r,echo=FALSE,warning=FALSE,include=FALSE}
 test <- read.csv('https://api.covid19india.org/csv/latest/state_wise.csv')
 colnames(test) <- c("ST_NM","Confirmed","Recovered","Deaths" ,"Active","Last_Updated_Time"
