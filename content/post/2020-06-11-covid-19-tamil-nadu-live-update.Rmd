@@ -204,8 +204,8 @@ dygraph(xts(cumsum_tncrd[,c(2,5)],order.by = cumsum_tncrd$Date)) %>%
   dyRangeSelector(dateWindow = c(cumsum_tncrd$Date[length(cumsum_tncrd$Date)]-20,
                                  cumsum_tncrd$Date[length(cumsum_tncrd$Date)])) %>%
   dyCSScool() %>%
-  dyLegend(show = 'follow') %>%
-  dy
+  dyLegend(show = 'follow') 
+
 
 
 ```
