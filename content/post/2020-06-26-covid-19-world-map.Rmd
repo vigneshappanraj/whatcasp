@@ -1,0 +1,230 @@
+---
+title: COVID-19, World Map
+author: Vignesh A
+date: '2020-06-26'
+slug: covid-19-world-map
+categories: []
+tags: []
+---
+
+
+
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+
+library(leaflet)
+library(tidyverse)
+library(covid19.analytics)
+```
+
+
+
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+
+df <- read.csv("https://query.data.world/s/u5uwzgonz2rvtrmdkbtmgssnzviqaw", header=TRUE, stringsAsFactors=FALSE);
+
+rm(daily)
+
+daily <- as.data.frame(df %>%
+  select(REPORT_DATE,PEOPLE_POSITIVE_NEW_CASES_COUNT,PEOPLE_DEATH_COUNT) %>%
+  group_by(REPORT_DATE) %>%
+  summarise(Conformed = sum(PEOPLE_POSITIVE_NEW_CASES_COUNT),
+            Deceased = sum(PEOPLE_DEATH_COUNT))%>%
+    mutate(CC = cumsum(Conformed), CD = cumsum(Deceased))
+  ) 
+
+
+
+library(xts)
+library(dygraphs)
+library(magrittr)
+library(lubridate)
+
+daily$REPORT_DATE <- mdy(daily$REPORT_DATE)
+
+daily
+
+dyCSScool <- function(dygraph){
+  
+  dygraph$x$css <- '
+  .dygraph-legend {
+  width: auto !important;
+  min-width: 150px;
+  color: white;
+  background-color: #BABABA !important;
+  padding-left:5px;
+  border-color:#BABABA;
+  border-style:solid;
+  border-width:thin;
+  transition:0s 4s;
+  z-index: 80 !important;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, .3);
+  border-radius: 3px;
+  }
+  
+  .dygraph-legend:hover{
+  transform: translate(-110%);
+  transition: 0s;
+  }
+  
+  .dygraph-legend > span {
+  color: black;
+  padding-left:5px;
+  padding-right:2px;
+  margin-left:-5px;
+  background-color: white !important;
+  display: block;
+  }
+  
+  .dygraph-legend > span:first-child {
+  margin-top:2px;
+  }
+  
+  .dygraph-legend > span > span{
+  display: inline;
+  }
+  
+  .highlight {
+  border-left: 2px solid #BABABA;
+  padding-left:3px !important;
+  }
+  '
+  dygraph
+}
+
+
+
+library(dygraphs)
+
+
+
+
+dygraph(xts(daily[,c(4,5)],order.by = daily$REPORT_DATE)) %>%
+  dySeries("CC",drawPoints = TRUE,pointSize = 3, label = "Deceased",color = 'red') %>%
+  dySeries("CD",label = "Confirmed",color = '#000000', stepPlot = TRUE, fillGraph = TRUE) %>%
+  dyOptions(stackedGraph = FALSE,
+            fillGraph = TRUE,
+            drawPoints = TRUE,
+            pointSize = 3,
+            maxNumberWidth = 10,
+            mobileDisableYTouch = TRUE) %>%
+  dyRangeSelector() %>%
+  dyCSScool() %>%
+  dyLegend(show = 'follow') %>%
+  dyAxis(name = "y")
+
+
+```
+
+
+
+
+
+
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
+covid19.all.datasets <- covid19.data("ALL")
+data <- covid19.data("aggregated")
+data$Country_Region <- as.character(data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Antigua and Barbuda','Antigua and Barb.',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Bosnia and Herzegovina','Bosnia and Herz.',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Cabo Verde','Cape Verde',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Central African Republic','Central African Rep.',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Dominican Republic','Dominican Rep.',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Equatorial Guinea','Eq. Guinea',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Sao Tome and Principe','SÃ£o TomÃ© and Principe',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Taiwan*','Taiwan',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'US','United States',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Western Sahara','W. Sahara',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Burma','Myanmar',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'West Bank and Gaza','Palestine',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'South Sudan','S. Sudan',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Saint Vincent and the Grenadines','St. Vin. and Gren.',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Saint Kitts and Nevis','St. Kitts and Nevis',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'North Macedonia','Macedonia',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Korea, South','Korea',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Eswatini','Swaziland',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Czechia','Czech Rep.',data$Country_Region)
+data$Country_Region <- ifelse(data$Country_Region == 'Congo (Kinshasa)','Dem. Rep. Congo',data$Country_Region)
+
+
+daily_cont <- as.data.frame(data %>%
+  select(Country_Region,Confirmed,Deaths,Recovered,Active) %>%
+  group_by(Country_Region) %>%
+  summarise(Confirmed = sum(Confirmed),
+            Death = sum(Deaths),
+            Recovered = sum(Recovered),
+            Active = sum(Active)))
+
+```
+
+
+
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+colnames(daily_cont)[1] <- 'name'
+rm(nycounties)
+nycounties <- rgdal::readOGR("custom.geo.json")
+nycounties <- sp::merge(nycounties,daily_cont,by = 'name')
+bins1 <- c(0,500,1000,5000,10000,20000,50000,100000,200000,500000,700000,1000000,Inf)
+pal1 <- colorBin("Blues",domain = nycounties$Confirmed,bins = bins1)
+labels <- sprintf(
+  '<strong>%s</strong><br/>
+  <b>Total Cases</b>:<b style="color:#F70D1A">%g</b><br/>
+  <b>Recovered:</b> <b style="color:#F70D1A">+ %g </b><br/>
+  <b>Active :</b> <b style="color:#F70D1A">%g</b><br/>
+  <b>Death :</b> <b style="color:#F70D1A">%g</b> ',
+  nycounties$name, nycounties$Confirmed, nycounties$Recovered,nycounties$Active,nycounties$Death
+) %>% 
+  lapply(htmltools::HTML)
+
+
+```
+
+
+
+```{r,echo=FALSE,warning=FALSE}
+leaflet(nycounties) %>%
+  setView(lng = 80.2087, lat = 13.0677, zoom = 2) %>%
+  addPolygons(stroke = TRUE, 
+              weight = 2,
+              smoothFactor = 0.3, fillOpacity = 2,
+              fillColor = ~pal1(Confirmed),
+              color = "black ", opacity = 10,
+              label = labels,
+              highlight = highlightOptions(weight = 2,
+                                           color = "white",
+                                           fillOpacity = 0.3,
+                                           bringToFront = TRUE),
+              labelOptions = labelOptions(noHide = F, textsize='15px'))
+```
+
+
+
+```{r}
+library(plotly)
+live.map(covid19.data("ts-confirmed"))
+
+
+```
+
+
+
+
+
+```{r,echo=FALSE,warning=FALSE,}
+
+
+dygraph(xts(daily[,c(4,5)],order.by = daily$REPORT_DATE)) %>%
+  dySeries("CC",drawPoints = TRUE,pointSize = 3, label = "Deceased",color = 'red') %>%
+  dySeries("CD",label = "Confirmed",color = '#000000', stepPlot = TRUE, fillGraph = TRUE) %>%
+  dyOptions(stackedGraph = FALSE,
+            fillGraph = TRUE,
+            drawPoints = TRUE,
+            pointSize = 3,
+            maxNumberWidth = 10,
+            mobileDisableYTouch = TRUE) %>%
+  dyRangeSelector() %>%
+  dyCSScool() %>%
+  dyLegend(show = 'follow') %>%
+  dyAxis(name = "y")
+```
+
