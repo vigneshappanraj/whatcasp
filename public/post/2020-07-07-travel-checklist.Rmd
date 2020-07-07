@@ -10,6 +10,7 @@ tags: []
 
 
 ```{r,include=FALSE,echo=FALSE,warning=FALSE}
+library(tidyverse)
 library(leaflet)
 library(leafpop)
 library(sf)
@@ -32,8 +33,9 @@ leafIcons <- icons(
 )
   images = combined$Image
 
-l <- leaflet() %>%
+leaflet() %>%
     setView(78.9629,20.5937,5) %>%
+    addProviderTiles("Esri.NatGeoWorldMap") %>%
     #addTiles() %>%
     #addAwesomeMarkers(lng = lng,lat = lat, icon=icons, label = combined$Place) %>%
     addMarkers(lng = lng,lat = lat, group = "points",label = combined$Place,
@@ -42,8 +44,8 @@ l <- leaflet() %>%
     addPopupImages(image = images,group = "points", width = 400) %>%
     addControl(html = html_legend, position = "bottomleft")
     
-l %>%
-      addProviderTiles("Esri.NatGeoWorldMap")
+
+      
 
 
 
