@@ -1,0 +1,56 @@
+---
+title: Travel Checklist
+author: Vignesh A
+date: '2020-07-07'
+slug: travel-checklist
+categories: []
+tags: []
+---
+
+
+
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+library(leaflet)
+library(leafpop)
+library(sf)
+```
+
+```{r,echo=FALSE,warning=FALSE}
+combined <- read.csv('combined.csv')
+lng <- combined$Lon
+lat <- combined$Lat
+if (interactive()) {
+  
+combined$Image <- as.character(combined$Image)
+combined$Status <- as.character(combined$Status)
+html_legend <- "<img src='https://i.ibb.co/pngSjxr/icons8-marker-40-1.png'> - Yet to Visit<br/><img src='https://i.ibb.co/JRjN7v4/icons8-marker-40.png'> - Visited"
+leafIcons <- icons(
+  iconUrl = ifelse( combined$Status == 'yet_to',
+                    "https://i.ibb.co/q0StmBH/icons8-marker-100.png",
+                    "https://i.ibb.co/T1QxhJQ/icons8-marker-100-1.png"),
+  iconWidth = 38, iconHeight = 50
+)
+  images = combined$Image
+
+l <- leaflet() %>%
+    setView(78.9629,20.5937,5) %>%
+    #addTiles() %>%
+    #addAwesomeMarkers(lng = lng,lat = lat, icon=icons, label = combined$Place) %>%
+    addMarkers(lng = lng,lat = lat, group = "points",label = combined$Place,
+               labelOptions = labelOptions(noHide = F, textsize = "15px"),
+               icon = leafIcons) %>%
+    addPopupImages(image = images,group = "points", width = 400) %>%
+    addControl(html = html_legend, position = "bottomleft")
+    
+l %>%
+      addProviderTiles("Esri.NatGeoWorldMap")
+
+
+
+  
+  
+  # NOTE the gif animation
+}
+
+```
+
