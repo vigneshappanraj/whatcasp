@@ -20,8 +20,6 @@ library(sf)
 combined <- read.csv('combined.csv')
 lng <- combined$Lon
 lat <- combined$Lat
-if (interactive()) {
-  
 combined$Image <- as.character(combined$Image)
 combined$Status <- as.character(combined$Status)
 html_legend <- "<img src='https://i.ibb.co/pngSjxr/icons8-marker-40-1.png'> - Yet to Visit<br/><img src='https://i.ibb.co/JRjN7v4/icons8-marker-40.png'> - Visited"
@@ -31,8 +29,13 @@ leafIcons <- icons(
                     "https://i.ibb.co/T1QxhJQ/icons8-marker-100-1.png"),
   iconWidth = 38, iconHeight = 50
 )
-  images = combined$Image
+images = combined$Image
 
+
+    
+```
+
+```{r, echo=FALSE,warning=FALSE}
 leaflet() %>%
     setView(78.9629,20.5937,5) %>%
     addProviderTiles("Esri.NatGeoWorldMap") %>%
@@ -41,18 +44,7 @@ leaflet() %>%
     addMarkers(lng = lng,lat = lat, group = "points",label = combined$Place,
                labelOptions = labelOptions(noHide = F, textsize = "15px"),
                icon = leafIcons) %>%
-    addPopupImages(image = images,group = "points", width = 400) %>%
-    addControl(html = html_legend, position = "bottomleft")
-    
-
-      
-
-
-
-  
-  
-  # NOTE the gif animation
-}
-
+    addPopupImages(image = images,group = "points", width = 300,height = 300) %>%
+    addControl(html = html_legend)
 ```
 
