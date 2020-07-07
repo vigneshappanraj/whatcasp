@@ -8,6 +8,35 @@ tags: []
 ---
 
 
+## Why one should travel ?
+
+
+
+
+
+
+
+*“It is better to travel well than to arrive.”*
+
+*“A mind that is stretched by a new experience can never go back to its old dimensions.”*
+
+*“Travel makes one modest, you see what a tiny place you occupy in the world.”*
+
+*“Never get so busy making a living that you forget to make a life.”*
+
+*“Traveling – it leaves you speechless, then turns you into a storyteller.”*
+
+*“Travel isn’t always pretty. It isn’t always comfortable. Sometimes it hurts, it even breaks your heart. But that’s OK. The journey changes you; it should change you. It leaves marks on your memory, on your consciousness, on your heart, and on your body. You take something with you. Hopefully, you leave something good behind.”*
+
+*“To awaken quite alone in a strange town is one of the most pleasant sensations in the world.”*
+
+
+
+
+THE PLACES I HAVE VISITED AND YET TO VISIT
+
+
+
 
 ```{r,include=FALSE,echo=FALSE,warning=FALSE}
 library(tidyverse)
@@ -37,7 +66,7 @@ images = combined$Image
 
 ```{r, echo=FALSE,warning=FALSE}
 leaflet() %>%
-    setView(78.9629,20.5937,5) %>%
+    setView(77.9629,13.5937,5) %>%
     addProviderTiles("Esri.NatGeoWorldMap") %>%
     #addTiles() %>%
     #addAwesomeMarkers(lng = lng,lat = lat, icon=icons, label = combined$Place) %>%
