@@ -1,0 +1,399 @@
+---
+title: Whatsapp Chat Data Analysis
+author: Vignesh
+date: '2020-07-24'
+slug: checking-post
+categories: Descriptive
+tags: []
+---
+  
+# About 
+  
+  The Whole Idea about this analysis, is to Understand about the persons chatting behavior and finding pattern in Whatsapp Messaging
+
+*In this we will be analysing the chat between two persons*
+  
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+library(rwhatsapp)
+library(lubridate)
+library("ggplot2"); theme_set(theme_minimal())
+library("lubridate")
+library(tidyverse)
+library(sqldf)
+library(radarchart)
+library(plotly)
+library(wordcloud)
+library(wordcloud2)
+library(stopwords)
+
+#Cleanign data for word cloud#
+
+library(SnowballC)
+#Creating corpus for word cloud 
+library(corpus)
+library(tm)
+library(ggimage)
+library(dygraphs)
+library(xts)
+library(dplyr)
+library(tidyr)
+
+
+```
+
+
+```{r,include=FALSE,echo=FALSE,warning=FALSE}
+dyCSScool <- function(dygraph){
+  
+  dygraph$x$css <- '
+  .dygraph-legend {
+  width: auto !important;
+  min-width: 150px;
+  color: white;
+  background-color: #BABABA !important;
+  padding-left:5px;
+  border-color:#BABABA;
+  border-style:solid;
+  border-width:thin;
+  transition:0s 4s;
+  z-index: 80 !important;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, .3);
+  border-radius: 3px;
+  }
+  
+  .dygraph-legend:hover{
+  transform: translate(-110%);
+  transition: 0s;
+  }
+  
+  .dygraph-legend > span {
+  color: black;
+  padding-left:5px;
+  padding-right:2px;
+  margin-left:-5px;
+  background-color: white !important;
+  display: block;
+  }
+  
+  .dygraph-legend > span:first-child {
+  margin-top:2px;
+  }
+  
+  .dygraph-legend > span > span{
+  display: inline;
+  }
+  
+  .highlight {
+  border-left: 2px solid #BABABA;
+  padding-left:3px !important;
+  }
+  '
+  dygraph
+}
+
+```
+
+
+
+
+**From the below chart we can clearly see the number of messages sent each day**
+  
+  
+```{r echo=FALSE,warning=FALSE}
+chat<- rwa_read('WhatsApp Chat with Sekaru TSM.txt')
+whsum <- as.data.frame(chat %>%mutate(day = date(time)) %>%count(day))
+colnames(whsum)[2] <- 'No.of.Msg'
+dyBarChart <- function(dygraph) {
+  dyPlotter(dygraph = dygraph,
+            name = "BarChart",
+            path = system.file("plotters/barchart.js",
+                               package = "dygraphs"))
+}
+
+dygraph(xts(whsum$No.of.Msg,order.by = whsum$day)) %>%
+  dyBarChart() %>%
+  dySeries(drawPoints = TRUE,pointSize = 3, label = "Number Of Messages",color = '#FD7070') %>%
+  dyRangeSelector(dateWindow = c(whsum$day[length(whsum$day)]-50,whsum$day[length(whsum$day)])) %>%
+  dyCSScool() %>%
+  dyLegend(show = 'follow') 
+```
+
+```{r echo=FALSE,warning=FALSE}
+df<-as.data.frame(chat)
+df <- df[,-4]
+df <-na.omit(df)
+df$day <- weekdays(df$time)
+df$date<- as.Date(df$time)
+df$hour <-hour(df$time)
+#colnames(df)
+chat_participants<- as.data.frame(df %>% 
+                                    select('author',) %>% 
+                                    unique())
+#print(paste('total numer of chats : ',count(df)))
+```
+The Total number of messages were : **`r count(df)`** 
+  
+  Number of messages sent by each persons:
+```{r echo=FALSE,warning=FALSE}
+each_auth_no_of_message <- select(df,'author') %>% count(author)
+for(i in 1:dim(each_auth_no_of_message)){
+  print(paste('Number of messages sent by ',each_auth_no_of_message$author[i],'is',each_auth_no_of_message$n[i]))
+}
+
+```
+
+
+
+```{r echo=FALSE,warning=FALSE}
+count_per_date <- as.data.frame(df %>% 
+                                  select(date,day) %>%
+                                  count(date) )
+count_per_date$day <- weekdays(count_per_date$date)
+
+average_count_per_day <- sqldf("SELECT day,  avg(n) as mean_Y1 FROM count_per_date GROUP BY day")
+colnames(average_count_per_day) <- c('Day_of_a_Week','Average_No_of_Msg')
+average_count_per_day <- average_count_per_day %>%
+  arrange(desc(round(Average_No_of_Msg)))
+average_count_per_day$Average_No_of_Msg <-round(average_count_per_day$Average_No_of_Msg)
+
+
+#head(average_count_per_day,1)
+
+#print(paste('Most number of messages are sent on',average_count_per_day$day[1],'with average of',average_count_per_day$mean[1],'messages'))
+```
+
+From the below graph we can able to find the average number of messages sent per day.
+
+```{r echo=FALSE,warning=FALSE}
+average_count_per_day$Day_of_a_Week<-ordered(average_count_per_day$Day_of_a_Week,levels = c("Sunday", 
+                                                                        "Monday", 
+                                                                        "Tuesday", 
+                                                                        "Wednesday", 
+                                                                        "Thursday", 
+                                                                        "Friday",
+                                                                        "Saturday"))
+average_count_per_day <- average_count_per_day %>%
+  arrange(Day_of_a_Week)
+chartJSRadar(average_count_per_day,
+             main = 'Average words per day',
+             showLegend = FALSE,
+             polyAlpha = 0.2,
+             lineAlpha = 5)
+```
+
+
+```{r echo=FALSE,warning=FALSE}
+number_of_msg_per_day <- as.data.frame(select(df,date) %>%count(date))
+#print(paste('Average number of messages sent per day :',round(mean(number_of_msg_per_day$n))))
+
+```
+
+Average Number of Messages sent per day **`r round(mean(number_of_msg_per_day$n))`**
+  
+```{r echo=FALSE,warning=FALSE}
+for(i in 1:dim(chat_participants)[1]){
+  cat <- df %>% 
+    filter(author == as.character(chat_participants[i,])) %>% 
+    count(date) %>%
+    summarise(mean(n))
+  print(paste('Average number of text sent by',chat_participants$author[i],'per day is',round(cat$`mean(n)`[1])))
+  
+}
+
+```
+
+
+```{r echo=FALSE,warning=FALSE}
+max_msg_on <- as.data.frame(select(df,date) %>%count(date) %>%
+                              arrange(desc(n)) %>% head(1))
+min_msg_on <- as.data.frame(select(df,date) %>%count(date) %>%
+                              arrange(desc(n)) %>% tail(1))
+#print(paste('Maximum number of message sent was ', max_msg_on$n[1],'on',max_msg_on$date[1]))
+#print(paste('Minimum number of message sent was ', min_msg_on$n[1],'on',min_msg_on$date[1]))
+```
+
+Maximum number of message sent was **`r max_msg_on$n[1]`** on **`r max_msg_on$date[1]`**
+  
+  Minimum number of message sent was **`r min_msg_on$n[1]`** on **`r min_msg_on$date[1]`**
+  
+  **Maximum number of messages by each person**
+```{r echo=FALSE,warning=FALSE}
+for(i in 1:dim(chat_participants)[1]){
+  cat <- df %>% 
+    filter(author == as.character(chat_participants[i,])) %>% 
+    count(date) %>%
+    arrange(desc(n))
+  print(paste('maximum number of text sent by',chat_participants$author[i],'is',cat$n[i],"on",cat$date[i]))
+  
+}
+```
+
+**Average Number of Messages Per Hour can be found from below graph**
+  
+```{r echo=FALSE,warning=FALSE}
+hourly_msg <- df %>%
+  select(hour,date)%>%
+  count(hour,date) %>%
+  group_by(hour)%>%
+  summarise(round(a_mean = mean(n)))%>%
+  arrange(desc(-hour)) 
+colnames(hourly_msg) <- c('Hours_in_a_day','Average_Number_Of_Messages')
+#hourly_msg
+
+pl <- ggplot(hourly_msg,aes(x=Hours_in_a_day,y=Average_Number_Of_Messages)) +
+  geom_bar(stat='identity',fill = 'pink',colour ='black' )+ theme(legend.position = "none") +
+  ggtitle('Average Messages Per Hour')
+
+
+ggplotly(pl)
+
+```
+```{r echo=FALSE,warning=FALSE}
+max_msg <- function(data) sapply(data, max,na.rm=TRUE)
+#print(paste('The busiest hour is',
+# hourly_msg %>%
+#  arrange(desc(Average_Number_Of_Messages)) %>% 
+# head(1) %>% 
+# select(Hours_in_a_day),'with',
+#max_msg(df %>%
+#      select(hour,date)%>%
+#     count(hour,date) %>%
+#    group_by(hour)%>%
+#   summarise(a_mean = round(mean(n)))%>%
+#    arrange(desc(-hour)) %>% select(a_mean)),'average messages'))
+
+```
+
+From the above Graph we can see the busies Hour is **`r hourly_msg %>% arrange(desc(Average_Number_Of_Messages)) %>%head(1) %>% select(Hours_in_a_day)`** with **`r max_msg(df %>%select(hour,date)%>% count(hour,date) %>% group_by(hour) %>% summarise(a_mean = round(mean(n))) %>% arrange(desc(-hour)) %>% select(a_mean))`** average messages
+
+```{r echo=FALSE,warning=FALSE}
+cloud_tweet <- df
+cloud_tweet$text <- iconv(cloud_tweet$text, from = 'UTF-8', to = 'ASCII//TRANSLIT')
+
+corpus <- VCorpus(VectorSource(cloud_tweet$text))
+#as.character(corpus[[33]])
+removeURL <- content_transformer(function(x) gsub("(f|ht)tp(s?)://\\S+", "", x, perl=T))
+corpus <- tm_map(corpus, removeURL)
+#as.character(corpus[[33]])
+toSpace <- content_transformer(function (x , pattern ) gsub(pattern, " ", x))
+corpus <- tm_map(corpus, toSpace, "/")
+#as.character(corpus[[33]])
+corpus <- tm_map(corpus, toSpace, "@")
+#as.character(corpus[[46]])
+corpus <- tm_map(corpus, toSpace, "\\|")
+#as.character(corpus[[33]])
+to_corpus <- tm_map(corpus, toSpace, "\\|")
+corpus <- tm_map(corpus,removeWords, stopwords())
+corpus <- tm_map(corpus,content_transformer(tolower))
+#as.character(corpus[[1]])
+corpus <- tm_map(corpus,removeWords, c('dha','media','omitted'))
+corpus <- tm_map(corpus,removePunctuation)
+#as.character(corpus[[1]])
+corpus <- tm_map(corpus,removeNumbers)
+#as.character(corpus[[3]])
+#as.character(corpus[[1]])
+corpus <- tm_map(corpus,stripWhitespace)
+#as.character(corpus[[1]])
+cleaned_text <-data.frame(text=unlist(sapply(corpus, `[`, "content")), stringsAsFactors=F)
+
+cleaned_text$author <- df$author
+dtm <- TermDocumentMatrix(corpus)
+m <- as.matrix(dtm)
+v <- sort(rowSums(m),decreasing=TRUE)
+d <- data.frame(word = names(v),freq=v)
+rownames(d) <- c()
+colnames(d) <- c('Word','Occurance')
+#print('most used words are')
+#print(head(d, 10))
+
+```
+**The Most Used Words are**
+```{r echo=FALSE,warning=FALSE}
+top10 <- head(d, 10)
+knitr :: kable(top10)
+```
+
+# **The WordCloud **
+## greater the size, greater the word used
+```{r echo=FALSE,warning=FALSE}
+pal <- brewer.pal(12,'Set3')
+#wordcloud(corpus, min.freq = 100, max.words = Inf,width =1000,heigt = 1000,random.order = FALSE,colors = pal)
+wordcloud2(d, size = 1.5)
+```
+
+
+
+
+
+
+**TOP 10 Words used by each person**
+  
+  
+```{r echo=FALSE,warning=FALSE}
+for(i in 1:dim(chat_participants)[1]){
+  cleaned_text %>%
+    filter(author == chat_participants[i,]) %>%
+    select(text)
+  corpus <- VCorpus(VectorSource(cleaned_text %>%
+                                   filter(author == chat_participants[i,]) %>%
+                                   select(text)))
+  dtm <- TermDocumentMatrix(corpus)
+  m <- as.matrix(dtm)
+  v <- sort(rowSums(m),decreasing=TRUE)
+  d <- data.frame(word = names(v),freq=v)
+  rownames(d)<-c()
+  d$percentage <- round(d$freq/sum(d$freq)*100,2)
+  print(paste('top ten words used by',
+              chat_participants[i,],':'))
+  colnames(d) <- c('Word','Occurance','Percentage')
+  print(head(d, 5))
+  
+  print(paste('the most used word by',
+              chat_participants[i,],'is : ',head(d,5)[1,1]))
+}
+```
+
+
+
+**The most Used emorji**
+  
+```{r echo=FALSE,warning=FALSE}
+emoji_data <- rwhatsapp::emojis %>% # data built into package
+  mutate(hex_runes1 = gsub("\\s[[:alnum:]]+", "", hex_runes)) %>% # ignore combined emojis
+  mutate(emoji_url = paste0("https://abs.twimg.com/emoji/v2/72x72/", 
+                            tolower(hex_runes1), ".png"))
+pl1<- chat %>%
+  unnest(emoji) %>%
+  count(emoji, sort = TRUE) %>%
+  top_n(n = 6, n) %>%
+  left_join(emoji_data, by = "emoji") %>%
+  ggplot(aes(x = reorder(emoji, n), y = n, fill = emoji)) +
+  geom_col(show.legend = FALSE) +
+  ylab("") +
+  xlab("") +
+  coord_flip() +
+  geom_image(aes(y = n + 20, image = emoji_url)) +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+pl2 <- chat %>%
+  unnest(emoji) %>%
+  count(author, emoji, sort = TRUE) %>%
+  group_by(author) %>%
+  top_n(n = 6, n) %>%
+  left_join(emoji_data, by = "emoji") %>% 
+  ggplot(aes(x = reorder(emoji, n), y = n, fill = author)) +
+  geom_col(show.legend = FALSE) +
+  ylab("") +
+  xlab("") +
+  coord_flip() +
+  geom_image(aes(y = n + 20, image = emoji_url)) +
+  facet_wrap(~author, ncol = 2, scales = "free_y") +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+pl1  
+pl2
+
+```
+
+
+# Thank You
