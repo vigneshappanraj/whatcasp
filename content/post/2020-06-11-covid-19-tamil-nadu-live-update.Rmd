@@ -81,7 +81,7 @@ Most common symptoms:
 1. fever
 2. dry cough
 3. tiredness
-4. Less common symptoms:
+4. Less common symptoms
 5. aches and pains
 6. sore throat
 7. diarrhoea
@@ -210,6 +210,50 @@ dygraph(xts(cumsum_tncrd[,c(2,5)],order.by = cumsum_tncrd$Date)) %>%
 
 ```
 * Adjust the date slider for data between particular dates *
+
+
+## Active cases day wise
+
+```{r,echo=FALSE,warning=FALSE,fig.width=6,fig.height=3}
+
+df <- read.csv('https://api.covid19india.org/csv/latest/state_wise_daily.csv')
+date <- unique(df$Date)
+rm(act)
+rm(dat)
+act <- NULL
+dat <- NULL
+dat <- unique(df$Date)
+for(i in 1:length(date)){
+  act[i] <- as.numeric(df %>% 
+    filter(Date == date[i]) %>% 
+    select(Status,Date,TN) %>%
+    mutate(Active = TN[1] - TN[2]-TN[3]) %>%
+    select(Active) %>%
+    unique())
+}
+active <- cbind(as.data.frame(dat),as.data.frame(act))
+active$dat <- as.Date(active$dat,'%d-%b-%y')
+active <- as.data.frame(active %>%
+  mutate(cumsum = cumsum(act)))
+
+dygraph(xts(active$cumsum,order.by = active$dat)) %>%
+  dySeries(drawPoints = TRUE,pointSize = 3, label = "Total active",color = 'blue') %>%
+  dyOptions(stackedGraph = FALSE,
+            fillGraph = TRUE,
+            drawPoints = TRUE,
+            pointSize = 3,
+            mobileDisableYTouch = TRUE) %>%
+  dyRangeSelector(dateWindow = c(active$dat[length(active$dat)]-80,
+                                 active$dat[length(active$dat)])) %>%
+  dyCSScool() %>%
+  dyLegend(show = 'follow')
+
+
+
+
+```
+
+
 
 ## Recovered cases day wise
 

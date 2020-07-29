@@ -211,6 +211,50 @@ dygraph(xts(cumsum_crd[,c(2,5)],order.by = cumsum_crd$Date)) %>%
 ```
 * Adjust the date slider for data between particular dates *
 
+## Active cases day Wise (Cumulative)
+
+```{r,echo=FALSE,warning=FALSE,fig.width=6,fig.height=3}
+df <- read.csv('https://api.covid19india.org/csv/latest/state_wise_daily.csv')
+date <- unique(df$Date)
+rm(act1)
+rm(dat1)
+act1 <- NULL
+dat1 <- NULL
+dat1 <- unique(df$Date)
+
+for(i in 1:length(date)){
+  act1[i] <- as.numeric(df %>% 
+                         filter(Date == date[i]) %>% 
+                         select(Status,Date,TT) %>%
+                         mutate(Active = TT[1] - TT[2]-TT[3]) %>%
+                         select(Active) %>%
+                         unique())
+}
+
+active <- cbind(as.data.frame(dat1),as.data.frame(act1))
+active$dat1 <- as.Date(active$dat1,'%d-%b-%y')
+active <- as.data.frame(active %>%
+                          mutate(cumsum = cumsum(act1)))
+
+dygraph(xts(active$cumsum,order.by = active$dat1)) %>%
+  dySeries(drawPoints = TRUE,pointSize = 3, label = "Total active",color = 'blue') %>%
+  dyOptions(stackedGraph = FALSE,
+            fillGraph = TRUE,
+            drawPoints = TRUE,
+            pointSize = 3,
+            mobileDisableYTouch = TRUE) %>%
+  dyRangeSelector(dateWindow = c(active$dat1[length(active$dat1)]-80,
+                                 active$dat1[length(active$dat1)])) %>%
+  dyCSScool() %>%
+  dyLegend(show = 'follow')
+
+```
+
+
+
+
+
+
 
 
 ## Recovered cases day wise
