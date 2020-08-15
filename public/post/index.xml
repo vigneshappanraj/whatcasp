@@ -159,5 +159,16 @@ Simple Linear RegressionMultiple Linear RegressionLogistic RegressionRidge Re
 Netflix and Chill, That famous saying, So netflix has entertaining us for almost a decade now.</description>
     </item>
     
+    <item>
+      <title>Untitled</title>
+      <link>/post/untitled/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/post/untitled/</guid>
+      <description>GitHub DocumentsThis is an R Markdown format used for publishing markdown documents to GitHub. When you click the Knit button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+Including CodeYou can include R code in the document as follows:
+summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.</description>
+    </item>
+    
   </channel>
 </rss>
