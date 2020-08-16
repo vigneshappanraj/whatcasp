@@ -1,0 +1,26 @@
+---
+title: Machine Learning Model Selection - Cheat Sheet
+author: Vignesh A
+date: '2020-08-16'
+slug: machine-learning-model-selection-cheat-sheet
+categories: []
+tags: []
+---
+
+# Model Selection.
+
+
+* But the time consumed for creating for all these models can cause real problems, in order to solve these thing and more or less to find a well suitable model. SKlean has a cheet sheet that saves a lot time in selecting a model.
+
+* from the below diagram you can see the various constaints for selection a model on basic of dataset.
+
+
+![](https://scikit-learn.org/stable/_static/ml_map.png)
+
+* This is a series of post where we will be trying various machine leaernig models, first on the next we will be learning how to approach a machine learning a problem.
+
+
+# Thank You.
+
+
+

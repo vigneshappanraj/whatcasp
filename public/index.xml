@@ -12,6 +12,17 @@
     
     
     <item>
+      <title>Machine Learning Model Selection - Cheat Sheet</title>
+      <link>/post/machine-learning-model-selection-cheat-sheet/</link>
+      <pubDate>Sun, 16 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/machine-learning-model-selection-cheat-sheet/</guid>
+      <description>Model Selection.But the time consumed for creating for all these models can cause real problems, in order to solve these thing and more or less to find a well suitable model. SKlean has a cheet sheet that saves a lot time in selecting a model.
+from the below diagram you can see the various constaints for selection a model on basic of dataset.
+This is a series of post where we will be trying various machine leaernig models, first on the next we will be learning how to approach a machine learning a problem.</description>
+    </item>
+    
+    <item>
       <title>Whatsapp Chat Data Analysis</title>
       <link>/post/checking-post/</link>
       <pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate>

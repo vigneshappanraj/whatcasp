@@ -3,17 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/post/machine-learning-model-selection-cheat-sheet/</loc>
+    <lastmod>2020-08-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2020-08-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/categories/</loc>
     <lastmod>2020-07-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/categories/descriptive/</loc>
-    <lastmod>2020-07-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
     <lastmod>2020-07-24T00:00:00+00:00</lastmod>
   </url>
   
