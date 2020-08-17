@@ -1,7 +1,7 @@
 ---
 title: COVID-19, India, Live Update
 author: Vignesh A
-date: '2020-06-12'
+date: '2020-08-17'
 slug: covid-19-india-live-update
 categories: []
 tags: []

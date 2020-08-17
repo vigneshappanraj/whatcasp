@@ -1,7 +1,7 @@
 ---
 title: COVID-19, Tamil Nadu, Live Update
 author: Vignesh A
-date: '2020-06-11'
+date: '2020-08-17'
 slug: covid-19-tamil-nadu-live-update
 categories: []
 tags: []
