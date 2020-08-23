@@ -14,7 +14,7 @@
     <item>
       <title>COVID-19, India, Live Update</title>
       <link>/post/covid-19-india-live-update/</link>
-      <pubDate>Mon, 17 Aug 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 23 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/covid-19-india-live-update/</guid>
       <description>COVID-19 affects different people in different ways. Most infected people will develop mild to moderate illness and recover without hospitalization.
@@ -25,12 +25,23 @@ feverdry coughtirednessLess common symptoms:aches and painssore throatdiar
     <item>
       <title>COVID-19, Tamil Nadu, Live Update</title>
       <link>/post/covid-19-tamil-nadu-live-update/</link>
-      <pubDate>Mon, 17 Aug 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 23 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/covid-19-tamil-nadu-live-update/</guid>
       <description>COVID-19 affects different people in different ways. Most infected people will develop mild to moderate illness and recover without hospitalization.
 Most common symptoms:
 feverdry coughtirednessLess common symptomsaches and painssore throatdiarrhoeaconjunctivitisheadacheloss of taste or smella rash on skin, or discolouration of fingers or toesFor informational purposes only.</description>
+    </item>
+    
+    <item>
+      <title>How To Approach A Machine Learning Model</title>
+      <link>/post/how-to-approach-a-machine-learning-model/</link>
+      <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/how-to-approach-a-machine-learning-model/</guid>
+      <description>How To Approach A Machine Learning ModelThis is just a short one , about how we are going to proceed in future posts. In this post we will be looking how we can proceed any machine learning model, form our previous post we can select a model appropriate to data we have.
+Once the model is selected, we should approch the model in following way.
+From the above image we can see the step by step we will be following in the upcoming posts, we will be expaining all the steps in details in Python.</description>
     </item>
     
     <item>
