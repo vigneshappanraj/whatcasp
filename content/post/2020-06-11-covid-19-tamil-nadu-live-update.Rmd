@@ -111,7 +111,7 @@ state_daily <- read.csv('https://api.covid19india.org/csv/latest/state_wise_dail
 #head(state_daily)
 
 #View(state_daily)
-state_daily <- state_daily[,c(1,2,35)]
+state_daily <- state_daily[,c(1,3,36)]
 #names(state_daily)
 state_daily$Date <- as.character(state_daily$Date)
 state_daily$Date <- as.Date(state_daily$Date, '%d-%b-%y')

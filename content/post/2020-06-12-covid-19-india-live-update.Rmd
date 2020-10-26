@@ -172,7 +172,7 @@ knitr::kable(test[-1,c("ST_NM","Confirmed","Recovered","Active","Deaths" )])
 ```{r,echo=FALSE,warning=FALSE,fig.width=6,fig.height=3}
 india_daily <- read.csv('https://api.covid19india.org/csv/latest/state_wise_daily.csv')
 
-india_daily <- india_daily[,c(1,2,3)]
+india_daily <- india_daily[,c(1,3,4)]
 
 
 india_daily$Date <- as.Date(india_daily$Date, '%d-%b-%y')
