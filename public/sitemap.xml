@@ -3,6 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/categories/</loc>
+    <lastmod>2020-08-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/covid-19-dashboard/</loc>
+    <lastmod>2020-08-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/covid-19-india-live-update/</loc>
     <lastmod>2020-08-23T00:00:00+00:00</lastmod>
   </url>
@@ -28,8 +38,8 @@
   </url>
   
   <url>
-    <loc>/categories/</loc>
-    <lastmod>2020-07-24T00:00:00+00:00</lastmod>
+    <loc>/categories/python/</loc>
+    <lastmod>2020-08-16T00:00:00+00:00</lastmod>
   </url>
   
   <url>

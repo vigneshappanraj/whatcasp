@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on </title>
+    <link>/categories/python/</link>
+    <description>Recent content in Python on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Sun, 16 Aug 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Machine Learning Model Selection - Cheat Sheet</title>
+      <link>/post/machine-learning-model-selection-cheat-sheet/</link>
+      <pubDate>Sun, 16 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/machine-learning-model-selection-cheat-sheet/</guid>
+      <description>Model Selection.But the time consumed for creating for all these models can cause real problems, in order to solve these thing and more or less to find a well suitable model. SKlean has a cheet sheet that saves a lot time in selecting a model.
+from the below diagram you can see the various constaints for selection a model on basic of dataset.
+This is a series of post where we will be trying various machine leaernig models, first on the next we will be learning how to approach a machine learning a problem.</description>
+    </item>
+    
+  </channel>
+</rss>

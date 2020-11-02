@@ -35,7 +35,7 @@ canonifyurls    = true
   authorAvatar = "img/vikki.jpg"
   authorLocation = "India"
   authorWebsite = "https://github.com/madeye28"
-  authorDescription = "யாதும் ஊரே யாவரும் கேளிர் "
+  authorDescription = "Live, let Live"
 
   pageNotFoundTitle = "404 - Page not found"
 
@@ -50,14 +50,31 @@ canonifyurls    = true
   url = "/"
   weight = 200
 
+
 [[menu.main]]
   name = "Post"
   url = "/post/"
   weight = 200
+
+
 
 [[menu.main]]
   name = "Twitter"
   url = "https://twitter.com/AppanrajVignesh"
   weight = 95
 
+[[menu.main]]
+  name = "COVID-19 Dashboard"
+  url = "/categories/COVID-19 Dashboard/"
+  weight = 99
 
+
+[[menu.main]]
+  name = "Python"
+  url = "/categories/Python/"
+  weight = 99
+
+[[menu.main]]
+  name = "R"
+  url = "/categories/r/"
+  weight = 99
