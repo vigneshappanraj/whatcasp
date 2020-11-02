@@ -3,7 +3,7 @@ title: Netflix Movie and TV Show Data Analysis
 author: A Vignesh
 date: '2020-05-13'
 slug: netflix-movie-and-tv-show-data-analysis
-categories: []
+categories: ["R"]
 tags: []
 ---
 ```{r,include=FALSE,echo=FALSE,warning=FALSE}

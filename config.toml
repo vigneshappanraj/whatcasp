@@ -76,5 +76,5 @@ canonifyurls    = true
 
 [[menu.main]]
   name = "R"
-  url = "/categories/r/"
+  url = "/categories/R/"
   weight = 99

@@ -3,7 +3,7 @@ title: 'Regression Project, Part - 5, Ridge, Lasso and Elastic Net Regression '
 author: Vignesh A
 date: '2020-05-24'
 slug: regression-project-part-5-ridge-lasso-and-elastic-net-regression
-categories: []
+categories: ["R"]
 tags: []
 ---
 # Shrinkage Methods in Linear Regression

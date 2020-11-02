@@ -28,17 +28,22 @@
   </url>
   
   <url>
+    <loc>/categories/r/</loc>
+    <lastmod>2020-08-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/how-to-approach-a-machine-learning-model/</loc>
     <lastmod>2020-08-18T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/machine-learning-model-selection-cheat-sheet/</loc>
-    <lastmod>2020-08-16T00:00:00+00:00</lastmod>
+    <loc>/categories/python/</loc>
+    <lastmod>2020-08-18T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/python/</loc>
+    <loc>/post/machine-learning-model-selection-cheat-sheet/</loc>
     <lastmod>2020-08-16T00:00:00+00:00</lastmod>
   </url>
   

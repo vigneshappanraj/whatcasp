@@ -3,7 +3,7 @@ title: 'Regression Project, Part - 4, Variable Selection Methord. '
 author: A Vignesh
 date: '2020-05-24'
 slug: regression-project-part-4-variable-selection-methord
-categories: []
+categories: ["R"]
 tags: []
 ---
 ```{r,include=FALSE,echo=FALSE,warning=FALSE}

@@ -3,7 +3,7 @@ title: COVID-19, India, Live Update
 author: Vignesh A
 date: '2020-08-23'
 slug: covid-19-india-live-update
-categories: ["COVID-19 Dashboard"]
+categories: ["COVID-19 Dashboard",'R']
 tags: []
 ---
 ```{r,include=FALSE,echo=FALSE,warning=FALSE}

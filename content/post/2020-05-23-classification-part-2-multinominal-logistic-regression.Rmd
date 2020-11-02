@@ -3,7 +3,7 @@ title: Classification, Part - 2, Multinominal logistic Regression.
 author: Vignesh A
 date: '2020-05-23'
 slug: classification-part-2-multinominal-logistic-regression
-categories: []
+categories: ["R"]
 tags: []
 ---
 
