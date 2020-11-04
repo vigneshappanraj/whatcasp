@@ -33,5 +33,119 @@ Most common symptoms:
 feverdry coughtirednessLess common symptomsaches and painssore throatdiarrhoeaconjunctivitisheadacheloss of taste or smella rash on skin, or discolouration of fingers or toesFor informational purposes only.</description>
     </item>
     
+    <item>
+      <title>Whatsapp Chat Data Analysis</title>
+      <link>/post/checking-post/</link>
+      <pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/checking-post/</guid>
+      <description>AboutThe Whole Idea about this analysis, is to Understand about the persons chatting behavior and finding pattern in Whatsapp Messaging
+In this we will be analysing the chat between two persons
+From the below chart we can clearly see the number of messages sent each day
+{&#34;x&#34;:{&#34;attrs&#34;:{&#34;labels&#34;:[&#34;day&#34;,&#34;Number Of Messages&#34;],&#34;retainDateWindow&#34;:false,&#34;axes&#34;:{&#34;x&#34;:{&#34;pixelsPerLabel&#34;:60}},&#34;colors&#34;:[&#34;#FD7070&#34;,&#34;#FD7070&#34;],&#34;series&#34;:{&#34;Number Of Messages&#34;</description>
+    </item>
+    
+    <item>
+      <title>Crime Against Womens in India</title>
+      <link>/post/crime-against-womens-in-india/</link>
+      <pubDate>Mon, 01 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/crime-against-womens-in-india/</guid>
+      <description>Cases Against Womens In IndiaKey Findings4 Rape cases were filed per hour in India13 “Cruelty by Husband or his Relatives” cases filed per hour in IndiaAverage Number of crimes Against women per year is : 19458641% cases are classified under “Cruelty by Husband or his Relatives”In this discriptive analysis we will be looking into CRime Against Womens that are filed dataset from data.</description>
+    </item>
+    
+    <item>
+      <title>Regression Project, Part - 4, Variable Selection Methord. </title>
+      <link>/post/regression-project-part-4-variable-selection-methord/</link>
+      <pubDate>Sun, 24 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/regression-project-part-4-variable-selection-methord/</guid>
+      <description>In This Project we will using variable selection methord to find the best combination of variables for a product. Drawback of this variable selection is it doesnot do will with variables with more than two categorical variables.
+In this post we will bec using the mtcars dataset.
+There are three types of Variable Selection Methord.1. Best Subset Methord2. Forward Stepwise Methord3. Backward Stepwise Methord
+We will be comparing Adjusted R Square values of all the above models with linear regression model.</description>
+    </item>
+    
+    <item>
+      <title>Regression Project, Part - 5, Ridge, Lasso and Elastic Net Regression </title>
+      <link>/post/regression-project-part-5-ridge-lasso-and-elastic-net-regression/</link>
+      <pubDate>Sun, 24 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/regression-project-part-5-ridge-lasso-and-elastic-net-regression/</guid>
+      <description>Shrinkage Methods in Linear RegressionThe need for shrinkage method arises due to the issues of underfitting or overfitting the data. When we want to minimize the mean error (Mean Squared Error(MSE) in case of Linear Regression), we need to optimize the bias-variance trade-off.
+What is this bias-variance trade-off?The bias-variance trade-off indicates the level of underfitting or overfitting of the data with respect to the Linear Regression model applied to it.</description>
+    </item>
+    
+    <item>
+      <title>Classification, Part - 2, Multinominal logistic Regression.</title>
+      <link>/post/classification-part-2-multinominal-logistic-regression/</link>
+      <pubDate>Sat, 23 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/classification-part-2-multinominal-logistic-regression/</guid>
+      <description>This will eb small Post, we will be discusing about Multinominal Logistic Regression, When the predicted i.e when dependent variable has multiple category.
+We will be using the famous iris dataset
+The dataset consist of columns:
+## [1] &amp;quot;Sepal.Length&amp;quot; &amp;quot;Sepal.Width&amp;quot; &amp;quot;Petal.Length&amp;quot; &amp;quot;Petal.Width&amp;quot; &amp;quot;Species&amp;quot;## &amp;#39;data.frame&amp;#39;: 150 obs. of 5 variables:## $ Sepal.Length: num 5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...## $ Sepal.Width : num 3.</description>
+    </item>
+    
+    <item>
+      <title>Classification, Part -1 , Logistic Regression</title>
+      <link>/post/classification-part-1-logistic-regression/</link>
+      <pubDate>Sat, 23 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/classification-part-1-logistic-regression/</guid>
+      <description>Classification ModelsIn classification methord, dependant variable will be a categorical variable. In this post we will be looking at one of the methord used for classification,Logistic Regression.
+Logistic Regression works well when the prediction varibale has two categories, we will be working with Multinomial Classification in future posts.
+The Dataset that we are going to use is obtained from Kaggle
+The Columns in our dataset are
+## [1] &amp;quot;male&amp;quot; &amp;quot;age&amp;quot; &amp;quot;education&amp;quot; &amp;quot;currentSmoker&amp;quot; ## [5] &amp;quot;cigsPerDay&amp;quot; &amp;quot;BPMeds&amp;quot; &amp;quot;prevalentStroke&amp;quot; &amp;quot;prevalentHyp&amp;quot; ## [9] &amp;quot;diabetes&amp;quot; &amp;quot;totChol&amp;quot; &amp;quot;sysBP&amp;quot; &amp;quot;diaBP&amp;quot; ## [13] &amp;quot;BMI&amp;quot; &amp;quot;heartRate&amp;quot; &amp;quot;glucose&amp;quot; &amp;quot;TenYearCHD&amp;quot;As we did in other regression models, we need to prepare the data for out model construction.</description>
+    </item>
+    
+    <item>
+      <title> Regression Project, Part -3, Multiple Linear Regression</title>
+      <link>/post/regression-project-part-3-multiple-linear-regression/</link>
+      <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/regression-project-part-3-multiple-linear-regression/</guid>
+      <description>Multiple Linear Regression.Multiple linear regression is similar to simple linear regression, in this we will be using multiple independent variable to preict the dependent variable. We will be also finding the relation between all those indipendent variable and dependent variable.
+The total number of variables we have :
+## [1] &amp;quot;bedrooms&amp;quot; &amp;quot;bathrooms&amp;quot; &amp;quot;sqft_living&amp;quot; &amp;quot;sqft_lot&amp;quot; ## [5] &amp;quot;floors&amp;quot; &amp;quot;waterfront&amp;quot; &amp;quot;view&amp;quot; &amp;quot;condition&amp;quot; ## [9] &amp;quot;grade&amp;quot; &amp;quot;sqft_above&amp;quot; &amp;quot;sqft_basement&amp;quot; &amp;quot;yr_built&amp;quot; ## [13] &amp;quot;yr_renovated&amp;quot; &amp;quot;zipcode&amp;quot; &amp;quot;sqft_living15&amp;quot; &amp;quot;sqft_lot15&amp;quot; ## [17] &amp;quot;priceinK&amp;quot; &amp;quot;PYears&amp;quot; &amp;quot;Pmonth&amp;quot;## Train dataset consist of 17062 entries## Test dataset consist of 4550 entriesIn this PriceinK is the dependent variable all the other variables are considered as independent variables.</description>
+    </item>
+    
+    <item>
+      <title>Regression Project, Part -2, Simple Linear Regression</title>
+      <link>/post/regression-project-part-2-simple-linear-regression/</link>
+      <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/regression-project-part-2-simple-linear-regression/</guid>
+      <description>So now we have a clean data, will be creating a simple model, a simple linear model.A simpole linear model gives the relationship between a indipendent variable and a dependant variable. in what way a indipendent variable affect the dedpendent variable.
+Now our dataset consist of the following columns.
+## [1] &amp;quot;bedrooms&amp;quot; &amp;quot;bathrooms&amp;quot; &amp;quot;sqft_living&amp;quot; &amp;quot;sqft_lot&amp;quot; ## [5] &amp;quot;floors&amp;quot; &amp;quot;waterfront&amp;quot; &amp;quot;view&amp;quot; &amp;quot;condition&amp;quot; ## [9] &amp;quot;grade&amp;quot; &amp;quot;sqft_above&amp;quot; &amp;quot;sqft_basement&amp;quot; &amp;quot;yr_built&amp;quot; ## [13] &amp;quot;yr_renovated&amp;quot; &amp;quot;zipcode&amp;quot; &amp;quot;sqft_living15&amp;quot; &amp;quot;sqft_lot15&amp;quot; ## [17] &amp;quot;priceinK&amp;quot; &amp;quot;PYears&amp;quot; &amp;quot;Pmonth&amp;quot;The structure of our dataset is</description>
+    </item>
+    
+    <item>
+      <title>Regression Project, Part -1, Data Preprocessing</title>
+      <link>/post/regression-project-part-1-data-preprocessing/</link>
+      <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/regression-project-part-1-data-preprocessing/</guid>
+      <description>Main IdeaThe idea of this new series of data is to understand more obout different types of regressiion and how they works.
+Regression, is to find a relationship between dependant variable and independent variablewhat kind of relationship exists.How Much each Indipendent variblee affect the dependent variableThe few Regressions that we are going to work in this series are givven below
+Simple Linear RegressionMultiple Linear RegressionLogistic RegressionRidge RegressionElasticNet RegressionWe will be using House Sales in King County, USA dataset from Kaagle for all regression models except Logistic regression(it is a Classification Model).</description>
+    </item>
+    
+    <item>
+      <title>Netflix Movie and TV Show Data Analysis</title>
+      <link>/post/netflix-movie-and-tv-show-data-analysis/</link>
+      <pubDate>Wed, 13 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/netflix-movie-and-tv-show-data-analysis/</guid>
+      <description>Important Findings:It will take 283 days from now to watch all available Movies in Netflix
+4 in 10, Movies or TV Shows are not suitable for childrens under 17
+67% of TV Shows never made to Second Season.
+Only 6% TV Shows have more than 5 Seasons
+Netflix and Chill, That famous saying, So netflix has entertaining us for almost a decade now.</description>
+    </item>
+    
   </channel>
 </rss>

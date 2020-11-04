@@ -3,6 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/post/morais-the-talented-girl/</loc>
+    <lastmod>2020-11-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2020-11-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/categories/</loc>
     <lastmod>2020-08-23T00:00:00+00:00</lastmod>
   </url>
@@ -19,11 +29,6 @@
   
   <url>
     <loc>/post/covid-19-tamil-nadu-live-update/</loc>
-    <lastmod>2020-08-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
     <lastmod>2020-08-23T00:00:00+00:00</lastmod>
   </url>
   
@@ -45,11 +50,6 @@
   <url>
     <loc>/post/machine-learning-model-selection-cheat-sheet/</loc>
     <lastmod>2020-08-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/descriptive/</loc>
-    <lastmod>2020-07-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>
