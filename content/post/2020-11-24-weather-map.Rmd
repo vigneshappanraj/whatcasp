@@ -6,7 +6,7 @@ slug: weather-map
 categories: R
 tags: []
 ---
-
-```{r showChoro1}
-shiny::includeHTML("https://embed.windy.com/embed2.html?lat=11.609&lon=79.499&detailLat=11.609&detailLon=79.499&width=650&height=450&zoom=5&level=surface&overlay=wind&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1")
+```{r}
+knitr::include_app('https://vigneshappanraj.shinyapps.io/Weather_app/')
 ```
+
