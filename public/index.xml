@@ -12,17 +12,12 @@
     
     
     <item>
-      <title>MORAIS THE TALENTED GIRL</title>
-      <link>/post/morais-the-talented-girl/</link>
-      <pubDate>Wed, 04 Nov 2020 00:00:00 +0000</pubDate>
+      <title>Weather Map</title>
+      <link>/post/weather-map/</link>
+      <pubDate>Tue, 24 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/morais-the-talented-girl/</guid>
-      <description>MORAIS THE GREATEST GIRL
-Miss WORD missed by an inch
-The next form of god,
-the savior of the world
-defining the beauty,
-TRESHINA MORAIS</description>
+      <guid>/post/weather-map/</guid>
+      <description>shiny::includeHTML(&amp;quot;https://embed.windy.com/embed2.html?lat=11.609&amp;amp;lon=79.499&amp;amp;detailLat=11.609&amp;amp;detailLon=79.499&amp;amp;width=650&amp;amp;height=450&amp;amp;zoom=5&amp;amp;level=surface&amp;amp;overlay=wind&amp;amp;product=ecmwf&amp;amp;menu=&amp;amp;message=&amp;amp;marker=&amp;amp;calendar=now&amp;amp;pressure=&amp;amp;type=map&amp;amp;location=coordinates&amp;amp;detail=&amp;amp;metricWind=default&amp;amp;metricTemp=default&amp;amp;radarRange=-1&amp;quot;)Windy: Wind map &amp;amp; weather forecastwindow.W={version:&#34;19.10.3&#34;,assets:&#34;19.10.3.emb.985a&#34;,target:&#34;embed2&#34;,build:&#34;2019-09-02, 15:34&#34;,startTs:Date.now()};try{1204window.Promise||document.write(&#39;&#39;)(c) OSM &amp;amp; contributorsNEMS4 model by &amp;nbsp;www.windy.com dFmkj[&amp;#xe013;+-</description>
     </item>
     
     <item>
