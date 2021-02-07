@@ -1,0 +1,1064 @@
+---
+title: Different Classification Models From Logistic to XGBoost
+author: Vignesh A
+date: '2021-01-07'
+slug: different-classification-models-from-logistic-to-xgboost
+categories: []
+tags: []
+---
+
+
+
+<div id="preprocessing-the-data" class="section level1">
+<h1>Preprocessing the data</h1>
+<div id="importing-dataset" class="section level3">
+<h3>importing dataset</h3>
+<pre class="r"><code>library(readxl)
+library(randomForest)
+library(caret)
+df &lt;- read_excel(&quot;AIML_Endterm.xlsx&quot;)
+df &lt;- as.data.frame(df)</code></pre>
+</div>
+<div id="viewing-sample-of-dataset" class="section level3">
+<h3>Viewing sample of dataset</h3>
+<pre class="r"><code>head(df)</code></pre>
+<pre><code>##   age          job marital education default balance housing loan contact day
+## 1  58   management married  tertiary      no    2143     yes   no unknown   5
+## 2  44   technician  single secondary      no      29     yes   no unknown   5
+## 3  33 entrepreneur married secondary      no       2     yes  yes unknown   5
+## 4  47  blue-collar married   unknown      no    1506     yes   no unknown   5
+## 5  33      unknown  single   unknown      no       1      no   no unknown   5
+## 6  35   management married  tertiary      no     231     yes   no unknown   5
+##   month duration campaign pdays previous poutcome  y
+## 1   may      261        1    -1        0  unknown no
+## 2   may      151        1    -1        0  unknown no
+## 3   may       76        1    -1        0  unknown no
+## 4   may       92        1    -1        0  unknown no
+## 5   may      198        1    -1        0  unknown no
+## 6   may      139        1    -1        0  unknown no</code></pre>
+</div>
+<div id="name-of-the-variables" class="section level3">
+<h3>Name of the variables</h3>
+<pre class="r"><code>names(df)</code></pre>
+<pre><code>##  [1] &quot;age&quot;       &quot;job&quot;       &quot;marital&quot;   &quot;education&quot; &quot;default&quot;   &quot;balance&quot;  
+##  [7] &quot;housing&quot;   &quot;loan&quot;      &quot;contact&quot;   &quot;day&quot;       &quot;month&quot;     &quot;duration&quot; 
+## [13] &quot;campaign&quot;  &quot;pdays&quot;     &quot;previous&quot;  &quot;poutcome&quot;  &quot;y&quot;</code></pre>
+</div>
+<div id="viewing-the-structure-dimentsiond-and-summary-of-the-dataset" class="section level3">
+<h3>viewing the structure, dimentsiond and summary of the dataset</h3>
+<pre class="r"><code>str(df)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    44369 obs. of  17 variables:
+##  $ age      : num  58 44 33 47 33 35 28 42 58 43 ...
+##  $ job      : chr  &quot;management&quot; &quot;technician&quot; &quot;entrepreneur&quot; &quot;blue-collar&quot; ...
+##  $ marital  : chr  &quot;married&quot; &quot;single&quot; &quot;married&quot; &quot;married&quot; ...
+##  $ education: chr  &quot;tertiary&quot; &quot;secondary&quot; &quot;secondary&quot; &quot;unknown&quot; ...
+##  $ default  : chr  &quot;no&quot; &quot;no&quot; &quot;no&quot; &quot;no&quot; ...
+##  $ balance  : num  2143 29 2 1506 1 ...
+##  $ housing  : chr  &quot;yes&quot; &quot;yes&quot; &quot;yes&quot; &quot;yes&quot; ...
+##  $ loan     : chr  &quot;no&quot; &quot;no&quot; &quot;yes&quot; &quot;no&quot; ...
+##  $ contact  : chr  &quot;unknown&quot; &quot;unknown&quot; &quot;unknown&quot; &quot;unknown&quot; ...
+##  $ day      : num  5 5 5 5 5 5 5 5 5 5 ...
+##  $ month    : chr  &quot;may&quot; &quot;may&quot; &quot;may&quot; &quot;may&quot; ...
+##  $ duration : num  261 151 76 92 198 139 217 380 50 55 ...
+##  $ campaign : num  1 1 1 1 1 1 1 1 1 1 ...
+##  $ pdays    : num  -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 ...
+##  $ previous : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ poutcome : chr  &quot;unknown&quot; &quot;unknown&quot; &quot;unknown&quot; &quot;unknown&quot; ...
+##  $ y        : chr  &quot;no&quot; &quot;no&quot; &quot;no&quot; &quot;no&quot; ...</code></pre>
+<pre class="r"><code>dim(df)</code></pre>
+<pre><code>## [1] 44369    17</code></pre>
+<pre class="r"><code>summary(df)</code></pre>
+<pre><code>##       age           job              marital           education        
+##  Min.   :18.0   Length:44369       Length:44369       Length:44369      
+##  1st Qu.:33.0   Class :character   Class :character   Class :character  
+##  Median :39.0   Mode  :character   Mode  :character   Mode  :character  
+##  Mean   :40.9                                                           
+##  3rd Qu.:48.0                                                           
+##  Max.   :95.0                                                           
+##    default             balance         housing              loan          
+##  Length:44369       Min.   : -8019   Length:44369       Length:44369      
+##  Class :character   1st Qu.:    75   Class :character   Class :character  
+##  Mode  :character   Median :   459   Mode  :character   Mode  :character  
+##                     Mean   :  1378                                        
+##                     3rd Qu.:  1452                                        
+##                     Max.   :102127                                        
+##    contact               day        month              duration   
+##  Length:44369       Min.   : 1   Length:44369       Min.   :   0  
+##  Class :character   1st Qu.: 9   Class :character   1st Qu.: 103  
+##  Mode  :character   Median :16   Mode  :character   Median : 180  
+##                     Mean   :16                      Mean   : 258  
+##                     3rd Qu.:21                      3rd Qu.: 319  
+##                     Max.   :31                      Max.   :4918  
+##     campaign          pdays           previous          poutcome        
+##  Min.   : 1.000   Min.   : -1.00   Min.   :  0.0000   Length:44369      
+##  1st Qu.: 1.000   1st Qu.: -1.00   1st Qu.:  0.0000   Class :character  
+##  Median : 2.000   Median : -1.00   Median :  0.0000   Mode  :character  
+##  Mean   : 2.784   Mean   : 40.98   Mean   :  0.5913                     
+##  3rd Qu.: 3.000   3rd Qu.: -1.00   3rd Qu.:  0.0000                     
+##  Max.   :63.000   Max.   :871.00   Max.   :275.0000                     
+##       y            
+##  Length:44369      
+##  Class :character  
+##  Mode  :character  
+##                    
+##                    
+## </code></pre>
+</div>
+<div id="converting-necessary-character-variables-into-factor-variables" class="section level3">
+<h3>converting necessary character variables into factor variables</h3>
+<pre class="r"><code>df$job &lt;- as.factor(df$job)
+df$marital &lt;- as.factor(df$marital)
+df$education &lt;- as.factor(df$education)
+df$default &lt;- as.factor(df$default)
+df$housing &lt;- as.factor(df$housing)
+df$loan &lt;- as.factor(df$loan)
+df$contact &lt;- as.factor(df$contact)
+df$month &lt;- as.factor(df$month)
+df$poutcome &lt;- as.factor(df$month)
+df$y &lt;- as.factor(df$y)</code></pre>
+</div>
+<div id="finding-missing-value" class="section level3">
+<h3>finding missing value</h3>
+<p>Using visual representaion is one way of finding if there is any missing value or NA’s</p>
+<pre class="r"><code>library(Amelia)
+missmap(df)</code></pre>
+<p><img src="/post/2021-01-07-different-classification-models-from-logistic-to-xgboost_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>From the visual representaion we can see that there are no missing entries in the dataset</p>
+</div>
+<div id="finding-outliers" class="section level3">
+<h3>finding outliers</h3>
+<pre class="r"><code>boxplot(df[,unlist(lapply(df, is.numeric))  ],horizontal = TRUE)</code></pre>
+<p><img src="/post/2021-01-07-different-classification-models-from-logistic-to-xgboost_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="scaling-for-better-viewing-purpose" class="section level3">
+<h3>scaling for better viewing purpose</h3>
+<pre class="r"><code>boxplot(scale(df[,unlist(lapply(df, is.numeric))]),horizontal = TRUE)</code></pre>
+<p><img src="/post/2021-01-07-different-classification-models-from-logistic-to-xgboost_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="we-can-see-there-are-outliers-in-many-independent-variables-we-are-going-to-treat-the-outliers-using-1.5iqr-method" class="section level2">
+<h2>WE can see there are outliers in many independent variables, we are going to treat the outliers using <strong>1.5IQR</strong> method</h2>
+<pre class="r"><code>df$age &lt;- ifelse(df$age &gt;= 70,70,df$age)
+df$balance &lt;- ifelse(df$balance &gt;= 3517,3517,df$balance)
+df$balance &lt;- ifelse(df$balance &lt;= -1980,-1980,df$balance)
+df$duration &lt;- ifelse(df$duration &gt;= 643,643,df$duration)
+df$campaign &lt;- ifelse(df$campaign &gt;= 6,6,df$campaign)
+df$previous &lt;- ifelse(df$previous &gt;= 200,0,df$previous)</code></pre>
+<div id="after-treating-outliers" class="section level3">
+<h3>After treating outliers</h3>
+<pre class="r"><code>boxplot(scale(df[,unlist(lapply(df, is.numeric))]),horizontal = TRUE)</code></pre>
+<p><img src="/post/2021-01-07-different-classification-models-from-logistic-to-xgboost_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+</div>
+<div id="doing-stepwise-logistic-regressing-to-find-the-significants-variables-that-we-will-be-using-to-predict-the-dependent-variables" class="section level2">
+<h2>Doing stepwise logistic regressing to find the significants variables that we will be using to predict the dependent variables</h2>
+<pre class="r"><code>library(MASS)
+reg1 &lt;- glm(y~.,df,family = &quot;binomial&quot;)
+stepReg1 &lt;-stepAIC(reg1)</code></pre>
+<pre><code>## Start:  AIC=21919.65
+## y ~ age + job + marital + education + default + balance + housing + 
+##     loan + contact + day + month + duration + campaign + pdays + 
+##     previous + poutcome
+## 
+## 
+## Step:  AIC=21919.65
+## y ~ age + job + marital + education + default + balance + housing + 
+##     loan + contact + day + month + duration + campaign + pdays + 
+##     previous
+## 
+##             Df Deviance   AIC
+## - age        1    21840 21918
+## - default    1    21840 21918
+## &lt;none&gt;            21840 21920
+## - day        1    21858 21936
+## - pdays      1    21875 21953
+## - marital    2    21878 21954
+## - education  3    21880 21954
+## - balance    1    21890 21968
+## - loan       1    21905 21983
+## - previous   1    21923 22001
+## - job       11    21956 22014
+## - campaign   1    21961 22039
+## - housing    1    22148 22226
+## - contact    2    22366 22442
+## - month     11    23042 23100
+## - duration   1    28086 28164
+## 
+## Step:  AIC=21917.65
+## y ~ job + marital + education + default + balance + housing + 
+##     loan + contact + day + month + duration + campaign + pdays + 
+##     previous
+## 
+##             Df Deviance   AIC
+## - default    1    21840 21916
+## &lt;none&gt;            21840 21918
+## - day        1    21858 21934
+## - pdays      1    21875 21951
+## - education  3    21881 21953
+## - marital    2    21882 21956
+## - balance    1    21890 21966
+## - loan       1    21905 21981
+## - previous   1    21923 21999
+## - job       11    21959 22015
+## - campaign   1    21961 22037
+## - housing    1    22151 22227
+## - contact    2    22366 22440
+## - month     11    23042 23098
+## - duration   1    28086 28162
+## 
+## Step:  AIC=21916.09
+## y ~ job + marital + education + balance + housing + loan + contact + 
+##     day + month + duration + campaign + pdays + previous
+## 
+##             Df Deviance   AIC
+## &lt;none&gt;            21840 21916
+## - day        1    21858 21932
+## - pdays      1    21875 21949
+## - education  3    21881 21951
+## - marital    2    21883 21955
+## - balance    1    21892 21966
+## - loan       1    21906 21980
+## - previous   1    21923 21997
+## - job       11    21960 22014
+## - campaign   1    21962 22036
+## - housing    1    22152 22226
+## - contact    2    22367 22439
+## - month     11    23045 23099
+## - duration   1    28086 28160</code></pre>
+<pre class="r"><code>stepReg1$anova</code></pre>
+<pre><code>## Stepwise Model Path 
+## Analysis of Deviance Table
+## 
+## Initial Model:
+## y ~ age + job + marital + education + default + balance + housing + 
+##     loan + contact + day + month + duration + campaign + pdays + 
+##     previous + poutcome
+## 
+## Final Model:
+## y ~ job + marital + education + balance + housing + loan + contact + 
+##     day + month + duration + campaign + pdays + previous
+## 
+## 
+##         Step Df    Deviance Resid. Df Resid. Dev      AIC
+## 1                               44329   21839.65 21919.65
+## 2 - poutcome  0 0.000000000     44329   21839.65 21919.65
+## 3      - age  1 0.001489311     44330   21839.65 21917.65
+## 4  - default  1 0.441668983     44331   21840.09 21916.09</code></pre>
+<pre class="r"><code>metric&lt;-&quot;Accuracy&quot;</code></pre>
+</div>
+</div>
+<div id="from-the-step-wise-logistic-regression-we-can-see-the-significant-variables-are" class="section level1">
+<h1>From the step wise logistic regression we can see the significant variables are</h1>
+<div id="so-we-will-be-creating-the-models-using-these-variables" class="section level2">
+<h2>So we will be creating the models using these variables</h2>
+<h2>
+y ~ job + marital + education + balance + housing + loan + contact +
+day + month + duration + campaign + pdays + previous"
+</h2>
+<hr />
+</div>
+</div>
+<div id="descriptive-statistics-of-the-selected-independent-variables" class="section level1">
+<h1>Descriptive statistics of the selected independent variables</h1>
+<p>#correlation between the variables</p>
+<pre class="r"><code>library(corrgram)
+library(corrplot)
+corrplot(cor(df[,c(6,10,12,13,14,15)]),method = &quot;number&quot;,type = &quot;upper&quot;)</code></pre>
+<p><img src="/post/2021-01-07-different-classification-models-from-logistic-to-xgboost_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>library(psych)
+library(modeest)
+library(tidyverse)</code></pre>
+</div>
+<div id="measure-of-dispersion" class="section level1">
+<h1>Measure of dispersion</h1>
+<pre class="r"><code>df_data_frame &lt;- as.data.frame(describeBy(df[,c(2,3,4,6,7,8,12,13,16)],group = NULL))
+df_dispersion &lt;- df_data_frame[,c(4,10,11,12,13)]
+df_central_tendency &lt;- df_data_frame[,c(3,5)]
+df_dispersion$variance &lt;- df_dispersion$sd^2
+options(scipen = 999)
+names(df_dispersion) &lt;-c(&#39;Standard Deviation&#39;,
+                         &#39;Range&#39;,
+                         &#39;Skewness&#39;,
+                         &#39;Kurtosis&#39;,
+                         &#39;Standard Error&#39;,
+                         &#39;Variance&#39;)
+knitr:: kable(df_dispersion)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Standard Deviation</th>
+<th align="right">Range</th>
+<th align="right">Skewness</th>
+<th align="right">Kurtosis</th>
+<th align="right">Standard Error</th>
+<th align="right">Variance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">job*</td>
+<td align="right">3.2704966</td>
+<td align="right">11</td>
+<td align="right">0.2602512</td>
+<td align="right">-1.2677386</td>
+<td align="right">0.0155265</td>
+<td align="right">10.6961482</td>
+</tr>
+<tr class="even">
+<td align="left">marital*</td>
+<td align="right">0.6081139</td>
+<td align="right">2</td>
+<td align="right">-0.1042654</td>
+<td align="right">-0.4422227</td>
+<td align="right">0.0028870</td>
+<td align="right">0.3698026</td>
+</tr>
+<tr class="odd">
+<td align="left">education*</td>
+<td align="right">0.7466731</td>
+<td align="right">3</td>
+<td align="right">0.1866209</td>
+<td align="right">-0.2747943</td>
+<td align="right">0.0035448</td>
+<td align="right">0.5575207</td>
+</tr>
+<tr class="even">
+<td align="left">balance</td>
+<td align="right">1193.8218361</td>
+<td align="right">5497</td>
+<td align="right">1.0975029</td>
+<td align="right">0.0078864</td>
+<td align="right">5.6676066</td>
+<td align="right">1425210.5762946</td>
+</tr>
+<tr class="odd">
+<td align="left">housing*</td>
+<td align="right">0.4975241</td>
+<td align="right">1</td>
+<td align="right">-0.1999987</td>
+<td align="right">-1.9600447</td>
+<td align="right">0.0023620</td>
+<td align="right">0.2475302</td>
+</tr>
+<tr class="even">
+<td align="left">loan*</td>
+<td align="right">0.3675266</td>
+<td align="right">1</td>
+<td align="right">1.8447731</td>
+<td align="right">1.4032193</td>
+<td align="right">0.0017448</td>
+<td align="right">0.1350758</td>
+</tr>
+<tr class="odd">
+<td align="left">duration</td>
+<td align="right">177.0056921</td>
+<td align="right">643</td>
+<td align="right">1.0371851</td>
+<td align="right">0.1022886</td>
+<td align="right">0.8403252</td>
+<td align="right">31331.0150420</td>
+</tr>
+<tr class="even">
+<td align="left">campaign</td>
+<td align="right">1.6075069</td>
+<td align="right">5</td>
+<td align="right">1.0840243</td>
+<td align="right">0.0253782</td>
+<td align="right">0.0076316</td>
+<td align="right">2.5840784</td>
+</tr>
+<tr class="odd">
+<td align="left">poutcome*</td>
+<td align="right">3.0157012</td>
+<td align="right">11</td>
+<td align="right">-0.4488389</td>
+<td align="right">-1.0189968</td>
+<td align="right">0.0143169</td>
+<td align="right">9.0944534</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="measure-of-central-tendency" class="section level1">
+<h1>Measure of Central Tendency</h1>
+<pre class="r"><code>df_central_tendency &lt;- df_data_frame[,c(3,5)]
+knitr::kable(df_central_tendency)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">mean</th>
+<th align="right">median</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">job*</td>
+<td align="right">5.346638</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">marital*</td>
+<td align="right">2.169691</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">education*</td>
+<td align="right">2.224887</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">balance</td>
+<td align="right">949.399829</td>
+<td align="right">459</td>
+</tr>
+<tr class="odd">
+<td align="left">housing*</td>
+<td align="right">1.549753</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">loan*</td>
+<td align="right">1.160991</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">duration</td>
+<td align="right">234.713944</td>
+<td align="right">180</td>
+</tr>
+<tr class="even">
+<td align="left">campaign</td>
+<td align="right">2.405305</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">poutcome*</td>
+<td align="right">6.476008</td>
+<td align="right">7</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>cat(&quot;Mode of job = &quot;,as.character(mlv(df$job)),&#39;\n&#39;,
+    &quot;\nMode of balance = &quot;,as.character(mlv(df$balance)),&#39;\n&#39;,
+    &quot;\nMode of Contact = &quot;,as.character(mlv(df$contact)),&#39;\n&#39;,
+    &quot;\nMode of day = &quot;,as.character(mlv(df$day)),&#39;\n&#39;,
+    &quot;\nMode of Month = &quot;,as.character(mlv(df$month)),&#39;\n&#39;,
+    &quot;\nMode of duration = &quot;,as.character(mlv(df$duration)),&#39;\n&#39;,
+    &quot;\nMode of Campaign = &quot;,as.character(mlv(df$campaign)))</code></pre>
+<pre><code>## Mode of job =  blue-collar 
+##  
+## Mode of balance =  219.160739238224 
+##  
+## Mode of Contact =  cellular 
+##  
+## Mode of day =  15.6718503493351 
+##  
+## Mode of Month =  may 
+##  
+## Mode of duration =  126.571422132071 
+##  
+## Mode of Campaign =  1.39021861618211</code></pre>
+<hr />
+</div>
+<div id="building-models" class="section level1">
+<h1>Building Models</h1>
+<p>The Models that we will be buildings are given below</p>
+<h2>
+<ol style="list-style-type: decimal">
+<li>Logistic Regression
+</h2>
+<br>
+<h2>
+<ol start="2" style="list-style-type: decimal">
+<li>Decision Tree
+</h2>
+<br>
+<h2>
+<ol start="3" style="list-style-type: decimal">
+<li>Random Forest
+</h2>
+<br>
+<h2>
+<ol start="4" style="list-style-type: decimal">
+<li>Support Vector Machine(SVM)
+</h2>
+<br>
+<h2>
+<ol start="5" style="list-style-type: decimal">
+<li>Gradient Boosting
+</h2>
+<br></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol>
+</div>
+<div id="logistic-regression-model-creation" class="section level1">
+<h1>Logistic regression Model creation</h1>
+<div id="working-of-logistic-regression" class="section level3">
+<h3>Working of Logistic Regression</h3>
+<p><img src="https://miro.medium.com/max/1280/1*CYAn9ACXrWX3IneHSoMVOQ.gif" /></p>
+<pre class="r"><code>reg2 &lt;- glm(y ~ job + marital + education + balance 
+            + housing + loan + contact + 
+              day + month + duration + campaign ,
+            df,family = &quot;binomial&quot;)
+summary(reg2)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ job + marital + education + balance + housing + 
+##     loan + contact + day + month + duration + campaign, family = &quot;binomial&quot;, 
+##     data = df)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.6073  -0.3844  -0.2324  -0.1337   3.7142  
+## 
+## Coefficients:
+##                       Estimate  Std. Error z value             Pr(&gt;|z|)    
+## (Intercept)        -3.14482512  0.12341474 -25.482 &lt; 0.0000000000000002 ***
+## jobblue-collar     -0.36360400  0.07056883  -5.152  0.00000025707379313 ***
+## jobentrepreneur    -0.47641731  0.12188359  -3.909  0.00009275971037016 ***
+## jobhousemaid       -0.49270556  0.13118539  -3.756             0.000173 ***
+## jobmanagement      -0.20952475  0.07174343  -2.920             0.003495 ** 
+## jobretired          0.19728325  0.08585472   2.298             0.021569 *  
+## jobself-employed   -0.32645781  0.10846336  -3.010             0.002614 ** 
+## jobservices        -0.23005912  0.08115270  -2.835             0.004584 ** 
+## jobstudent          0.47688801  0.10657948   4.474  0.00000765966930278 ***
+## jobtechnician      -0.20401464  0.06749710  -3.023             0.002506 ** 
+## jobunemployed      -0.25141598  0.10856363  -2.316             0.020567 *  
+## jobunknown         -0.42571300  0.22631999  -1.881             0.059969 .  
+## maritalmarried     -0.17833597  0.05688580  -3.135             0.001719 ** 
+## maritalsingle       0.06884874  0.06128563   1.123             0.261264    
+## educationsecondary  0.17189837  0.06220575   2.763             0.005721 ** 
+## educationtertiary   0.42314768  0.07237699   5.846  0.00000000502206306 ***
+## educationunknown    0.24227350  0.10151360   2.387             0.017004 *  
+## balance             0.00011003  0.00001439   7.644  0.00000000000002102 ***
+## housingyes         -0.68626832  0.04208444 -16.307 &lt; 0.0000000000000002 ***
+## loanyes            -0.44349437  0.05782716  -7.669  0.00000000000001729 ***
+## contacttelephone   -0.14311752  0.07223868  -1.981             0.047572 *  
+## contactunknown     -1.77276223  0.06932033 -25.573 &lt; 0.0000000000000002 ***
+## day                 0.00903709  0.00245760   3.677             0.000236 ***
+## monthaug           -0.61037783  0.07744028  -7.882  0.00000000000000322 ***
+## monthdec            1.14153256  0.17166545   6.650  0.00000000002935882 ***
+## monthfeb            0.00923356  0.08818844   0.105             0.916612    
+## monthjan           -1.12945834  0.11778568  -9.589 &lt; 0.0000000000000002 ***
+## monthjul           -0.83910720  0.07462129 -11.245 &lt; 0.0000000000000002 ***
+## monthjun            0.60540309  0.09257798   6.539  0.00000000006177206 ***
+## monthmar            1.84994262  0.11914017  15.527 &lt; 0.0000000000000002 ***
+## monthmay           -0.27187076  0.07075829  -3.842             0.000122 ***
+## monthnov           -0.83046592  0.08226901 -10.095 &lt; 0.0000000000000002 ***
+## monthoct            1.26094261  0.10566909  11.933 &lt; 0.0000000000000002 ***
+## monthsep            1.36034790  0.11692712  11.634 &lt; 0.0000000000000002 ***
+## duration            0.00680288  0.00009554  71.206 &lt; 0.0000000000000002 ***
+## campaign           -0.14421218  0.01345403 -10.719 &lt; 0.0000000000000002 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 32351  on 44368  degrees of freedom
+## Residual deviance: 22049  on 44333  degrees of freedom
+## AIC: 22121
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<p>A logistic regression model is created above</p>
+</div>
+</div>
+<div id="decision-tree-model-creation" class="section level1">
+<h1>Decision Tree Model creation</h1>
+<div id="working-of-decision-tree" class="section level3">
+<h3>Working of Decision Tree</h3>
+<p><img src="https://cfcdn.usu.com/fileadmin/user_upload/unymira/images_en/content_en/unymira_decision-tree-animiert_1140x680px.gif" /></p>
+<pre class="r"><code>library(tree)
+library(rpart)
+library(rpart.plot)
+tree &lt;- rpart(y ~ job + marital + education + balance 
+              + housing + loan + contact + 
+                day + month + duration + campaign + poutcome, data = df)
+
+rpart.plot(tree)</code></pre>
+<p><img src="/post/2021-01-07-different-classification-models-from-logistic-to-xgboost_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+</div>
+</div>
+<div id="random-forest-model-creation" class="section level1">
+<h1>Random Forest Model creation</h1>
+<div id="working-of-random-forest" class="section level3">
+<h3>Working of Random Forest</h3>
+<p><img src="https://miro.medium.com/max/2400/1*bYGSIgMlmVdedFJaE6PuBg.gif" /></p>
+<pre class="r"><code>rffit &lt;- randomForest(y ~ job + marital + education + balance 
+                      + housing + loan + contact + 
+                        day + month + duration + campaign ,data= df,ntree = 300)
+print(rffit) </code></pre>
+<pre><code>## 
+## Call:
+##  randomForest(formula = y ~ job + marital + education + balance +      housing + loan + contact + day + month + duration + campaign,      data = df, ntree = 300) 
+##                Type of random forest: classification
+##                      Number of trees: 300
+## No. of variables tried at each split: 3
+## 
+##         OOB estimate of  error rate: 10.22%
+## Confusion matrix:
+##        no  yes class.error
+## no  37595 1502  0.03841727
+## yes  3034 2238  0.57549317</code></pre>
+</div>
+</div>
+<div id="svm-model-creation" class="section level1">
+<h1>SVM Model creation</h1>
+<div id="working-of-svm" class="section level3">
+<h3>Working of SVM</h3>
+<p><img src="https://jeremykun.files.wordpress.com/2017/06/svm_solve_by_hand-e1496076457793.gif" /></p>
+<pre class="r"><code>library(e1071) 
+library(gbm)
+classifier = svm(formula = y ~ job + marital + education + balance 
+                 + housing + loan + contact + 
+                   day + month + duration + campaign 
+                 + previous , 
+                 data = df, 
+                 type = &#39;C-classification&#39;, 
+                 kernel = &#39;linear&#39;) 
+
+classifier</code></pre>
+<pre><code>## 
+## Call:
+## svm(formula = y ~ job + marital + education + balance + housing + 
+##     loan + contact + day + month + duration + campaign + previous, 
+##     data = df, type = &quot;C-classification&quot;, kernel = &quot;linear&quot;)
+## 
+## 
+## Parameters:
+##    SVM-Type:  C-classification 
+##  SVM-Kernel:  linear 
+##        cost:  1 
+## 
+## Number of Support Vectors:  11250</code></pre>
+</div>
+</div>
+<div id="greadient-boosting-model-creation" class="section level1">
+<h1>Greadient Boosting Model creation</h1>
+<div id="working-of-gradient-boosting" class="section level3">
+<h3>Working of Gradient Boosting</h3>
+<p><img src="https://miro.medium.com/max/2400/1*wsBakfF2Geh1zgY4HJbwFQ.gif" /></p>
+<pre class="r"><code>xg_df &lt;- df[,c(&quot;y&quot;, &quot;job&quot;, &quot;marital&quot;, &quot;education&quot; , &quot;balance&quot; ,
+                &quot;housing&quot;  ,&quot;loan&quot; , &quot;contact&quot;,  
+                 &quot;day&quot;,  &quot;month&quot;,  &quot;duration&quot;  ,&quot;campaign&quot; ,&quot;previous&quot;)]
+xg_df$y &lt;- ifelse(xg_df$y == &quot;no&quot;,0,1)
+df1 &lt;- read.csv(&#39;final edited data.csv&#39;)
+
+
+xg_df &lt;- df1
+
+
+df_lable &lt;- xg_df[,&quot;y&quot;]
+
+
+grad_boost &lt;- gbm(y ~ job + marital + education + balance 
+                 + housing + loan + contact + 
+                   day + month + duration + campaign 
+                 + previous ,
+                  distribution = &quot;bernoulli&quot;,
+                  data = xg_df,
+                  n.trees =1000,
+                  interaction.depth = 1,
+                  n.cores = NULL, # will use all cores by default
+                  verbose = FALSE)
+summary(grad_boost)</code></pre>
+<p><img src="/post/2021-01-07-different-classification-models-from-logistic-to-xgboost_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<pre><code>##                 var    rel.inf
+## duration   duration 59.6061892
+## month         month 19.0232715
+## previous   previous  6.2934834
+## housing     housing  4.0898473
+## contact     contact  2.7654257
+## job             job  2.5292307
+## day             day  1.7322697
+## balance     balance  1.6043444
+## campaign   campaign  1.0086354
+## marital     marital  0.5061720
+## loan           loan  0.4747471
+## education education  0.3663837</code></pre>
+<hr />
+</div>
+</div>
+<div id="working-of-cross-fold-validation" class="section level1">
+<h1>Working of cross fold validation</h1>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/KfoldCV.gif" /></p>
+<p><img src="https://i.pinimg.com/originals/8b/f6/d4/8bf6d49e5964db81282b39d0e8db05cf.gif" /></p>
+</div>
+<div id="fold-cross-validated-model" class="section level1">
+<h1>10 fold cross validated model</h1>
+<div id="cross-fold-validation-is-only-done-for-two-models-since-rest-models-such-as-bagging-and-boosting-where-multiple-decision-tress-has-to-created-requires-more-computaion-power-and-takes-a-huge-amount-of-time." class="section level2">
+<h2>Cross fold validation is only done for two models, since rest models such as bagging and boosting where multiple decision tress has to created requires more computaion power and takes a huge amount of time.</h2>
+</div>
+<div id="so-i-have-included-the-code-for-those-but-didnt-run-those-since-my-system-wasnt-capable-of-handleing-those-high-computaion-power." class="section level2">
+<h2>So i have included the code for those, but didnt run those, since my system wasnt capable of handleing those high computaion power.</h2>
+<pre class="r"><code>library(caret)
+
+# define training control
+train_control &lt;- trainControl(method = &quot;cv&quot;, number = 10)
+
+# train the model on training set
+model &lt;- train(y ~ job + marital + education + balance 
+                 + housing + loan + contact + 
+                   day + month + duration + campaign 
+                 + previous ,
+               data = df,
+               metric=metric,
+               trControl = train_control,
+               method = &quot;glm&quot;,
+               family=binomial())
+
+# print cv scores
+summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## NULL
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.7797  -0.3818  -0.2288  -0.1314   3.6726  
+## 
+## Coefficients:
+##                       Estimate  Std. Error z value             Pr(&gt;|z|)    
+## (Intercept)        -3.27247745  0.12455007 -26.274 &lt; 0.0000000000000002 ***
+## `jobblue-collar`   -0.34172650  0.07088312  -4.821  0.00000142850900016 ***
+## jobentrepreneur    -0.45847842  0.12247064  -3.744             0.000181 ***
+## jobhousemaid       -0.46756338  0.13143344  -3.557             0.000375 ***
+## jobmanagement      -0.20737652  0.07210648  -2.876             0.004028 ** 
+## jobretired          0.21100683  0.08631331   2.445             0.014499 *  
+## `jobself-employed` -0.31926258  0.10905321  -2.928             0.003416 ** 
+## jobservices        -0.21093884  0.08147066  -2.589             0.009622 ** 
+## jobstudent          0.47287840  0.10697265   4.421  0.00000984481708898 ***
+## jobtechnician      -0.19756139  0.06780231  -2.914             0.003571 ** 
+## jobunemployed      -0.22993580  0.10905944  -2.108             0.035000 *  
+## jobunknown         -0.40858266  0.22693224  -1.800             0.071788 .  
+## maritalmarried     -0.18332302  0.05709600  -3.211             0.001324 ** 
+## maritalsingle       0.07195542  0.06149575   1.170             0.241966    
+## educationsecondary  0.18025756  0.06247932   2.885             0.003913 ** 
+## educationtertiary   0.43324200  0.07273833   5.956  0.00000000258214645 ***
+## educationunknown    0.25383658  0.10191399   2.491             0.012749 *  
+## balance             0.00010472  0.00001447   7.235  0.00000000000046483 ***
+## housingyes         -0.71891581  0.04232719 -16.985 &lt; 0.0000000000000002 ***
+## loanyes            -0.45850359  0.05805626  -7.898  0.00000000000000284 ***
+## contacttelephone   -0.15271200  0.07278469  -2.098             0.035893 *  
+## contactunknown     -1.64595558  0.07014127 -23.466 &lt; 0.0000000000000002 ***
+## day                 0.01009711  0.00246639   4.094  0.00004241957142842 ***
+## monthaug           -0.55151028  0.07784117  -7.085  0.00000000000138973 ***
+## monthdec            1.07812115  0.17304037   6.230  0.00000000046506668 ***
+## monthfeb            0.01686755  0.08841959   0.191             0.848708    
+## monthjan           -1.16635574  0.11808637  -9.877 &lt; 0.0000000000000002 ***
+## monthjul           -0.76305864  0.07517639 -10.150 &lt; 0.0000000000000002 ***
+## monthjun            0.58141890  0.09303299   6.250  0.00000000041150743 ***
+## monthmar            1.84759818  0.12018013  15.374 &lt; 0.0000000000000002 ***
+## monthmay           -0.29876589  0.07107745  -4.203  0.00002629525502781 ***
+## monthnov           -0.81791475  0.08251137  -9.913 &lt; 0.0000000000000002 ***
+## monthoct            1.19586233  0.10644309  11.235 &lt; 0.0000000000000002 ***
+## monthsep            1.27696558  0.11735921  10.881 &lt; 0.0000000000000002 ***
+## duration            0.00685797  0.00009628  71.228 &lt; 0.0000000000000002 ***
+## campaign           -0.14889089  0.01349550 -11.033 &lt; 0.0000000000000002 ***
+## previous            0.10023599  0.00739313  13.558 &lt; 0.0000000000000002 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 32351  on 44368  degrees of freedom
+## Residual deviance: 21875  on 44332  degrees of freedom
+## AIC: 21949
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<pre class="r"><code>fit.cart&lt;-train(y ~ job + marital + education + balance 
+                 + housing + loan + contact + 
+                   day + month + duration + campaign 
+                 + previous + poutcome,data = df,trControl=train_control,method =&quot;rpart&quot;,metric=metric)
+fit.cart</code></pre>
+<pre><code>## CART 
+## 
+## 44369 samples
+##    13 predictor
+##     2 classes: &#39;no&#39;, &#39;yes&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 39931, 39933, 39933, 39932, 39933, 39932, ... 
+## Resampling results across tuning parameters:
+## 
+##   cp           Accuracy   Kappa    
+##   0.003603945  0.8890214  0.3574229
+##   0.005279464  0.8874887  0.3272678
+##   0.015806778  0.8829365  0.1633892
+## 
+## Accuracy was used to select the optimal model using the largest value.
+## The final value used for the model was cp = 0.003603945.</code></pre>
+</div>
+<div id="fold-cross-validation-code-for-svm" class="section level2">
+<h2>10 Fold Cross validation Code for SVM</h2>
+<pre class="r"><code>metric&lt;-&quot;Accuracy&quot; 
+control&lt;-trainControl(method = &quot;cv&quot;,number = 10)  
+fit.svm&lt;-train(y ~ job + marital + education + balance 
+                + housing + loan + contact + 
+                  day + month + duration + campaign 
+                + previous + poutcome,data = df,trControl=control,method =&quot;svmRadial&quot;,metric=metric)</code></pre>
+<p><br>
+## 10 Fold Cross Validation Code for Random Forest</p>
+<pre class="r"><code>metric&lt;-&quot;Accuracy&quot; 
+control&lt;-trainControl(method = &quot;cv&quot;,number = 10) 
+fit.rf&lt;-train(y ~ job + marital + education + balance 
+               + housing + loan + contact + 
+                 day + month + duration + campaign 
+               + previous + poutcome,data = df,trControl=control,method =&quot;rf&quot;,ntree = 300,metric=metric)</code></pre>
+<p><br></p>
+<hr />
+</div>
+</div>
+<div id="comparing-all-the-models." class="section level1">
+<h1>Comparing all the models.</h1>
+</div>
+<div id="logistic-regression-confusion-matrix-specifcity-accuracy-and-sensitivity" class="section level1">
+<h1>Logistic Regression Confusion Matrix, Specifcity, Accuracy and sensitivity</h1>
+<pre class="r"><code>reg2_pred &lt;- predict(reg2,newdata = df[,-17],type = &quot;response&quot;)
+reg2_pred &lt;- ifelse(reg2_pred &gt; 0.40 ,&#39;yes&#39;,&#39;no&#39;)
+confusionMatrix(df$y,as.factor(reg2_pred))</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction    no   yes
+##        no  37180  1917
+##        yes  3016  2256
+##                                              
+##                Accuracy : 0.8888             
+##                  95% CI : (0.8859, 0.8917)   
+##     No Information Rate : 0.9059             
+##     P-Value [Acc &gt; NIR] : 1                  
+##                                              
+##                   Kappa : 0.4164             
+##                                              
+##  Mcnemar&#39;s Test P-Value : &lt;0.0000000000000002
+##                                              
+##             Sensitivity : 0.9250             
+##             Specificity : 0.5406             
+##          Pos Pred Value : 0.9510             
+##          Neg Pred Value : 0.4279             
+##              Prevalence : 0.9059             
+##          Detection Rate : 0.8380             
+##    Detection Prevalence : 0.8812             
+##       Balanced Accuracy : 0.7328             
+##                                              
+##        &#39;Positive&#39; Class : no                 
+## </code></pre>
+</div>
+<div id="decision-tree-confusion-matrix-specifcity-accuracy-and-sensitivity" class="section level1">
+<h1>Decision Tree Confusion Matrix, Specifcity, Accuracy and sensitivity</h1>
+<pre class="r"><code>tree_pred &lt;- predict(tree,df[,-17],type=&quot;prob&quot;)
+
+tree_pred &lt;- ifelse(tree_pred[,2] &gt; 0.4 ,&#39;yes&#39;,&#39;no&#39;)
+
+
+confusionMatrix(df$y,as.factor(tree_pred))</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction    no   yes
+##        no  37628  1469
+##        yes  3318  1954
+##                                              
+##                Accuracy : 0.8921             
+##                  95% CI : (0.8892, 0.895)    
+##     No Information Rate : 0.9229             
+##     P-Value [Acc &gt; NIR] : 1                  
+##                                              
+##                   Kappa : 0.3926             
+##                                              
+##  Mcnemar&#39;s Test P-Value : &lt;0.0000000000000002
+##                                              
+##             Sensitivity : 0.9190             
+##             Specificity : 0.5708             
+##          Pos Pred Value : 0.9624             
+##          Neg Pred Value : 0.3706             
+##              Prevalence : 0.9229             
+##          Detection Rate : 0.8481             
+##    Detection Prevalence : 0.8812             
+##       Balanced Accuracy : 0.7449             
+##                                              
+##        &#39;Positive&#39; Class : no                 
+## </code></pre>
+</div>
+<div id="random-forest-confusion-matrix-specifcity-accuracy-and-sensitivity" class="section level1">
+<h1>Random Forest Confusion Matrix, Specifcity, Accuracy and sensitivity</h1>
+<pre class="r"><code>rf_pred &lt;- predict(rffit,df[,-17])
+confusionMatrix(df$y,rf_pred)</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction    no   yes
+##        no  39094     3
+##        yes    59  5213
+##                                                
+##                Accuracy : 0.9986               
+##                  95% CI : (0.9982, 0.9989)     
+##     No Information Rate : 0.8824               
+##     P-Value [Acc &gt; NIR] : &lt; 0.00000000000000022
+##                                                
+##                   Kappa : 0.9933               
+##                                                
+##  Mcnemar&#39;s Test P-Value : 0.000000000002848    
+##                                                
+##             Sensitivity : 0.9985               
+##             Specificity : 0.9994               
+##          Pos Pred Value : 0.9999               
+##          Neg Pred Value : 0.9888               
+##              Prevalence : 0.8824               
+##          Detection Rate : 0.8811               
+##    Detection Prevalence : 0.8812               
+##       Balanced Accuracy : 0.9990               
+##                                                
+##        &#39;Positive&#39; Class : no                   
+## </code></pre>
+</div>
+<div id="svm-confusion-matrix-specifcity-accuracy-and-sensitivity" class="section level1">
+<h1>SVM Confusion Matrix, Specifcity, Accuracy and sensitivity</h1>
+<pre class="r"><code>y_pred = predict(classifier, newdata = df[,-17]) 
+
+
+confusionMatrix(df$y,y_pred)</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction    no   yes
+##        no  38868   229
+##        yes  5024   248
+##                                              
+##                Accuracy : 0.8816             
+##                  95% CI : (0.8786, 0.8846)   
+##     No Information Rate : 0.9892             
+##     P-Value [Acc &gt; NIR] : 1                  
+##                                              
+##                   Kappa : 0.0679             
+##                                              
+##  Mcnemar&#39;s Test P-Value : &lt;0.0000000000000002
+##                                              
+##             Sensitivity : 0.88554            
+##             Specificity : 0.51992            
+##          Pos Pred Value : 0.99414            
+##          Neg Pred Value : 0.04704            
+##              Prevalence : 0.98925            
+##          Detection Rate : 0.87602            
+##    Detection Prevalence : 0.88118            
+##       Balanced Accuracy : 0.70273            
+##                                              
+##        &#39;Positive&#39; Class : no                 
+## </code></pre>
+</div>
+<div id="gradient-boosting-confusion-matrix-specifcity-accuracy-and-sensitivity" class="section level1">
+<h1>Gradient Boosting Confusion Matrix, Specifcity, Accuracy and sensitivity</h1>
+<pre class="r"><code>pred &lt;- predict.gbm(object = grad_boost,
+                    newdata = xg_df,
+                    n.trees = 1000,
+                    type = &quot;response&quot;)
+
+pred_fin &lt;- ifelse(pred &gt; 0.5,1,0)
+
+confusionMatrix(table(xg_df$y,pred_fin))</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##    pred_fin
+##         0     1
+##   0 38023  1074
+##   1  3521  1751
+##                                              
+##                Accuracy : 0.8964             
+##                  95% CI : (0.8936, 0.8993)   
+##     No Information Rate : 0.9363             
+##     P-Value [Acc &gt; NIR] : 1                  
+##                                              
+##                   Kappa : 0.3812             
+##                                              
+##  Mcnemar&#39;s Test P-Value : &lt;0.0000000000000002
+##                                              
+##             Sensitivity : 0.9152             
+##             Specificity : 0.6198             
+##          Pos Pred Value : 0.9725             
+##          Neg Pred Value : 0.3321             
+##              Prevalence : 0.9363             
+##          Detection Rate : 0.8570             
+##    Detection Prevalence : 0.8812             
+##       Balanced Accuracy : 0.7675             
+##                                              
+##        &#39;Positive&#39; Class : 0                  
+## </code></pre>
+</div>
+<div id="comparing-all-the-model." class="section level1">
+<h1>Comparing All the Model.</h1>
+<p><img src="https://i.ibb.co/HH0Wdxg/best-Model.jpg" /></p>
+<div id="from-this-we-can-see-that-random-forest-is-the-best-model-but-it-also-looks-like-there-is-some-bias-variance-trade-off-so-we-will-develope-the-same-model-for-train-data-and-will-test-on-test-dataset-to-check-how-the-bias-and-variance-looks" class="section level2">
+<h2>### From this we can see that Random forest is the best model, but it also looks like there is some bias variance trade off, so we will develope the same model for train data and will test on test dataset to check how the bias and variance looks</h2>
+</div>
+</div>
+<div id="test-train" class="section level1">
+<h1>Test train</h1>
+<p>Splitting the dataset into 70-30 and then creating a random forest model with train data and prediciting it on test dataset.</p>
+<pre class="r"><code>library(caTools)
+sample &lt;- sample.split(df,SplitRatio = 0.7)
+train &lt;- df[sample,]
+test &lt;- df[!sample,]
+
+rffit &lt;- randomForest(y ~ job + marital + education + balance 
+                      + housing + loan + contact + 
+                        day + month + duration + campaign ,data= train,ntree = 300)</code></pre>
+<div id="prediciting-on-test-dataset" class="section level2">
+<h2>prediciting on test dataset</h2>
+<pre class="r"><code>rf_pred &lt;- predict(rffit,test[,-17])
+confusionMatrix(test$y,rf_pred)</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction    no   yes
+##        no  13254   502
+##        yes  1135   769
+##                                              
+##                Accuracy : 0.8955             
+##                  95% CI : (0.8906, 0.9002)   
+##     No Information Rate : 0.9188             
+##     P-Value [Acc &gt; NIR] : 1                  
+##                                              
+##                   Kappa : 0.4288             
+##                                              
+##  Mcnemar&#39;s Test P-Value : &lt;0.0000000000000002
+##                                              
+##             Sensitivity : 0.9211             
+##             Specificity : 0.6050             
+##          Pos Pred Value : 0.9635             
+##          Neg Pred Value : 0.4039             
+##              Prevalence : 0.9188             
+##          Detection Rate : 0.8464             
+##    Detection Prevalence : 0.8784             
+##       Balanced Accuracy : 0.7631             
+##                                              
+##        &#39;Positive&#39; Class : no                 
+## </code></pre>
+</div>
+</div>
+<div id="the-models-important-paramaets-are-given-below" class="section level1">
+<h1>The Models important paramaets are given below</h1>
+<h2>
+Accuracy = 0.8986
+</h2>
+<br>
+<h2>
+TPR = 0.9231
+</h2>
+<br>
+<h2>
+FPR = 0.6128
+</h2>
+<br>
+<h2>
+Kappa = 0.4347
+</h2>
+<hr />
+</div>
+<div id="thank-you" class="section level1">
+<h1>THANK YOU</h1>
+</div>

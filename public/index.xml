@@ -12,6 +12,15 @@
     
     
     <item>
+      <title>Different Classification Models From Logistic to XGBoost</title>
+      <link>/post/different-classification-models-from-logistic-to-xgboost/</link>
+      <pubDate>Thu, 07 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/different-classification-models-from-logistic-to-xgboost/</guid>
+      <description>Preprocessing the dataimporting datasetlibrary(readxl)library(randomForest)library(caret)df &amp;lt;- read_excel(&amp;quot;AIML_Endterm.xlsx&amp;quot;)df &amp;lt;- as.data.frame(df)Viewing sample of datasethead(df)## age job marital education default balance housing loan contact day## 1 58 management married tertiary no 2143 yes no unknown 5## 2 44 technician single secondary no 29 yes no unknown 5## 3 33 entrepreneur married secondary no 2 yes yes unknown 5## 4 47 blue-collar married unknown no 1506 yes no unknown 5## 5 33 unknown single unknown no 1 no no unknown 5## 6 35 management married tertiary no 231 yes no unknown 5## month duration campaign pdays previous poutcome y## 1 may 261 1 -1 0 unknown no## 2 may 151 1 -1 0 unknown no## 3 may 76 1 -1 0 unknown no## 4 may 92 1 -1 0 unknown no## 5 may 198 1 -1 0 unknown no## 6 may 139 1 -1 0 unknown noName of the variablesnames(df)## [1] &amp;quot;age&amp;quot; &amp;quot;job&amp;quot; &amp;quot;marital&amp;quot; &amp;quot;education&amp;quot; &amp;quot;default&amp;quot; &amp;quot;balance&amp;quot; ## [7] &amp;quot;housing&amp;quot; &amp;quot;loan&amp;quot; &amp;quot;contact&amp;quot; &amp;quot;day&amp;quot; &amp;quot;month&amp;quot; &amp;quot;duration&amp;quot; ## [13] &amp;quot;campaign&amp;quot; &amp;quot;pdays&amp;quot; &amp;quot;previous&amp;quot; &amp;quot;poutcome&amp;quot; &amp;quot;y&amp;quot;viewing the structure, dimentsiond and summary of the datasetstr(df)## &amp;#39;data.</description>
+    </item>
+    
+    <item>
       <title>Live Wind Flow Map</title>
       <link>/post/weather-map/</link>
       <pubDate>Tue, 24 Nov 2020 00:00:00 +0000</pubDate>

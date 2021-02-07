@@ -1,0 +1,481 @@
+---
+title: Different Classification Models From Logistic to XGBoost
+author: Vignesh A
+date: '2021-01-07'
+slug: different-classification-models-from-logistic-to-xgboost
+categories: []
+tags: []
+---
+
+
+# Preprocessing the data
+
+
+### importing dataset
+```{r ,warning=FALSE,message=FALSE}
+library(readxl)
+library(randomForest)
+library(caret)
+df <- read_excel("AIML_Endterm.xlsx")
+df <- as.data.frame(df)
+```
+
+### Viewing sample of dataset
+
+```{r warning=FALSE,message=FALSE}
+head(df)
+```
+
+### Name of the variables
+
+```{r warning=FALSE,message=FALSE}
+names(df)
+```
+
+### viewing the structure, dimentsiond and summary of the dataset
+
+```{r warning=FALSE,message=FALSE}
+str(df)
+dim(df)
+summary(df)
+```
+
+### converting necessary character variables into factor variables
+
+```{r warning=FALSE,message=FALSE}
+df$job <- as.factor(df$job)
+df$marital <- as.factor(df$marital)
+df$education <- as.factor(df$education)
+df$default <- as.factor(df$default)
+df$housing <- as.factor(df$housing)
+df$loan <- as.factor(df$loan)
+df$contact <- as.factor(df$contact)
+df$month <- as.factor(df$month)
+df$poutcome <- as.factor(df$month)
+df$y <- as.factor(df$y)
+```
+
+### finding missing value
+Using visual representaion is one way of finding if there is any missing value or NA's
+
+
+```{r warning=FALSE,message=FALSE} 
+library(Amelia)
+missmap(df)
+```
+
+From the visual representaion we can see that there are no missing entries in the dataset
+
+
+### finding outliers
+
+```{r warning=FALSE,message=FALSE}
+boxplot(df[,unlist(lapply(df, is.numeric))  ],horizontal = TRUE)
+```
+
+### scaling for better viewing purpose
+
+```{r warning=FALSE,message=FALSE}
+boxplot(scale(df[,unlist(lapply(df, is.numeric))]),horizontal = TRUE)
+```
+
+
+## WE can see there are outliers in many independent variables, we are going to treat the outliers using **1.5IQR** method
+
+```{r warning=FALSE,message=FALSE}
+df$age <- ifelse(df$age >= 70,70,df$age)
+df$balance <- ifelse(df$balance >= 3517,3517,df$balance)
+df$balance <- ifelse(df$balance <= -1980,-1980,df$balance)
+df$duration <- ifelse(df$duration >= 643,643,df$duration)
+df$campaign <- ifelse(df$campaign >= 6,6,df$campaign)
+df$previous <- ifelse(df$previous >= 200,0,df$previous)
+```
+
+
+### After treating outliers
+```{r warning=FALSE,message=FALSE}
+boxplot(scale(df[,unlist(lapply(df, is.numeric))]),horizontal = TRUE)
+```
+
+## Doing stepwise logistic regressing to find the significants variables that we will be using to predict the dependent variables
+
+
+```{r warning=FALSE,message=FALSE}
+library(MASS)
+reg1 <- glm(y~.,df,family = "binomial")
+stepReg1 <-stepAIC(reg1)
+stepReg1$anova
+metric<-"Accuracy"
+```
+
+# From the step wise logistic regression we can see the significant variables are 
+
+
+## So we will be creating the models using these variables
+
+<h2> y ~ job + marital + education + balance + housing + loan + contact + 
+    day + month + duration + campaign + pdays + previous" </h2>
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+# Descriptive statistics of the selected independent variables
+
+#correlation between the variables
+
+```{r warning=FALSE,message=FALSE}
+library(corrgram)
+library(corrplot)
+corrplot(cor(df[,c(6,10,12,13,14,15)]),method = "number",type = "upper")
+```
+
+
+
+```{r warning=FALSE,message=FALSE}
+library(psych)
+library(modeest)
+library(tidyverse)
+```
+# Measure of dispersion
+
+```{r warning=FALSE,message=FALSE}
+
+
+
+df_data_frame <- as.data.frame(describeBy(df[,c(2,3,4,6,7,8,12,13,16)],group = NULL))
+df_dispersion <- df_data_frame[,c(4,10,11,12,13)]
+df_central_tendency <- df_data_frame[,c(3,5)]
+df_dispersion$variance <- df_dispersion$sd^2
+options(scipen = 999)
+names(df_dispersion) <-c('Standard Deviation',
+                         'Range',
+                         'Skewness',
+                         'Kurtosis',
+                         'Standard Error',
+                         'Variance')
+knitr:: kable(df_dispersion)
+```
+
+# Measure of Central Tendency
+
+```{r warning=FALSE,message=FALSE}
+df_central_tendency <- df_data_frame[,c(3,5)]
+knitr::kable(df_central_tendency)
+```
+
+```{r warning=FALSE,message=FALSE}
+cat("Mode of job = ",as.character(mlv(df$job)),'\n',
+    "\nMode of balance = ",as.character(mlv(df$balance)),'\n',
+    "\nMode of Contact = ",as.character(mlv(df$contact)),'\n',
+    "\nMode of day = ",as.character(mlv(df$day)),'\n',
+    "\nMode of Month = ",as.character(mlv(df$month)),'\n',
+    "\nMode of duration = ",as.character(mlv(df$duration)),'\n',
+    "\nMode of Campaign = ",as.character(mlv(df$campaign)))
+```
+----------------------------------------------------------------------------------------------------------
+
+
+# Building Models
+The Models that we will be buildings are given below
+
+<h2>1. Logistic Regression </h2>
+<br>
+<h2>2. Decision Tree </h2>
+<br>
+<h2>3. Random Forest </h2>
+<br>
+<h2>4. Support Vector Machine(SVM)</h2>
+<br>
+<h2>5. Gradient Boosting </h2>
+<br>
+
+# Logistic regression Model  creation
+
+### Working of Logistic Regression
+![](https://miro.medium.com/max/1280/1*CYAn9ACXrWX3IneHSoMVOQ.gif)
+
+
+```{r warning=FALSE,message=FALSE}
+reg2 <- glm(y ~ job + marital + education + balance 
+            + housing + loan + contact + 
+              day + month + duration + campaign ,
+            df,family = "binomial")
+summary(reg2)
+```
+A logistic regression model is created above
+
+
+
+# Decision Tree Model  creation
+
+### Working of Decision Tree
+![](https://cfcdn.usu.com/fileadmin/user_upload/unymira/images_en/content_en/unymira_decision-tree-animiert_1140x680px.gif)
+
+
+
+
+```{r warning=FALSE,message=FALSE}
+library(tree)
+library(rpart)
+library(rpart.plot)
+tree <- rpart(y ~ job + marital + education + balance 
+              + housing + loan + contact + 
+                day + month + duration + campaign + poutcome, data = df)
+
+rpart.plot(tree)
+```
+
+
+
+# Random Forest Model  creation
+
+### Working of Random Forest
+![](https://miro.medium.com/max/2400/1*bYGSIgMlmVdedFJaE6PuBg.gif)
+
+```{r warning=FALSE,message=FALSE}
+rffit <- randomForest(y ~ job + marital + education + balance 
+                      + housing + loan + contact + 
+                        day + month + duration + campaign ,data= df,ntree = 300)
+print(rffit) 
+```
+
+
+# SVM Model  creation
+
+### Working of SVM
+![](https://jeremykun.files.wordpress.com/2017/06/svm_solve_by_hand-e1496076457793.gif)
+
+
+```{r warning=FALSE,message=FALSE}
+library(e1071) 
+library(gbm)
+classifier = svm(formula = y ~ job + marital + education + balance 
+                 + housing + loan + contact + 
+                   day + month + duration + campaign 
+                 + previous , 
+                 data = df, 
+                 type = 'C-classification', 
+                 kernel = 'linear') 
+
+classifier
+```
+
+
+# Greadient Boosting Model creation
+
+### Working of Gradient Boosting
+![](https://miro.medium.com/max/2400/1*wsBakfF2Geh1zgY4HJbwFQ.gif)
+
+
+
+```{r warning=FALSE,message=FALSE}
+xg_df <- df[,c("y", "job", "marital", "education" , "balance" ,
+                "housing"  ,"loan" , "contact",  
+                 "day",  "month",  "duration"  ,"campaign" ,"previous")]
+xg_df$y <- ifelse(xg_df$y == "no",0,1)
+df1 <- read.csv('final edited data.csv')
+
+
+xg_df <- df1
+
+
+df_lable <- xg_df[,"y"]
+
+
+grad_boost <- gbm(y ~ job + marital + education + balance 
+                 + housing + loan + contact + 
+                   day + month + duration + campaign 
+                 + previous ,
+                  distribution = "bernoulli",
+                  data = xg_df,
+                  n.trees =1000,
+                  interaction.depth = 1,
+                  n.cores = NULL, # will use all cores by default
+                  verbose = FALSE)
+summary(grad_boost)
+```
+
+
+--------------------------------------------------------------------------------------------------------------
+
+# Working of cross fold validation
+![](https://upload.wikimedia.org/wikipedia/commons/4/4b/KfoldCV.gif)
+
+![](https://i.pinimg.com/originals/8b/f6/d4/8bf6d49e5964db81282b39d0e8db05cf.gif)
+
+# 10 fold cross validated model
+
+
+## Cross fold validation is only done for two models, since rest models such as bagging and boosting where multiple decision tress has to created requires more computaion power and takes a huge amount of time.
+
+## So i have included the code for those, but didnt run those, since my system wasnt capable of handleing those high computaion power.
+
+```{r warning=FALSE,message=FALSE}
+library(caret)
+
+# define training control
+train_control <- trainControl(method = "cv", number = 10)
+
+# train the model on training set
+model <- train(y ~ job + marital + education + balance 
+                 + housing + loan + contact + 
+                   day + month + duration + campaign 
+                 + previous ,
+               data = df,
+               metric=metric,
+               trControl = train_control,
+               method = "glm",
+               family=binomial())
+
+# print cv scores
+summary(model)
+```
+
+```{r warning=FALSE,message=FALSE}
+fit.cart<-train(y ~ job + marital + education + balance 
+                 + housing + loan + contact + 
+                   day + month + duration + campaign 
+                 + previous + poutcome,data = df,trControl=train_control,method ="rpart",metric=metric)
+fit.cart
+
+```
+
+## 10 Fold Cross validation Code for SVM
+```{r}
+metric<-"Accuracy" 
+control<-trainControl(method = "cv",number = 10)  
+fit.svm<-train(y ~ job + marital + education + balance 
+                + housing + loan + contact + 
+                  day + month + duration + campaign 
+                + previous + poutcome,data = df,trControl=control,method ="svmRadial",metric=metric)
+```
+
+
+
+<br>
+## 10 Fold Cross Validation Code for Random Forest
+
+```{r}
+metric<-"Accuracy" 
+control<-trainControl(method = "cv",number = 10) 
+fit.rf<-train(y ~ job + marital + education + balance 
+               + housing + loan + contact + 
+                 day + month + duration + campaign 
+               + previous + poutcome,data = df,trControl=control,method ="rf",ntree = 300,metric=metric)
+```
+
+
+
+<br>
+
+----------------------------------------------------------------------------------------------------------------
+
+
+
+
+# Comparing all the models.
+
+
+
+# Logistic Regression Confusion Matrix, Specifcity, Accuracy and sensitivity
+```{r warning=FALSE,message=FALSE}
+reg2_pred <- predict(reg2,newdata = df[,-17],type = "response")
+reg2_pred <- ifelse(reg2_pred > 0.40 ,'yes','no')
+confusionMatrix(df$y,as.factor(reg2_pred))
+
+
+```
+
+# Decision Tree Confusion Matrix, Specifcity, Accuracy and sensitivity
+
+```{r warning=FALSE,message=FALSE}
+tree_pred <- predict(tree,df[,-17],type="prob")
+
+tree_pred <- ifelse(tree_pred[,2] > 0.4 ,'yes','no')
+
+
+confusionMatrix(df$y,as.factor(tree_pred))
+
+```
+
+# Random Forest Confusion Matrix, Specifcity, Accuracy and sensitivity
+```{r warning=FALSE,message=FALSE}
+rf_pred <- predict(rffit,df[,-17])
+confusionMatrix(df$y,rf_pred)
+```
+
+
+
+# SVM Confusion Matrix, Specifcity, Accuracy and sensitivity
+```{r warning=FALSE,message=FALSE}
+y_pred = predict(classifier, newdata = df[,-17]) 
+
+
+confusionMatrix(df$y,y_pred)
+```
+
+# Gradient Boosting Confusion Matrix, Specifcity, Accuracy and sensitivity
+```{r warning=FALSE,message=FALSE}
+pred <- predict.gbm(object = grad_boost,
+                    newdata = xg_df,
+                    n.trees = 1000,
+                    type = "response")
+
+pred_fin <- ifelse(pred > 0.5,1,0)
+
+confusionMatrix(table(xg_df$y,pred_fin))
+```
+
+# Comparing All the Model.
+
+![](https://i.ibb.co/HH0Wdxg/best-Model.jpg)
+
+
+### From this we can see that Random forest is the best model, but it also looks like there is some bias variance trade off, so we will develope the same model for train data and will test on test dataset to check how the bias and variance looks
+-------------------------------------------------------------------------------------------------------------
+
+
+
+# Test train
+Splitting the dataset into 70-30 and then creating a random forest model with train data and prediciting it on test dataset.
+
+```{r warning=FALSE,message=FALSE}
+library(caTools)
+sample <- sample.split(df,SplitRatio = 0.7)
+train <- df[sample,]
+test <- df[!sample,]
+
+rffit <- randomForest(y ~ job + marital + education + balance 
+                      + housing + loan + contact + 
+                        day + month + duration + campaign ,data= train,ntree = 300)
+
+
+
+```
+
+## prediciting on test dataset
+```{r}
+rf_pred <- predict(rffit,test[,-17])
+confusionMatrix(test$y,rf_pred)
+
+
+```
+# The Models important paramaets are given below 
+
+<h2>Accuracy = 0.8986</h2>
+<br>
+<h2>TPR = 0.9231</h2>
+<br>
+<h2>FPR = 0.6128</h2>
+<br>
+<h2>Kappa = 0.4347 </h2>
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+
+# THANK YOU
