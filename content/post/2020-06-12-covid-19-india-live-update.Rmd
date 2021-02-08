@@ -204,7 +204,7 @@ dygraph(xts(cumsum_crd[,c(2,5)],order.by = cumsum_crd$Date)) %>%
             drawPoints = TRUE,
             pointSize = 3,
             mobileDisableYTouch = TRUE) %>%
-  dyRangeSelector(dateWindow = c(cumsum_crd$Date[length(cumsum_crd$Date)]-20,
+  dyRangeSelector(dateWindow = c(cumsum_crd$Date[length(cumsum_crd$Date)]-60,
                                  cumsum_crd$Date[length(cumsum_crd$Date)])) %>%
   dyCSScool() %>%
   dyLegend(show = 'follow')
@@ -271,7 +271,7 @@ dygraph(xts(cumsum_crd[,c(3,6)],order.by = cumsum_crd$Date)) %>%
             drawPoints = TRUE,
             pointSize = 3,
             mobileDisableYTouch = TRUE) %>%
-  dyRangeSelector(dateWindow = c(cumsum_crd$Date[length(cumsum_crd$Date)]-20,
+  dyRangeSelector(dateWindow = c(cumsum_crd$Date[length(cumsum_crd$Date)]-60,
                                  cumsum_crd$Date[length(cumsum_crd$Date)])) %>%
   dyCSScool() %>%
   dyLegend(show = 'follow')
@@ -294,7 +294,7 @@ dygraph(xts(cumsum_crd[,c(4,7)],order.by = cumsum_crd$Date)) %>%
             pointSize = 3,
             drawGapEdgePoints = TRUE,
             mobileDisableYTouch = TRUE) %>%
-  dyRangeSelector(dateWindow = c(cumsum_crd$Date[length(cumsum_crd$Date)]-20,
+  dyRangeSelector(dateWindow = c(cumsum_crd$Date[length(cumsum_crd$Date)]-60,
                                  cumsum_crd$Date[length(cumsum_crd$Date)])) %>%
   dyCSScool()%>%
   dyLegend(show = 'follow')
